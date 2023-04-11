@@ -37,5 +37,9 @@ namespace Models
 
         public DateTime PredvidjeniKraj { get; set; }
         public Kompanija? Kompanija { get; set; }
+
+        
+
+
     }
 }

@@ -12,7 +12,7 @@ using Models;
 namespace Projektito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230411212056_V1")]
+    [Migration("20230411215905_V1")]
     partial class V1
     {
         /// <inheritdoc />
@@ -63,7 +63,38 @@ namespace Projektito.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Dispeceri");
+                    b.ToTable("Dispecer");
+                });
+
+            modelBuilder.Entity("Models.DodeljenaTuraa", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<double>("GenerisanaCena")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("TuraID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VozacID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VoziloID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TuraID");
+
+                    b.HasIndex("VozacID");
+
+                    b.HasIndex("VoziloID");
+
+                    b.ToTable("DodeljeneTure");
                 });
 
             modelBuilder.Entity("Models.Favorizacija", b =>
@@ -86,7 +117,7 @@ namespace Projektito.Migrations
 
                     b.HasIndex("VozacID");
 
-                    b.ToTable("Favorizacije");
+                    b.ToTable("Favorizacija");
                 });
 
             modelBuilder.Entity("Models.Kompanija", b =>
@@ -128,7 +159,7 @@ namespace Projektito.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Kompanije");
+                    b.ToTable("Kompanija");
                 });
 
             modelBuilder.Entity("Models.Ocena", b =>
@@ -159,7 +190,7 @@ namespace Projektito.Migrations
 
                     b.HasIndex("VozacID");
 
-                    b.ToTable("Ocene");
+                    b.ToTable("Ocena");
                 });
 
             modelBuilder.Entity("Models.PonudjenaTura", b =>
@@ -187,7 +218,7 @@ namespace Projektito.Migrations
 
                     b.HasIndex("VozacID");
 
-                    b.ToTable("PonudjeneTure");
+                    b.ToTable("PonudjenaTura");
                 });
 
             modelBuilder.Entity("Models.PrihvacenaTura", b =>
@@ -218,7 +249,7 @@ namespace Projektito.Migrations
 
                     b.HasIndex("VoziloID");
 
-                    b.ToTable("PrihvaceneTure");
+                    b.ToTable("PrihvacenaTura");
                 });
 
             modelBuilder.Entity("Models.Prikolica", b =>
@@ -264,7 +295,7 @@ namespace Projektito.Migrations
 
                     b.HasIndex("VozacID");
 
-                    b.ToTable("Prikolice");
+                    b.ToTable("Prikolica");
                 });
 
             modelBuilder.Entity("Models.Tura", b =>
@@ -318,12 +349,6 @@ namespace Projektito.Migrations
                     b.Property<double>("VisinaRobe")
                         .HasColumnType("float");
 
-                    b.Property<int?>("VozacID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VozacID1")
-                        .HasColumnType("int");
-
                     b.Property<double>("Zapremina")
                         .HasColumnType("float");
 
@@ -331,11 +356,7 @@ namespace Projektito.Migrations
 
                     b.HasIndex("KompanijaID");
 
-                    b.HasIndex("VozacID");
-
-                    b.HasIndex("VozacID1");
-
-                    b.ToTable("Ture");
+                    b.ToTable("Tura");
                 });
 
             modelBuilder.Entity("Models.Vozac", b =>
@@ -380,7 +401,7 @@ namespace Projektito.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Vozaci");
+                    b.ToTable("Vozac");
                 });
 
             modelBuilder.Entity("Models.Vozilo", b =>
@@ -394,11 +415,15 @@ namespace Projektito.Migrations
                     b.Property<int>("CenaPoKilometru")
                         .HasColumnType("int");
 
-                    b.Property<int>("Marka")
-                        .HasColumnType("int");
+                    b.Property<string>("Marka")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("Model")
-                        .HasColumnType("int");
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Slika")
                         .IsRequired()
@@ -406,7 +431,8 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Tablice")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<int?>("VozacID")
                         .HasColumnType("int");
@@ -415,7 +441,28 @@ namespace Projektito.Migrations
 
                     b.HasIndex("VozacID");
 
-                    b.ToTable("Vozila");
+                    b.ToTable("Vozilo");
+                });
+
+            modelBuilder.Entity("Models.DodeljenaTuraa", b =>
+                {
+                    b.HasOne("Models.Tura", "Tura")
+                        .WithMany()
+                        .HasForeignKey("TuraID");
+
+                    b.HasOne("Models.Vozac", "Vozac")
+                        .WithMany("DodeljeneTure")
+                        .HasForeignKey("VozacID");
+
+                    b.HasOne("Models.Vozilo", "Vozilo")
+                        .WithMany("DodeljeneTure")
+                        .HasForeignKey("VoziloID");
+
+                    b.Navigation("Tura");
+
+                    b.Navigation("Vozac");
+
+                    b.Navigation("Vozilo");
                 });
 
             modelBuilder.Entity("Models.Favorizacija", b =>
@@ -455,7 +502,7 @@ namespace Projektito.Migrations
                         .HasForeignKey("TuraID");
 
                     b.HasOne("Models.Vozac", "Vozac")
-                        .WithMany()
+                        .WithMany("PonudjeneTure")
                         .HasForeignKey("VozacID");
 
                     b.Navigation("Dispecer");
@@ -472,7 +519,7 @@ namespace Projektito.Migrations
                         .HasForeignKey("TuraID");
 
                     b.HasOne("Models.Vozac", "Vozac")
-                        .WithMany()
+                        .WithMany("PrihvaceneTure")
                         .HasForeignKey("VozacID");
 
                     b.HasOne("Models.Vozilo", "Vozilo")
@@ -498,14 +545,6 @@ namespace Projektito.Migrations
                     b.HasOne("Models.Kompanija", "Kompanija")
                         .WithMany("Ture")
                         .HasForeignKey("KompanijaID");
-
-                    b.HasOne("Models.Vozac", null)
-                        .WithMany("DodeljeneTure")
-                        .HasForeignKey("VozacID");
-
-                    b.HasOne("Models.Vozac", null)
-                        .WithMany("PonudjeneTure")
-                        .HasForeignKey("VozacID1");
 
                     b.Navigation("Kompanija");
                 });
@@ -543,6 +582,8 @@ namespace Projektito.Migrations
 
                     b.Navigation("PonudjeneTure");
 
+                    b.Navigation("PrihvaceneTure");
+
                     b.Navigation("Prikolice");
 
                     b.Navigation("Vozila");
@@ -550,6 +591,8 @@ namespace Projektito.Migrations
 
             modelBuilder.Entity("Models.Vozilo", b =>
                 {
+                    b.Navigation("DodeljeneTure");
+
                     b.Navigation("PrihvaceneTure");
                 });
 #pragma warning restore 612, 618

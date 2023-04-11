@@ -12,7 +12,7 @@ namespace Projektito.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Dispeceri",
+                name: "Dispecer",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -26,11 +26,11 @@ namespace Projektito.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dispeceri", x => x.ID);
+                    table.PrimaryKey("PK_Dispecer", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Kompanije",
+                name: "Kompanija",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -44,11 +44,11 @@ namespace Projektito.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Kompanije", x => x.ID);
+                    table.PrimaryKey("PK_Kompanija", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vozaci",
+                name: "Vozac",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -63,87 +63,11 @@ namespace Projektito.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vozaci", x => x.ID);
+                    table.PrimaryKey("PK_Vozac", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Favorizacije",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    VozacID = table.Column<int>(type: "int", nullable: true),
-                    KompanijaID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Favorizacije", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Favorizacije_Kompanije_KompanijaID",
-                        column: x => x.KompanijaID,
-                        principalTable: "Kompanije",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Favorizacije_Vozaci_VozacID",
-                        column: x => x.VozacID,
-                        principalTable: "Vozaci",
-                        principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ocene",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Broj = table.Column<int>(type: "int", nullable: false),
-                    Opis = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    KompanijaID = table.Column<int>(type: "int", nullable: true),
-                    VozacID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ocene", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Ocene_Kompanije_KompanijaID",
-                        column: x => x.KompanijaID,
-                        principalTable: "Kompanije",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Ocene_Vozaci_VozacID",
-                        column: x => x.VozacID,
-                        principalTable: "Vozaci",
-                        principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Prikolice",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Tip = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Zapremina = table.Column<double>(type: "float", nullable: false),
-                    Duzina = table.Column<double>(type: "float", nullable: false),
-                    Sirina = table.Column<double>(type: "float", nullable: false),
-                    Visina = table.Column<double>(type: "float", nullable: false),
-                    Nosivost = table.Column<double>(type: "float", nullable: false),
-                    Tablice = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VozacID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Prikolice", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Prikolice_Vozaci_VozacID",
-                        column: x => x.VozacID,
-                        principalTable: "Vozaci",
-                        principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ture",
+                name: "Tura",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -161,55 +85,119 @@ namespace Projektito.Migrations
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DatumPocetka = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PredvidjeniKraj = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    KompanijaID = table.Column<int>(type: "int", nullable: true),
-                    VozacID = table.Column<int>(type: "int", nullable: true),
-                    VozacID1 = table.Column<int>(type: "int", nullable: true)
+                    KompanijaID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ture", x => x.ID);
+                    table.PrimaryKey("PK_Tura", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Ture_Kompanije_KompanijaID",
+                        name: "FK_Tura_Kompanija_KompanijaID",
                         column: x => x.KompanijaID,
-                        principalTable: "Kompanije",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Ture_Vozaci_VozacID",
-                        column: x => x.VozacID,
-                        principalTable: "Vozaci",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Ture_Vozaci_VozacID1",
-                        column: x => x.VozacID1,
-                        principalTable: "Vozaci",
+                        principalTable: "Kompanija",
                         principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vozila",
+                name: "Favorizacija",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VozacID = table.Column<int>(type: "int", nullable: true),
+                    KompanijaID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorizacija", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Favorizacija_Kompanija_KompanijaID",
+                        column: x => x.KompanijaID,
+                        principalTable: "Kompanija",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Favorizacija_Vozac_VozacID",
+                        column: x => x.VozacID,
+                        principalTable: "Vozac",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ocena",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Broj = table.Column<int>(type: "int", nullable: false),
+                    Opis = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    KompanijaID = table.Column<int>(type: "int", nullable: true),
+                    VozacID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ocena", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Ocena_Kompanija_KompanijaID",
+                        column: x => x.KompanijaID,
+                        principalTable: "Kompanija",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Ocena_Vozac_VozacID",
+                        column: x => x.VozacID,
+                        principalTable: "Vozac",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Prikolica",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tip = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Zapremina = table.Column<double>(type: "float", nullable: false),
+                    Duzina = table.Column<double>(type: "float", nullable: false),
+                    Sirina = table.Column<double>(type: "float", nullable: false),
+                    Visina = table.Column<double>(type: "float", nullable: false),
+                    Nosivost = table.Column<double>(type: "float", nullable: false),
+                    Tablice = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VozacID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prikolica", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Prikolica_Vozac_VozacID",
+                        column: x => x.VozacID,
+                        principalTable: "Vozac",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vozilo",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CenaPoKilometru = table.Column<int>(type: "int", nullable: false),
-                    Marka = table.Column<int>(type: "int", nullable: false),
-                    Model = table.Column<int>(type: "int", nullable: false),
+                    Marka = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Slika = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tablice = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tablice = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     VozacID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vozila", x => x.ID);
+                    table.PrimaryKey("PK_Vozilo", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Vozila_Vozaci_VozacID",
+                        name: "FK_Vozilo_Vozac_VozacID",
                         column: x => x.VozacID,
-                        principalTable: "Vozaci",
+                        principalTable: "Vozac",
                         principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
-                name: "PonudjeneTure",
+                name: "PonudjenaTura",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -220,26 +208,26 @@ namespace Projektito.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PonudjeneTure", x => x.ID);
+                    table.PrimaryKey("PK_PonudjenaTura", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_PonudjeneTure_Dispeceri_DispecerID",
+                        name: "FK_PonudjenaTura_Dispecer_DispecerID",
                         column: x => x.DispecerID,
-                        principalTable: "Dispeceri",
+                        principalTable: "Dispecer",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_PonudjeneTure_Ture_TuraID",
+                        name: "FK_PonudjenaTura_Tura_TuraID",
                         column: x => x.TuraID,
-                        principalTable: "Ture",
+                        principalTable: "Tura",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_PonudjeneTure_Vozaci_VozacID",
+                        name: "FK_PonudjenaTura_Vozac_VozacID",
                         column: x => x.VozacID,
-                        principalTable: "Vozaci",
+                        principalTable: "Vozac",
                         principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
-                name: "PrihvaceneTure",
+                name: "DodeljeneTure",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -251,97 +239,133 @@ namespace Projektito.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrihvaceneTure", x => x.ID);
+                    table.PrimaryKey("PK_DodeljeneTure", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_PrihvaceneTure_Ture_TuraID",
+                        name: "FK_DodeljeneTure_Tura_TuraID",
                         column: x => x.TuraID,
-                        principalTable: "Ture",
+                        principalTable: "Tura",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_PrihvaceneTure_Vozaci_VozacID",
+                        name: "FK_DodeljeneTure_Vozac_VozacID",
                         column: x => x.VozacID,
-                        principalTable: "Vozaci",
+                        principalTable: "Vozac",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_PrihvaceneTure_Vozila_VoziloID",
+                        name: "FK_DodeljeneTure_Vozilo_VoziloID",
                         column: x => x.VoziloID,
-                        principalTable: "Vozila",
+                        principalTable: "Vozilo",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrihvacenaTura",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TuraID = table.Column<int>(type: "int", nullable: true),
+                    VozacID = table.Column<int>(type: "int", nullable: true),
+                    VoziloID = table.Column<int>(type: "int", nullable: true),
+                    GenerisanaCena = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrihvacenaTura", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_PrihvacenaTura_Tura_TuraID",
+                        column: x => x.TuraID,
+                        principalTable: "Tura",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_PrihvacenaTura_Vozac_VozacID",
+                        column: x => x.VozacID,
+                        principalTable: "Vozac",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_PrihvacenaTura_Vozilo_VoziloID",
+                        column: x => x.VoziloID,
+                        principalTable: "Vozilo",
                         principalColumn: "ID");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Favorizacije_KompanijaID",
-                table: "Favorizacije",
-                column: "KompanijaID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Favorizacije_VozacID",
-                table: "Favorizacije",
-                column: "VozacID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ocene_KompanijaID",
-                table: "Ocene",
-                column: "KompanijaID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ocene_VozacID",
-                table: "Ocene",
-                column: "VozacID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PonudjeneTure_DispecerID",
-                table: "PonudjeneTure",
-                column: "DispecerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PonudjeneTure_TuraID",
-                table: "PonudjeneTure",
+                name: "IX_DodeljeneTure_TuraID",
+                table: "DodeljeneTure",
                 column: "TuraID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PonudjeneTure_VozacID",
-                table: "PonudjeneTure",
+                name: "IX_DodeljeneTure_VozacID",
+                table: "DodeljeneTure",
                 column: "VozacID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrihvaceneTure_TuraID",
-                table: "PrihvaceneTure",
-                column: "TuraID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrihvaceneTure_VozacID",
-                table: "PrihvaceneTure",
-                column: "VozacID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrihvaceneTure_VoziloID",
-                table: "PrihvaceneTure",
+                name: "IX_DodeljeneTure_VoziloID",
+                table: "DodeljeneTure",
                 column: "VoziloID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prikolice_VozacID",
-                table: "Prikolice",
-                column: "VozacID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ture_KompanijaID",
-                table: "Ture",
+                name: "IX_Favorizacija_KompanijaID",
+                table: "Favorizacija",
                 column: "KompanijaID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ture_VozacID",
-                table: "Ture",
+                name: "IX_Favorizacija_VozacID",
+                table: "Favorizacija",
                 column: "VozacID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ture_VozacID1",
-                table: "Ture",
-                column: "VozacID1");
+                name: "IX_Ocena_KompanijaID",
+                table: "Ocena",
+                column: "KompanijaID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vozila_VozacID",
-                table: "Vozila",
+                name: "IX_Ocena_VozacID",
+                table: "Ocena",
+                column: "VozacID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PonudjenaTura_DispecerID",
+                table: "PonudjenaTura",
+                column: "DispecerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PonudjenaTura_TuraID",
+                table: "PonudjenaTura",
+                column: "TuraID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PonudjenaTura_VozacID",
+                table: "PonudjenaTura",
+                column: "VozacID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrihvacenaTura_TuraID",
+                table: "PrihvacenaTura",
+                column: "TuraID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrihvacenaTura_VozacID",
+                table: "PrihvacenaTura",
+                column: "VozacID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrihvacenaTura_VoziloID",
+                table: "PrihvacenaTura",
+                column: "VoziloID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Prikolica_VozacID",
+                table: "Prikolica",
+                column: "VozacID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tura_KompanijaID",
+                table: "Tura",
+                column: "KompanijaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vozilo_VozacID",
+                table: "Vozilo",
                 column: "VozacID");
         }
 
@@ -349,34 +373,37 @@ namespace Projektito.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Favorizacije");
+                name: "DodeljeneTure");
 
             migrationBuilder.DropTable(
-                name: "Ocene");
+                name: "Favorizacija");
 
             migrationBuilder.DropTable(
-                name: "PonudjeneTure");
+                name: "Ocena");
 
             migrationBuilder.DropTable(
-                name: "PrihvaceneTure");
+                name: "PonudjenaTura");
 
             migrationBuilder.DropTable(
-                name: "Prikolice");
+                name: "PrihvacenaTura");
 
             migrationBuilder.DropTable(
-                name: "Dispeceri");
+                name: "Prikolica");
 
             migrationBuilder.DropTable(
-                name: "Ture");
+                name: "Dispecer");
 
             migrationBuilder.DropTable(
-                name: "Vozila");
+                name: "Tura");
 
             migrationBuilder.DropTable(
-                name: "Kompanije");
+                name: "Vozilo");
 
             migrationBuilder.DropTable(
-                name: "Vozaci");
+                name: "Kompanija");
+
+            migrationBuilder.DropTable(
+                name: "Vozac");
         }
     }
 }
