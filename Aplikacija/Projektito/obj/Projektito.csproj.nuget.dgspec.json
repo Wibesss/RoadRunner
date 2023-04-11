@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Fax\\Treca godina\\SWE\\Projektito\\Projektito.csproj": {}
+    "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj": {}
   },
   "projects": {
-    "C:\\Fax\\Treca godina\\SWE\\Projektito\\Projektito.csproj": {
+    "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Fax\\Treca godina\\SWE\\Projektito\\Projektito.csproj",
+        "projectUniqueName": "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
         "projectName": "Projektito",
-        "projectPath": "C:\\Fax\\Treca godina\\SWE\\Projektito\\Projektito.csproj",
-        "packagesPath": "C:\\Users\\nenad\\.nuget\\packages\\",
-        "outputPath": "C:\\Fax\\Treca godina\\SWE\\Projektito\\obj\\",
+        "projectPath": "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
+        "packagesPath": "C:\\Users\\boza0\\.nuget\\packages\\",
+        "outputPath": "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\nenad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\boza0\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -49,11 +46,17 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[7.0.4, )"
+              "version": "[7.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[7.0.4, )"
+              "version": "[7.0.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -79,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -33,9 +33,9 @@ namespace Models
         [MaxLength(20)]
         public required string Status { get; set; }
 
-        public required DateOnly DatumPocetka { get; set; }
+        public required DateTime DatumPocetka { get; set; }
 
-        public DateOnly PredvidjeniKraj { get; set; }
+        public DateTime PredvidjeniKraj { get; set; }
         public Kompanija? Kompanija { get; set; }
     }
 }

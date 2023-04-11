@@ -17,5 +17,7 @@ namespace Models
         public required string Tablice { get; set; }
 
         public Vozac? Vozac { get; set;}
+
+        public List<PrihvacenaTura> PrihvaceneTure{get; set;}
     }
 }
