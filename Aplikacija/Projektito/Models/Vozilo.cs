@@ -3,7 +3,7 @@ namespace Models
 
     public class Vozilo
     {
-         [Key]
+          [Key]
         public int ID { get; set; }
         [RegularExpression("^[0-9]+$")]
         public int CenaPoKilometru { get; set; }
@@ -21,9 +21,5 @@ namespace Models
         public Vozac? Vozac { get; set;}
 
         public List<PrihvacenaTura>? PrihvaceneTure{get; set;}
-
-        public List<DodeljenaTuraa>? DodeljeneTure{get; set;}
-
-       
     }
 }

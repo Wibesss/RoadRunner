@@ -14,6 +14,7 @@ namespace Models
         public DbSet<Vozac>? Vozac{get; set;}
         public DbSet<Vozilo>? Vozilo{get; set;}
         public DbSet<DodeljenaTuraa>? DodeljeneTure{get; set;}
+        public DbSet<TipTure>? TipTure{get; set;}
     }
 
 }

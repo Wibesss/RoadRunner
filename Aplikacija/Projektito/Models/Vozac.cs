@@ -33,12 +33,8 @@ namespace Models
 
         public List<Prikolica>? Prikolice { get; set; }
 
+        public List<PrihvacenaTura>? PrihvaceneTure { get; set; }
+
         public List<PonudjenaTura>? PonudjeneTure { get; set; }
-
-        public List<PrihvacenaTura>? PrihvaceneTure {get; set;}
-
-        public List<DodeljenaTuraa>? DodeljeneTure{get; set;}
-
-     
     }
 }

@@ -10,7 +10,7 @@ namespace Models
 
         public Vozac? Vozac { get; set; }
 
-        public Dispecer? Dispecer { get; set; }
+        public  Dispecer? Dispecer  { get; set; }
 
     }
 }
