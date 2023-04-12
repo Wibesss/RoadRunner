@@ -144,7 +144,7 @@ public class TuraController : ControllerBase
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
         if(tura != null && dispecer!=null && vozac!=null)
         {
-            PonudjenaTura pt=new PonudjenaTura();`
+            PonudjenaTura pt=new PonudjenaTura();
             pt.Vozac=vozac;
 
             try
