@@ -7,7 +7,7 @@ namespace Models
         public int ID { get; set; }
 
         [MaxLength(30)]
-        public required TipTure TipRobe { get; set;}
+        public TipTure? TipRobe { get; set;}
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
         public double? TezinaRobe { get; set; }
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]

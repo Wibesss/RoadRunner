@@ -12,6 +12,10 @@ namespace Models
 
         public Vozilo? Vozilo { get; set; }
 
+        public Dispecer? Dispecer { get; set; }
+
         public double GenerisanaCena { get; set; }
+
+        public bool Prosledjena { get; set; }
     }
 }

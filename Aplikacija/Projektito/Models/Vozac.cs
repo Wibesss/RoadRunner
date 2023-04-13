@@ -26,15 +26,21 @@ namespace Models
         public required string Sifra { get; set; }
         [RegularExpression(@"^\+?[0-9][0-9\s.-]{7,11}$")]
         public required string BrojTelefona { get; set;}
+        public required string Slika { get; set; }
         public List<Favorizacija>? Favorizacije { get; set; }
         public List<Ocena>? Ocene { get; set; }
 
+        [JsonIgnore]
         public List<Vozilo>? Vozila { get; set; }
 
         public List<Prikolica>? Prikolice { get; set; }
-
-        public List<PrihvacenaTura>? PrihvaceneTure { get; set; }
-
+        [JsonIgnore]
         public List<PonudjenaTura>? PonudjeneTure { get; set; }
+        [JsonIgnore]
+        public List<PrihvacenaTura>? PrihvaceneTure {get; set;}
+
+        public List<DodeljenaTuraa>? DodeljeneTure{get; set;}
+
+     
     }
 }

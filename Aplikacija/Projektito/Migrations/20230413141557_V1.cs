@@ -20,9 +20,10 @@ namespace Projektito.Migrations
                     Ime = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Prezime = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     JMBG = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    KorisnickoIme = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,7 +41,8 @@ namespace Projektito.Migrations
                     KorisnickoIme = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Adresa = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Vlasnik = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+                    Vlasnik = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,7 +72,8 @@ namespace Projektito.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    BrojTelefona = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    BrojTelefona = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,8 +224,7 @@ namespace Projektito.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TuraID = table.Column<int>(type: "int", nullable: true),
                     VozacID = table.Column<int>(type: "int", nullable: true),
-                    DispecerID = table.Column<int>(type: "int", nullable: true),
-                    GenerisanaCena = table.Column<double>(type: "float", nullable: false)
+                    DispecerID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -253,11 +255,17 @@ namespace Projektito.Migrations
                     TuraID = table.Column<int>(type: "int", nullable: true),
                     VozacID = table.Column<int>(type: "int", nullable: true),
                     VoziloID = table.Column<int>(type: "int", nullable: true),
+                    DispecerID = table.Column<int>(type: "int", nullable: true),
                     GenerisanaCena = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DodeljeneTure", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_DodeljeneTure_Dispecer_DispecerID",
+                        column: x => x.DispecerID,
+                        principalTable: "Dispecer",
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_DodeljeneTure_Tura_TuraID",
                         column: x => x.TuraID,
@@ -284,11 +292,18 @@ namespace Projektito.Migrations
                     TuraID = table.Column<int>(type: "int", nullable: true),
                     VozacID = table.Column<int>(type: "int", nullable: true),
                     VoziloID = table.Column<int>(type: "int", nullable: true),
-                    GenerisanaCena = table.Column<double>(type: "float", nullable: false)
+                    DispecerID = table.Column<int>(type: "int", nullable: true),
+                    GenerisanaCena = table.Column<double>(type: "float", nullable: false),
+                    Prosledjena = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PrihvacenaTura", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_PrihvacenaTura_Dispecer_DispecerID",
+                        column: x => x.DispecerID,
+                        principalTable: "Dispecer",
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_PrihvacenaTura_Tura_TuraID",
                         column: x => x.TuraID,
@@ -305,6 +320,11 @@ namespace Projektito.Migrations
                         principalTable: "Vozilo",
                         principalColumn: "ID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DodeljeneTure_DispecerID",
+                table: "DodeljeneTure",
+                column: "DispecerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DodeljeneTure_TuraID",
@@ -355,6 +375,11 @@ namespace Projektito.Migrations
                 name: "IX_PonudjenaTura_VozacID",
                 table: "PonudjenaTura",
                 column: "VozacID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrihvacenaTura_DispecerID",
+                table: "PrihvacenaTura",
+                column: "DispecerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PrihvacenaTura_TuraID",

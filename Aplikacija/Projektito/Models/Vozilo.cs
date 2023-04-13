@@ -19,7 +19,7 @@ namespace Models
         public required string Tablice { get; set; }
 
         public Vozac? Vozac { get; set;}
-
+        [JsonIgnore]
         public List<PrihvacenaTura>? PrihvaceneTure{get; set;}
     }
 }
