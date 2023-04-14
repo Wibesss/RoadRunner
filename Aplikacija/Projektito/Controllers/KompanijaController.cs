@@ -157,11 +157,50 @@ public class KompanijaController : ControllerBase
     }
     [Route("GetKompanije")]
     [HttpGet]
-    public async Task<IActionResult>GetKompanije()
+    public async Task<IActionResult> GetKompanije()
     {
         try{
             var Kompanije = await Context.Kompanija!.ToListAsync();
             return Ok(Kompanije);
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
+
+    [Route("OceniVozaca/{idKompanije}/{idVozaca}")]
+    [HttpPost]
+    public async Task<IActionResult> OceniVozaca([FromBody] Ocena o,int idKompanije,int idVozaca)
+    {
+        var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
+        var vozac=await Context.Vozac!.FindAsync(idVozaca);
+        o.Kompanija=kompanija;
+        o.Vozac=vozac;
+        try
+        {
+            Context.Ocena!.Add(o);
+            return Ok();
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
+
+     [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
+     [HttpPost]
+    public async Task<IActionResult> FavorizujVozaca(int idKompanije,int idVozaca)
+    {
+        var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
+        var vozac=await Context.Vozac!.FindAsync(idVozaca);
+        var fav=new Favorizacija();
+        fav.Kompanija=kompanija;
+        fav.Vozac=vozac;
+        try
+        {
+            Context.Favorizacija!.Add(fav);
+            return Ok();
         }
         catch(Exception ex)
         {

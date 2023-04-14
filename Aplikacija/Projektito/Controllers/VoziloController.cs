@@ -75,7 +75,37 @@ public class VoziloController : ControllerBase
         catch(Exception ex){
             return BadRequest(ex.Message);
         }
- 
-
     }
+
+   [Route("UpdateVozilo/{idVozila}")]
+   [HttpPut]
+   public async Task<IActionResult> UpdateVozilo([FromBody] Vozilo v,int idVozila)
+   {
+        var vozilo=await Context.Vozilo!.Where(p=>p.ID==idVozila).FirstOrDefaultAsync();
+    
+        if(vozilo!=null)
+        {
+            vozilo.Marka=v.Marka;
+            vozilo.Model=v.Model;
+            vozilo.Slika=v.Slika;
+            vozilo.Tablice=v.Tablice;
+            try
+            { 
+                Context.Vozilo!.Update(vozilo);
+                await Context.SaveChangesAsync();
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        else
+        {
+            return BadRequest("Vozilo nije pronadjeno!");
+        }
+
+   }
+
+    
 }

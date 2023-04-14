@@ -140,7 +140,7 @@ public class TuraController : ControllerBase
                 }     
         try
         { 
-            Context.Update(tura!);
+            Context.Tura.Update(tura!);
             await Context.SaveChangesAsync();
             return Ok(tura);
         }
@@ -250,6 +250,7 @@ public class TuraController : ControllerBase
             dt.Tura=prihvacena.Tura;
             dt.Dispecer=prihvacena.Dispecer;
             dt.GenerisanaCena=prihvacena.GenerisanaCena;
+            dt.Tura!.Status="Dodeljena";
             try
             {
                 Context.DodeljeneTure!.Add(dt);
@@ -400,8 +401,8 @@ public class TuraController : ControllerBase
    public async Task<ActionResult> GetTura()
    {
         try{
-        var ture= await Context!.Tura!.Include(p=>p.Kompanija).Include(p=>p.TipRobe).ToListAsync();
-        return Ok(ture);
+            var ture= await Context!.Tura!.Include(p=>p.Kompanija).Include(p=>p.TipRobe).ToListAsync();
+            return Ok(ture);
         }
         catch(Exception e)
         {
@@ -413,27 +414,73 @@ public class TuraController : ControllerBase
    [HttpGet]
    public async Task<ActionResult> GetPonudjenjaTura(int idVozaca)
    {
-        var ture= await Context!.PonudjenaTura!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
-        .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
-        return Ok(ture);
+        try
+        {
+            var ture= await Context!.PonudjenaTura!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
+            .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
+            return Ok(ture);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
    }
 
    [Route("GetPrihvacenaTura/{idDispecera}")]
    [HttpGet]
    public async Task<ActionResult> GetPrihvacenaTura(int idDispecera)
    {
-        var ture= await Context!.PrihvacenaTura!.Where(p=>p.Dispecer!.ID==idDispecera && p.Prosledjena==false).Include(p=>p.Dispecer)
-        .Include(p=>p.Tura).Include(p=>p.Vozac).Include(p=>p.Vozilo).ToListAsync();
-        return Ok(ture);
+        try
+        {
+            var ture= await Context!.PrihvacenaTura!.Where(p=>p.Dispecer!.ID==idDispecera && p.Prosledjena==false).Include(p=>p.Dispecer)
+            .Include(p=>p.Tura).Include(p=>p.Vozac).Include(p=>p.Vozilo).ToListAsync();
+            return Ok(ture);
+        } 
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
    }
 
    [Route("GetProsledjenaTura/{idKompanije}")]
    [HttpGet]
    public async Task<ActionResult> GetProsledjenaTura(int idKompanije)
    {
-        var ture= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.Kompanija!.ID==idKompanije && p.Prosledjena==true)
-        .Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).Include(p=>p.Vozilo).ToListAsync();
-        return Ok(ture);
+        try
+        {
+            var ture= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.Kompanija!.ID==idKompanije && p.Prosledjena==true)
+            .Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).Include(p=>p.Vozilo).ToListAsync();
+            return Ok(ture);
+        } 
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+[Route("ZavrsiTuru/{idDodeljeneTure}")]
+   [HttpPut]
+    public async Task<ActionResult>  ZavrsiTuru(int idDodeljeneTure)
+   {
+        var dodeljena=await Context.DodeljeneTure!.Where(p=> p.ID==idDodeljeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
+        if(dodeljena!.Tura!.Status=="U toku")
+        {
+            dodeljena!.Tura!.Status="Zavrsena";
+            try
+            {
+                Context.DodeljeneTure!.Update(dodeljena);
+                await Context.SaveChangesAsync();
+                return Ok("Tura zavrsena!");
+            } 
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        else
+        {
+            return BadRequest("Tura nije u toku!");
+        }
+        
    }
    
 
