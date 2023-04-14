@@ -7,20 +7,20 @@ namespace Models
         public int ID { get; set; }
 
         [MaxLength(30)]
-        public required string TipRobe { get; set; }
+        public TipTure? TipRobe { get; set;}
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
-        public double TezinaRobe { get; set; }
+        public double? TezinaRobe { get; set; }
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
-        public double DuzinaRobe { get; set; }
+        public double? DuzinaRobe { get; set; }
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
-        public double SirinaRobe { get; set; }
+        public double? SirinaRobe { get; set; }
 
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
-        public double VisinaRobe { get; set; }
+        public double? VisinaRobe { get; set; }
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
-        public double Zapremina { get; set; }
+        public double? Zapremina { get; set; }
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
-        public double PoctnaGeografskaSirina { get; set; }
+        public double PocetnaGeografskaSirina { get; set; }
         [RegularExpression(@"^(0*[1-9]\d{0,15}|0+)(\.\d\d)?$")]
 
         public double PocetnaGeografskaDuzina { get; set; }
@@ -35,11 +35,9 @@ namespace Models
 
         public required DateTime DatumPocetka { get; set; }
 
+        public required double Duzina{ get; set; }
         public DateTime PredvidjeniKraj { get; set; }
         public Kompanija? Kompanija { get; set; }
-
-        
-
 
     }
 }

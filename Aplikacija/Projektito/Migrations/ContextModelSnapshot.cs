@@ -32,7 +32,8 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Ime")
                         .IsRequired()
@@ -46,7 +47,8 @@ namespace Projektito.Migrations
 
                     b.Property<string>("KorisnickoIme")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Prezime")
                         .IsRequired()
@@ -57,6 +59,10 @@ namespace Projektito.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Slika")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
@@ -71,6 +77,9 @@ namespace Projektito.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
+                    b.Property<int?>("DispecerID")
+                        .HasColumnType("int");
+
                     b.Property<double>("GenerisanaCena")
                         .HasColumnType("float");
 
@@ -84,6 +93,8 @@ namespace Projektito.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("DispecerID");
 
                     b.HasIndex("TuraID");
 
@@ -138,6 +149,10 @@ namespace Projektito.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Naziv")
                         .IsRequired()
@@ -226,8 +241,14 @@ namespace Projektito.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
+                    b.Property<int?>("DispecerID")
+                        .HasColumnType("int");
+
                     b.Property<double>("GenerisanaCena")
                         .HasColumnType("float");
+
+                    b.Property<bool>("Prosledjena")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("TuraID")
                         .HasColumnType("int");
@@ -239,6 +260,8 @@ namespace Projektito.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("DispecerID");
 
                     b.HasIndex("TuraID");
 
@@ -295,6 +318,16 @@ namespace Projektito.Migrations
                     b.ToTable("Prikolica");
                 });
 
+            modelBuilder.Entity("Models.TipTure", b =>
+                {
+                    b.Property<string>("Tip")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Tip");
+
+                    b.ToTable("TipTure");
+                });
+
             modelBuilder.Entity("Models.Tura", b =>
                 {
                     b.Property<int>("ID")
@@ -306,7 +339,10 @@ namespace Projektito.Migrations
                     b.Property<DateTime>("DatumPocetka")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("DuzinaRobe")
+                    b.Property<double>("Duzina")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("DuzinaRobe")
                         .HasColumnType("float");
 
                     b.Property<int?>("KompanijaID")
@@ -321,13 +357,13 @@ namespace Projektito.Migrations
                     b.Property<double>("PocetnaGeografskaDuzina")
                         .HasColumnType("float");
 
-                    b.Property<double>("PoctnaGeografskaSirina")
+                    b.Property<double>("PocetnaGeografskaSirina")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("PredvidjeniKraj")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("SirinaRobe")
+                    b.Property<double?>("SirinaRobe")
                         .HasColumnType("float");
 
                     b.Property<string>("Status")
@@ -335,23 +371,23 @@ namespace Projektito.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<double>("TezinaRobe")
+                    b.Property<double?>("TezinaRobe")
                         .HasColumnType("float");
 
-                    b.Property<string>("TipRobe")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<string>("TipRobeTip")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<double>("VisinaRobe")
+                    b.Property<double?>("VisinaRobe")
                         .HasColumnType("float");
 
-                    b.Property<double>("Zapremina")
+                    b.Property<double?>("Zapremina")
                         .HasColumnType("float");
 
                     b.HasKey("ID");
 
                     b.HasIndex("KompanijaID");
+
+                    b.HasIndex("TipRobeTip");
 
                     b.ToTable("Tura");
                 });
@@ -395,6 +431,10 @@ namespace Projektito.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Slika")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
@@ -443,6 +483,10 @@ namespace Projektito.Migrations
 
             modelBuilder.Entity("Models.DodeljenaTuraa", b =>
                 {
+                    b.HasOne("Models.Dispecer", "Dispecer")
+                        .WithMany()
+                        .HasForeignKey("DispecerID");
+
                     b.HasOne("Models.Tura", "Tura")
                         .WithMany()
                         .HasForeignKey("TuraID");
@@ -452,8 +496,10 @@ namespace Projektito.Migrations
                         .HasForeignKey("VozacID");
 
                     b.HasOne("Models.Vozilo", "Vozilo")
-                        .WithMany("DodeljeneTure")
+                        .WithMany()
                         .HasForeignKey("VoziloID");
+
+                    b.Navigation("Dispecer");
 
                     b.Navigation("Tura");
 
@@ -511,6 +557,10 @@ namespace Projektito.Migrations
 
             modelBuilder.Entity("Models.PrihvacenaTura", b =>
                 {
+                    b.HasOne("Models.Dispecer", "Dispecer")
+                        .WithMany()
+                        .HasForeignKey("DispecerID");
+
                     b.HasOne("Models.Tura", "Tura")
                         .WithMany()
                         .HasForeignKey("TuraID");
@@ -522,6 +572,8 @@ namespace Projektito.Migrations
                     b.HasOne("Models.Vozilo", "Vozilo")
                         .WithMany("PrihvaceneTure")
                         .HasForeignKey("VoziloID");
+
+                    b.Navigation("Dispecer");
 
                     b.Navigation("Tura");
 
@@ -543,7 +595,13 @@ namespace Projektito.Migrations
                         .WithMany("Ture")
                         .HasForeignKey("KompanijaID");
 
+                    b.HasOne("Models.TipTure", "TipRobe")
+                        .WithMany("Ture")
+                        .HasForeignKey("TipRobeTip");
+
                     b.Navigation("Kompanija");
+
+                    b.Navigation("TipRobe");
                 });
 
             modelBuilder.Entity("Models.Vozilo", b =>
@@ -569,6 +627,11 @@ namespace Projektito.Migrations
                     b.Navigation("Ture");
                 });
 
+            modelBuilder.Entity("Models.TipTure", b =>
+                {
+                    b.Navigation("Ture");
+                });
+
             modelBuilder.Entity("Models.Vozac", b =>
                 {
                     b.Navigation("DodeljeneTure");
@@ -588,8 +651,6 @@ namespace Projektito.Migrations
 
             modelBuilder.Entity("Models.Vozilo", b =>
                 {
-                    b.Navigation("DodeljeneTure");
-
                     b.Navigation("PrihvaceneTure");
                 });
 #pragma warning restore 612, 618
