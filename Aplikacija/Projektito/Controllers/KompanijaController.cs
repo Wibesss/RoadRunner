@@ -175,16 +175,24 @@ public class KompanijaController : ControllerBase
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        o.Kompanija=kompanija;
-        o.Vozac=vozac;
-        try
+        var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).FirstOrDefaultAsync();
+        if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
         {
-            Context.Ocena!.Add(o);
-            return Ok();
+            o.Kompanija=kompanija;
+            o.Vozac=vozac;
+            try
+            {
+                Context.Ocena!.Add(o);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+            return BadRequest(ex.Message);
+            }
         }
-        catch(Exception ex)
+        else
         {
-           return BadRequest(ex.Message);
+            return BadRequest("Tura nije zavrsena ili ne postoji");
         }
     }
 
