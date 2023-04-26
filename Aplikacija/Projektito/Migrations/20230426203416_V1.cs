@@ -50,6 +50,17 @@ namespace Projektito.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TipPrikolice",
+                columns: table => new
+                {
+                    Tip = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipPrikolice", x => x.Tip);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TipTure",
                 columns: table => new
                 {
@@ -100,7 +111,8 @@ namespace Projektito.Migrations
                     DatumPocetka = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Duzina = table.Column<double>(type: "float", nullable: false),
                     PredvidjeniKraj = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    KompanijaID = table.Column<int>(type: "int", nullable: true)
+                    KompanijaID = table.Column<int>(type: "int", nullable: true),
+                    TipPrikoliceTip = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,6 +122,11 @@ namespace Projektito.Migrations
                         column: x => x.KompanijaID,
                         principalTable: "Kompanija",
                         principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Tura_TipPrikolice_TipPrikoliceTip",
+                        column: x => x.TipPrikoliceTip,
+                        principalTable: "TipPrikolice",
+                        principalColumn: "Tip");
                     table.ForeignKey(
                         name: "FK_Tura_TipTure_TipRobeTip",
                         column: x => x.TipRobeTip,
@@ -173,12 +190,12 @@ namespace Projektito.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tip = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Zapremina = table.Column<double>(type: "float", nullable: false),
-                    Duzina = table.Column<double>(type: "float", nullable: false),
-                    Sirina = table.Column<double>(type: "float", nullable: false),
-                    Visina = table.Column<double>(type: "float", nullable: false),
-                    Nosivost = table.Column<double>(type: "float", nullable: false),
+                    TipPrikoliceTip = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Zapremina = table.Column<double>(type: "float", nullable: true),
+                    Duzina = table.Column<double>(type: "float", nullable: true),
+                    Sirina = table.Column<double>(type: "float", nullable: true),
+                    Visina = table.Column<double>(type: "float", nullable: true),
+                    Nosivost = table.Column<double>(type: "float", nullable: true),
                     Tablice = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Slika = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VozacID = table.Column<int>(type: "int", nullable: true)
@@ -186,6 +203,11 @@ namespace Projektito.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prikolica", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Prikolica_TipPrikolice_TipPrikoliceTip",
+                        column: x => x.TipPrikoliceTip,
+                        principalTable: "TipPrikolice",
+                        principalColumn: "Tip");
                     table.ForeignKey(
                         name: "FK_Prikolica_Vozac_VozacID",
                         column: x => x.VozacID,
@@ -397,6 +419,11 @@ namespace Projektito.Migrations
                 column: "VoziloID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Prikolica_TipPrikoliceTip",
+                table: "Prikolica",
+                column: "TipPrikoliceTip");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Prikolica_VozacID",
                 table: "Prikolica",
                 column: "VozacID");
@@ -405,6 +432,11 @@ namespace Projektito.Migrations
                 name: "IX_Tura_KompanijaID",
                 table: "Tura",
                 column: "KompanijaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tura_TipPrikoliceTip",
+                table: "Tura",
+                column: "TipPrikoliceTip");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tura_TipRobeTip",
@@ -449,6 +481,9 @@ namespace Projektito.Migrations
 
             migrationBuilder.DropTable(
                 name: "Kompanija");
+
+            migrationBuilder.DropTable(
+                name: "TipPrikolice");
 
             migrationBuilder.DropTable(
                 name: "TipTure");

@@ -32,6 +32,7 @@ namespace Models
 
         [JsonIgnore]
         public List<Vozilo>? Vozila { get; set; }
+        [JsonIgnore]
 
         public List<Prikolica>? Prikolice { get; set; }
         [JsonIgnore]

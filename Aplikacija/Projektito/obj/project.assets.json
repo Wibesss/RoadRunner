@@ -3866,19 +3866,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\boza0\\.nuget\\packages\\": {}
+    "C:\\Users\\nenad\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
+      "projectUniqueName": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj",
       "projectName": "Projektito",
-      "projectPath": "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
-      "packagesPath": "C:\\Users\\boza0\\.nuget\\packages\\",
-      "outputPath": "D:\\SWE\\si.23.09.roadrunner\\Aplikacija\\Projektito\\obj\\",
+      "projectPath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj",
+      "packagesPath": "C:\\Users\\nenad\\.nuget\\packages\\",
+      "outputPath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\boza0\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nenad\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3946,7 +3950,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

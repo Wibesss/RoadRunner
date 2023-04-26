@@ -280,13 +280,13 @@ namespace Projektito.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<double>("Duzina")
+                    b.Property<double?>("Duzina")
                         .HasColumnType("float");
 
-                    b.Property<double>("Nosivost")
+                    b.Property<double?>("Nosivost")
                         .HasColumnType("float");
 
-                    b.Property<double>("Sirina")
+                    b.Property<double?>("Sirina")
                         .HasColumnType("float");
 
                     b.Property<string>("Slika")
@@ -298,24 +298,35 @@ namespace Projektito.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
-                    b.Property<string>("Tip")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("TipPrikoliceTip")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<double>("Visina")
+                    b.Property<double?>("Visina")
                         .HasColumnType("float");
 
                     b.Property<int?>("VozacID")
                         .HasColumnType("int");
 
-                    b.Property<double>("Zapremina")
+                    b.Property<double?>("Zapremina")
                         .HasColumnType("float");
 
                     b.HasKey("ID");
 
+                    b.HasIndex("TipPrikoliceTip");
+
                     b.HasIndex("VozacID");
 
                     b.ToTable("Prikolica");
+                });
+
+            modelBuilder.Entity("Models.TipPrikolice", b =>
+                {
+                    b.Property<string>("Tip")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Tip");
+
+                    b.ToTable("TipPrikolice");
                 });
 
             modelBuilder.Entity("Models.TipTure", b =>
@@ -374,6 +385,9 @@ namespace Projektito.Migrations
                     b.Property<double?>("TezinaRobe")
                         .HasColumnType("float");
 
+                    b.Property<string>("TipPrikoliceTip")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("TipRobeTip")
                         .HasColumnType("nvarchar(450)");
 
@@ -386,6 +400,8 @@ namespace Projektito.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("KompanijaID");
+
+                    b.HasIndex("TipPrikoliceTip");
 
                     b.HasIndex("TipRobeTip");
 
@@ -584,9 +600,17 @@ namespace Projektito.Migrations
 
             modelBuilder.Entity("Models.Prikolica", b =>
                 {
-                    b.HasOne("Models.Vozac", null)
+                    b.HasOne("Models.TipPrikolice", "TipPrikolice")
+                        .WithMany()
+                        .HasForeignKey("TipPrikoliceTip");
+
+                    b.HasOne("Models.Vozac", "Vozac")
                         .WithMany("Prikolice")
                         .HasForeignKey("VozacID");
+
+                    b.Navigation("TipPrikolice");
+
+                    b.Navigation("Vozac");
                 });
 
             modelBuilder.Entity("Models.Tura", b =>
@@ -594,6 +618,10 @@ namespace Projektito.Migrations
                     b.HasOne("Models.Kompanija", "Kompanija")
                         .WithMany("Ture")
                         .HasForeignKey("KompanijaID");
+
+                    b.HasOne("Models.TipPrikolice", null)
+                        .WithMany("Ture")
+                        .HasForeignKey("TipPrikoliceTip");
 
                     b.HasOne("Models.TipTure", "TipRobe")
                         .WithMany("Ture")
@@ -624,6 +652,11 @@ namespace Projektito.Migrations
 
                     b.Navigation("Ocene");
 
+                    b.Navigation("Ture");
+                });
+
+            modelBuilder.Entity("Models.TipPrikolice", b =>
+                {
                     b.Navigation("Ture");
                 });
 
