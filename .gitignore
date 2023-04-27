@@ -48,3 +48,25 @@ Thumbs.db
 *.mov
 *.wmv
 
+# .NET Core
+
+# Build results
+bin/
+obj/
+
+# .NET Core Tools
+.project.json
+*.lock.json
+.project.pbxproj
+.bundleconfig.json
+
+# Visual Studio Code
+.vscode/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.nuget/packages/
+
