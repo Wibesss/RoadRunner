@@ -31,6 +31,7 @@ public class TuraController : ControllerBase
    }
 
 
+
   
    [Route("AddTura/{idKompanije}/{tipTure}")]
    [HttpPost]
