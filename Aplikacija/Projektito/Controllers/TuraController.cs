@@ -88,6 +88,7 @@ public class TuraController : ControllerBase
 
    }
 
+
    [Route("UpdateTura/{idTure}/{tipTure}")]
    [HttpPut]
    public async Task<IActionResult> UpdateTura([FromBody] Tura t,int idTure,string tipTure)
