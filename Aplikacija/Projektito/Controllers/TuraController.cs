@@ -53,7 +53,7 @@ public class TuraController : ControllerBase
                     t.Zapremina=null;
             
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Crst Materijal"))
+                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Cvrst Materijal"))
                 {
                     t.Zapremina=null;
                 
@@ -86,17 +86,17 @@ public class TuraController : ControllerBase
 
    }
 
-   [Route("UpdateTura/{idTure}")]
+   [Route("UpdateTura/{idTure}/{tipTure}")]
    [HttpPut]
-   public async Task<IActionResult> UpdateTura([FromBody] Tura t,int idTure)
+   public async Task<IActionResult> UpdateTura([FromBody] Tura t,int idTure,string tipTure)
    {
          
-            var tura=await Context.Tura!.FindAsync(idTure);
-              
-            if(tura != null)
+            var tura=await Context.Tura!.Where(p=>p.ID==idTure).Include(p=>p.TipRobe).FirstOrDefaultAsync();
+            var tip=await Context.TipTure!.Where(p=>p.Tip==tipTure).FirstOrDefaultAsync();
+            if(tura != null && tura.Status=="Slobodna")
                 {
-                    tura.TipRobe=t.TipRobe;
-                    if(t.TipRobe==await Context!.TipTure!.FindAsync("Tecnost"))
+                    tura.TipRobe=tip;
+                    if(tura.TipRobe!.Tip=="Tecnost")
                     {
                         tura.Zapremina=t.Zapremina;
                         tura.TezinaRobe=null;
@@ -104,7 +104,7 @@ public class TuraController : ControllerBase
                         tura.SirinaRobe=null;
                         tura.DuzinaRobe=null;
                     }
-                    else if(t.TipRobe==await Context!.TipTure!.FindAsync("Hrana"))
+                    else if(tura.TipRobe!.Tip=="Hrana")
                     {
                         tura.Zapremina=null;
                         tura.TezinaRobe=t.TezinaRobe;
@@ -112,7 +112,7 @@ public class TuraController : ControllerBase
                         tura.SirinaRobe=t.SirinaRobe;
                         tura.DuzinaRobe=t.DuzinaRobe;
                     }
-                    else if(t.TipRobe==await Context!.TipTure!.FindAsync("Crst Materijal"))
+                    else if(tura.TipRobe!.Tip=="Cvrst Materijal")
                     {
                         tura.Zapremina=null;
                         tura.TezinaRobe=t.TezinaRobe;
@@ -120,7 +120,7 @@ public class TuraController : ControllerBase
                         tura.SirinaRobe=t.SirinaRobe;
                         tura.DuzinaRobe=t.DuzinaRobe;
                     }
-                    else if(t.TipRobe==await Context!.TipTure!.FindAsync("Automobil"))
+                    else if(tura.TipRobe!.Tip=="Automobil")
                     {
                         tura.Zapremina=null;
                         tura.TezinaRobe=t.TezinaRobe;
@@ -133,14 +133,20 @@ public class TuraController : ControllerBase
                     int dodatnoVreme=(int)tura.Duzina/840 + 1;
                     DateTime datum=tura.DatumPocetka.AddDays(dodatnoVreme);
                     tura.PredvidjeniKraj=datum;
+                    t.Status="Slobodna";
                     tura.PocetnaGeografskaDuzina=t.PocetnaGeografskaDuzina;
                     tura.PocetnaGeografskaSirina=t.PocetnaGeografskaSirina;
                     tura.OdredisnaGeografskaDuzina=t.OdredisnaGeografskaDuzina;
                     tura.OdredisnaGeografskaSirina=t.OdredisnaGeografskaSirina;
-                }     
+                } 
+                else
+                {
+                    return BadRequest("Tura ne postoji ili nije slobodna!");
+
+                }    
         try
         { 
-            Context.Tura.Update(tura!);
+            Context.Tura!.Update(tura!);
             await Context.SaveChangesAsync();
             return Ok(tura);
         }
@@ -250,7 +256,7 @@ public class TuraController : ControllerBase
             dt.Tura=prihvacena.Tura;
             dt.Dispecer=prihvacena.Dispecer;
             dt.GenerisanaCena=prihvacena.GenerisanaCena;
-            dt.Tura!.Status="Dodeljena";
+            dt.Tura!.Status="U toku";
             try
             {
                 Context.DodeljeneTure!.Add(dt);
@@ -479,9 +485,6 @@ public class TuraController : ControllerBase
         else
         {
             return BadRequest("Tura nije u toku!");
-        }
-        
+        }    
    }
-   
-
 }
