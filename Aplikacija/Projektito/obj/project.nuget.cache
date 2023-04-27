@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ml8KDtulw4MIyhBAUX6HJrXTwarfmuCdxFmLko0VGloZAMidFU8lllWlntJJrAko5VwKom0XOna+Zs7p5qprng==",
+  "dgSpecHash": "aHJMXbwZ8fWcWv/Zkw6DiGAc0a3J5KbRDRVz0fkaIwXqr2deQ8zwVHSXP2nN5KPDOlRs9jG1e+flamZxLXFUAg==",
   "success": true,
-  "projectFilePath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj",
+  "projectFilePath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nenad\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\nenad\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

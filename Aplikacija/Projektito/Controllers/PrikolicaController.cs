@@ -92,7 +92,7 @@ public class PrikolicaController : ControllerBase
         var Vozac=Context.Vozac!.Where(p=>p.ID==idVozaca).FirstOrDefault();
         if(Vozac!=null)
         {
-            var prikolice = await Context.Prikolica!.Where(p=>p.Vozac==Vozac).ToListAsync();
+            var prikolice = await Context.Prikolica!.Where(p=>p.Vozac==Vozac).Include(z=>z.TipPrikolice).ToListAsync();
             return Ok(prikolice);
         }
         else
@@ -105,7 +105,21 @@ public class PrikolicaController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+    [Route("GetTipPrikolica")]
+   [HttpGet]
+   public async Task<IActionResult> GetTipPrikolica()
+   {
+    try{
+       
+            var tipPrikolica = await Context.TipPrikolice!.ToListAsync();
+            return Ok(tipPrikolica);
+        
+     }
+    catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
    [Route("DeltePrikolica/{idPrikolica}")]
    [HttpDelete]
    public async Task<IActionResult> DeletePrikolica (int idPrikolica)
@@ -128,37 +142,55 @@ public class PrikolicaController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-    [Route("UpdatePrikolica/{idPrikolica}")]
+    [Route("UpdatePrikolica/{idPrikolica}/{tipPrikolice}")]
     [HttpPut]
-    public async Task<IActionResult> UpdatePrikolica ([FromBody]Prikolica prik , int idPrikolica)
+    public async Task<IActionResult> UpdatePrikolica ([FromBody]Prikolica prik , int idPrikolica, string tipPrikolice)
     {
         try{
-        var prikolica = await Context.Prikolica!.Where(p=>p.ID==idPrikolica).FirstOrDefaultAsync();
+        var prikolica = await Context.Prikolica!.Where(p=>p.ID==idPrikolica).Include(z=>z.TipPrikolice).FirstOrDefaultAsync();
+        var prikolicaaa = await Context.TipPrikolice!.Where(p => p.Tip==tipPrikolice).FirstOrDefaultAsync();
         if(prikolica!=null)
         {
-            prikolica.TipPrikolice=prik.TipPrikolice;
-            if(prikolica.TipPrikolice.Tip=="Hladnjaca")
+            prikolica.TipPrikolice=prikolicaaa;
+            if(prikolica.TipPrikolice!.Tip == "Hladnjaca")
             {
                prikolica.Zapremina=null;
+               prikolica.Duzina=prik.Duzina;
+               prikolica.Sirina=prik.Sirina;
+               prikolica.Visina=prik.Visina;
+               prikolica.Nosivost=prik.Nosivost;
             }
-            else if(prikolica.TipPrikolice.Tip=="Cisterna")
+            else if(prikolica.TipPrikolice.Tip == "Cisterna")
             {
+                prikolica.Zapremina=prik.Zapremina;
                 prikolica.Duzina=null;
                 prikolica.Sirina=null;
                 prikolica.Visina=null;
                 prikolica.Nosivost=null;
             }
-            else if(prikolica.TipPrikolice.Tip=="Prikolica sa ciradom")
+            else if(prikolica.TipPrikolice.Tip == "Prikolica sa ciradom")
             {
-                prikolica.Zapremina=null;
+               prikolica.Zapremina=null;
+               prikolica.Duzina=prik.Duzina;
+               prikolica.Sirina=prik.Sirina;
+               prikolica.Visina=prik.Visina;
+               prikolica.Nosivost=prik.Nosivost;
             }
-            else if(prikolica.TipPrikolice.Tip=="Prikolica bez cirade")
+            else if(prikolica.TipPrikolice.Tip == "Prikolica bez cirade")
             {
-                prikolica.Zapremina=null;
+               prikolica.Zapremina=null;
+               prikolica.Duzina=prik.Duzina;
+               prikolica.Sirina=prik.Sirina;
+               prikolica.Visina=prik.Visina;
+               prikolica.Nosivost=prik.Nosivost;
             }
-            else if(prikolica.TipPrikolice.Tip=="autoVoz")
+            else if(prikolica.TipPrikolice.Tip == "Auto voz")
             {
-                prikolica.Zapremina=null;
+               prikolica.Zapremina=null;
+               prikolica.Duzina=prik.Duzina;
+               prikolica.Sirina=prik.Sirina;
+               prikolica.Visina=prik.Visina;
+               prikolica.Nosivost=prik.Nosivost;
             }
             prikolica.Tablice=prik.Tablice;
             prikolica.Slika=prik.Slika;

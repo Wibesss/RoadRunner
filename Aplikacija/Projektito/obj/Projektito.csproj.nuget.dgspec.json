@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj": {}
+    "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj": {}
   },
   "projects": {
-    "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj": {
+    "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj",
+        "projectUniqueName": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
         "projectName": "Projektito",
-        "projectPath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\Projektito.csproj",
+        "projectPath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\Projektito\\Projektito.csproj",
         "packagesPath": "C:\\Users\\nenad\\.nuget\\packages\\",
-        "outputPath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\projektito\\obj\\",
+        "outputPath": "C:\\Fax\\Treca godina\\SWE\\SWEREPOSITORIJUM\\si.23.09.roadrunner\\Aplikacija\\Projektito\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
