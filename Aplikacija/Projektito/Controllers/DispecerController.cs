@@ -31,6 +31,8 @@ public class DispecerController : ControllerBase
             return BadRequest("Los format korisnickog imena");
         if(disp.Sifra.Length>20 || disp.Sifra.Length<1 || Regex.IsMatch(disp.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
             return BadRequest("Los format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
+        string sifra= BCrypt.Net.BCrypt.HashPassword(disp.Sifra,10);
+        disp.Sifra=sifra;      
         var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == disp.Email).FirstOrDefault();
         var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == disp.KorisnickoIme).FirstOrDefault();
         var VozacEmail = Context.Vozac!.Where(p => p.Email == disp.Email).FirstOrDefault();

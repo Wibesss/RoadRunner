@@ -93,7 +93,7 @@ public class TuraController : ControllerBase
    [HttpPut]
    public async Task<IActionResult> UpdateTura([FromBody] Tura t,int idTure,string tipTure)
    {
-         
+          
             var tura=await Context.Tura!.Where(p=>p.ID==idTure).Include(p=>p.TipRobe).FirstOrDefaultAsync();
             var tip=await Context.TipTure!.Where(p=>p.Tip==tipTure).FirstOrDefaultAsync();
             if(tura != null && tura.Status=="Slobodna")

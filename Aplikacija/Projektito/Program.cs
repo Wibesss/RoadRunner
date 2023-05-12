@@ -1,5 +1,7 @@
-var builder = WebApplication.CreateBuilder(args);
 
+
+var builder = WebApplication.CreateBuilder(args);
+var config= builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -10,8 +12,32 @@ builder.Services.AddDbContext<Context>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProbaCS"));
 });
-var app = builder.Build();
 
+
+builder.Services.AddAuthentication(x=>
+{
+    x.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme=JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(x=>
+{
+    x.TokenValidationParameters=new TokenValidationParameters
+    {
+            ValidIssuer=config["Jwt:Issuer"],
+            ValidAudience=config["Jwt:Audience"],
+            IssuerSigningKey=new SymmetricSecurityKey
+                (Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+            ValidateIssuer=true,
+            ValidateAudience=true,
+            ValidateLifetime=true,
+            ValidateIssuerSigningKey=true
+    };
+});
+
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -20,6 +46,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -32,6 +32,8 @@ public class VozacController : ControllerBase
             return BadRequest("Los format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
         if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
             return BadRequest("Los format broja telefona");
+         string sifra= BCrypt.Net.BCrypt.HashPassword(Vozac.Sifra,10);
+        Vozac.Sifra=sifra;    
         var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == Vozac.Email).FirstOrDefault();
         var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == Vozac.KorisnickoIme).FirstOrDefault();
         var VozacEmail = Context.Vozac!.Where(p => p.Email == Vozac.Email).FirstOrDefault();
@@ -51,6 +53,7 @@ public class VozacController : ControllerBase
         return BadRequest(ex.Message);
     }
   }
+  [Authorize(Roles="Vozac")]
   [Route("UpdateVozac/{id}")]
   [HttpPut]
   public async Task<IActionResult> UpdateVozac([FromBody]Vozac Vozac, int id)
@@ -133,6 +136,7 @@ public class VozacController : ControllerBase
             return BadRequest(ex.Message);
         }
    }
+    [Authorize(Roles="Vozac")]
    [Route("UpdateSifra/{id}/{sifra}")]
   [HttpPut]
   public async Task<IActionResult>UpdateSifra(int id,string sifra)

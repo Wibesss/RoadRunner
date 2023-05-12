@@ -12,7 +12,7 @@ using Models;
 namespace Projektito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230426203416_V1")]
+    [Migration("20230512221608_V1")]
     partial class V1
     {
         /// <inheritdoc />
@@ -60,8 +60,7 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Sifra")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slika")
                         .IsRequired()
@@ -164,8 +163,7 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Sifra")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Vlasnik")
                         .IsRequired()
@@ -448,8 +446,7 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Sifra")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slika")
                         .IsRequired()
