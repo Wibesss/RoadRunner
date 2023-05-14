@@ -10,6 +10,15 @@ builder.Services.AddDbContext<Context>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProbaCS"));
 });
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,8 +30,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseCors(options => 
+{
+    options.WithOrigins("http://localhost:3000")
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+});
+
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

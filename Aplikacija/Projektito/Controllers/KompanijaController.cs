@@ -43,7 +43,7 @@ public class KompanijaController : ControllerBase
             return BadRequest("Vec postoji nalog sa tim korisnickim imenom");
         Context.Kompanija!.Add(komp);
         await Context.SaveChangesAsync();
-         return Ok($"Kompanija dodata");
+         return Ok(new { message = "Kompanija dodata" });
     }
         catch(Exception ex){
             return BadRequest(ex.Message);
