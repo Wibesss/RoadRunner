@@ -57,8 +57,7 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Sifra")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slika")
                         .IsRequired()
@@ -161,8 +160,7 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Sifra")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Vlasnik")
                         .IsRequired()
@@ -445,8 +443,7 @@ namespace Projektito.Migrations
 
                     b.Property<string>("Sifra")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slika")
                         .IsRequired()

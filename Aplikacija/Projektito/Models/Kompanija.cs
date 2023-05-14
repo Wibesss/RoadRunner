@@ -12,8 +12,6 @@ namespace Models
         [MaxLength(20)]
         [RegularExpression("^[a-zA-Z][a-zA-Z0-9]*$")]
         public required string KorisnickoIme { get; set; }
-        [MaxLength(20)]
-        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")]
         public required string Sifra { get; set; }
         [MaxLength(40)]
         public required string Adresa { get; set; }

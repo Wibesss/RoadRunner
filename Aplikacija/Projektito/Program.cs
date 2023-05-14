@@ -1,6 +1,9 @@
-var builder = WebApplication.CreateBuilder(args);
 
+
+var builder = WebApplication.CreateBuilder(args);
+var config= builder.Configuration;
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -10,6 +13,7 @@ builder.Services.AddDbContext<Context>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProbaCS"));
 });
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -19,8 +23,34 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
-var app = builder.Build();
 
+
+builder.Services.AddAuthentication(x=>
+{
+    x.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme=JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(x=>
+{
+    x.SaveToken=true;
+    x.TokenValidationParameters=new TokenValidationParameters
+    {
+            ValidIssuer=config["Jwt:Issuer"],
+            ValidAudience=config["Jwt:Audience"],
+            IssuerSigningKey=new SymmetricSecurityKey
+                (Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+            ValidateIssuer=true,
+            ValidateAudience=true,
+            ValidateLifetime=true,
+            ValidateIssuerSigningKey=true,
+            ClockSkew=TimeSpan.Zero
+    };
+}).AddCookie("default");
+
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -38,6 +68,8 @@ app.UseCors(options =>
            .AllowAnyHeader()
            .AllowAnyMethod();
 });
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

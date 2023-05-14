@@ -11,8 +11,8 @@ public class VoziloController : ControllerBase
   {
         Context=context;
   }
-
-    [Route("AddVozilo/{idVozaca}")]
+   [Authorize(Roles ="Vozac,Dispecer")]
+   [Route("AddVozilo/{idVozaca}")]
    [HttpPost]
    public async Task<IActionResult> AddVozilo([FromBody] Vozilo v,int idVozaca)
    {
@@ -38,7 +38,8 @@ public class VoziloController : ControllerBase
         }
 
    }
-
+   
+   [Authorize(Roles ="Vozac,Dispecer")]
    [Route("GetVozilo/{idVozaca}")]
    [HttpGet]
    public async Task<ActionResult> GetVozilo(int idVozaca)
@@ -54,11 +55,13 @@ public class VoziloController : ControllerBase
         }
 
    }
+  [Authorize(Roles ="Vozac,Dispecer")]
   [Route("DeleteVozilo/{idVozila}")]
   [HttpDelete]
    public async Task<ActionResult> DeleteVozac(int idVozila)
    {
     try{
+             
              var vozilo = Context.Vozilo!.Find(idVozila);
              if(vozilo!=null)
              {
@@ -76,7 +79,7 @@ public class VoziloController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+   [Authorize(Roles ="Vozac,Dispecer")]
    [Route("UpdateVozilo/{idVozila}")]
    [HttpPut]
    public async Task<IActionResult> UpdateVozilo([FromBody] Vozilo v,int idVozila)

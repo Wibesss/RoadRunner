@@ -22,7 +22,7 @@ namespace Projektito.Migrations
                     JMBG = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     KorisnickoIme = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Sifra = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Slika = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -39,7 +39,7 @@ namespace Projektito.Migrations
                     Naziv = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KorisnickoIme = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Sifra = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adresa = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Vlasnik = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Logo = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -82,7 +82,7 @@ namespace Projektito.Migrations
                     JMBG = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sifra = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Sifra = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BrojTelefona = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Slika = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },

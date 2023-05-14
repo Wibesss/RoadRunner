@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Projektito.Controllers;
 
+
 [ApiController]
 [Route("[controller]")]
 public class KompanijaController : ControllerBase
@@ -31,6 +32,8 @@ public class KompanijaController : ControllerBase
             return BadRequest("Pogresan format adrese");
         if(komp.Vlasnik.Length<1 || komp.Vlasnik.Length>40 || Regex.IsMatch(komp.Vlasnik,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
             return BadRequest("Pogresan format vlasnika");
+              string sifra= BCrypt.Net.BCrypt.HashPassword(komp.Sifra,10);
+        komp.Sifra=sifra;    
         var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == komp.Email).FirstOrDefault();
         var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == komp.KorisnickoIme).FirstOrDefault();
         var VozacEmail = Context.Vozac!.Where(p => p.Email == komp.Email).FirstOrDefault();
