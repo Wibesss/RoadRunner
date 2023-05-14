@@ -12,6 +12,7 @@ public class VozacController : ControllerBase
   {
         Context=context;
   }
+  [AllowAnonymous]
   [Route("AddVozac")]
   [HttpPost]
   public async Task<IActionResult> AddVozac ([FromBody]Vozac Vozac)
@@ -53,7 +54,7 @@ public class VozacController : ControllerBase
         return BadRequest(ex.Message);
     }
   }
-  [Authorize(Roles="Vozac")]
+  [Authorize(Roles ="Vozac,Dispecer")]
   [Route("UpdateVozac/{id}")]
   [HttpPut]
   public async Task<IActionResult> UpdateVozac([FromBody]Vozac Vozac, int id)
@@ -114,6 +115,7 @@ public class VozacController : ControllerBase
          return BadRequest(ex.Message);
       }
   }
+  [Authorize(Roles ="Vozac,Dispecer")]
   [Route("DeleteVozac/{id}")]
   [HttpDelete]
   public async Task<ActionResult> DeleteVozac(int id)
@@ -136,9 +138,9 @@ public class VozacController : ControllerBase
             return BadRequest(ex.Message);
         }
    }
-    [Authorize(Roles="Vozac")]
+   [Authorize(Roles ="Vozac,Dispecer")]
    [Route("UpdateSifra/{id}/{sifra}")]
-  [HttpPut]
+   [HttpPut]
   public async Task<IActionResult>UpdateSifra(int id,string sifra)
     {
          try{
@@ -163,6 +165,7 @@ public class VozacController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize(Roles ="Kompanija,Dispecer")]
     [Route("GetVozace")]
     [HttpGet]
     public async Task<IActionResult>GetVozace()

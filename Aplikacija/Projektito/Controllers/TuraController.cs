@@ -13,6 +13,7 @@ public class TuraController : ControllerBase
    {
         Context=context;
    }
+   [Authorize(Roles ="Dispecer")]
    [Route("AddTipTure")]
    [HttpPost]
    public async Task<IActionResult> AddTipTure([FromBody]TipTure tt)
@@ -32,7 +33,7 @@ public class TuraController : ControllerBase
 
 
 
-  
+   [Authorize(Roles ="Kompanija,Dispecer")]
    [Route("AddTura/{idKompanije}/{tipTure}")]
    [HttpPost]
    public async Task<IActionResult> AddTura([FromBody] Tura t,int idKompanije,string tipTure )
@@ -88,7 +89,7 @@ public class TuraController : ControllerBase
 
    }
 
-
+   [Authorize(Roles ="Kompanija,Dispecer")] 
    [Route("UpdateTura/{idTure}/{tipTure}")]
    [HttpPut]
    public async Task<IActionResult> UpdateTura([FromBody] Tura t,int idTure,string tipTure)
@@ -161,7 +162,7 @@ public class TuraController : ControllerBase
         }
    
    }
-
+   [AllowAnonymous] 
    [Route("GetTipTure")]
    [HttpGet]
    public async Task<ActionResult> GetTipTure()
@@ -176,7 +177,7 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+   [Authorize(Roles ="Kompanija,Dispecer")] 
    [Route("DeleteTura/{idTure}")]
    [HttpDelete]
    public async Task<IActionResult> DeleteTura(int idTure)
@@ -201,7 +202,7 @@ public class TuraController : ControllerBase
         }
 
    }
-
+    [Authorize(Roles ="Dispecer")]
     [Route("AddPonudjenaTura/{idTure}/{idDispecera}/{idVozaca}")]
     [HttpPost]
     public async Task<IActionResult> AddPonudjenaTura(int idTure,int idDispecera,int idVozaca)
@@ -240,7 +241,7 @@ public class TuraController : ControllerBase
             return BadRequest(vozac!.Ime+" "+vozac.Prezime+" je vec dobio ponudu za odredjenu turu");
         }
     }
-
+    [Authorize(Roles ="Vozac")]
     [Route("AddDodeljenaTura/{idPrihvaceneTure}")]
     [HttpPost]
     public async Task<IActionResult> AddDodeljenaTura(int idPrihvaceneTure)
@@ -276,7 +277,7 @@ public class TuraController : ControllerBase
             return BadRequest("Nije pronadjena prihvacena tura");
         }
     }
-
+    [Authorize(Roles ="Vozac")]
     [Route("AddPrihvacenaTura/{idPonudjeneTure}/{idVozila}")]
     [HttpPost]
     public async Task<IActionResult> AddPrihvacenaTura(int idPonudjeneTure,int idVozila)
@@ -307,8 +308,8 @@ public class TuraController : ControllerBase
             return BadRequest("Nije pronadjeno vozilo ili ponudjena tura");
         }
     }
-
-     [Route("ProslediTuru/{idPrihvaceneTure}")]
+     [Authorize(Roles ="Dispecer")]
+    [Route("ProslediTuru/{idPrihvaceneTure}")]
     [HttpPut]
     public async Task<IActionResult> ProslediTuru(int idPrihvaceneTure)
     {
@@ -333,11 +334,11 @@ public class TuraController : ControllerBase
     }
 
 
-   [Route("DeletePonudjenaTura/{idTure}")]
+   [Route("DeletePonudjenaTura/{idTure}/{idVozaca}")]
    [HttpDelete]
-   public async Task<IActionResult> DeletePonudjenaTura(int idTure)
+   public async Task<IActionResult> DeletePonudjenaTura(int idTure,int idVozaca)
    {
-        var tura=await Context.PonudjenaTura!.FindAsync(idTure);
+        var tura=await Context.PonudjenaTura!.Where(p=>p.Tura!.ID==idTure && p.Vozac!.ID==idVozaca).FirstOrDefaultAsync();
         if(tura!=null)
         {
             try

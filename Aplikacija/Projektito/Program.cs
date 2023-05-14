@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 var config= builder.Configuration;
 // Add services to the container.
 
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -11,6 +12,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(options => 
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProbaCS"));
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
 });
 
 
@@ -22,6 +33,7 @@ builder.Services.AddAuthentication(x=>
 
 }).AddJwtBearer(x=>
 {
+    x.SaveToken=true;
     x.TokenValidationParameters=new TokenValidationParameters
     {
             ValidIssuer=config["Jwt:Issuer"],
@@ -31,9 +43,10 @@ builder.Services.AddAuthentication(x=>
             ValidateIssuer=true,
             ValidateAudience=true,
             ValidateLifetime=true,
-            ValidateIssuerSigningKey=true
+            ValidateIssuerSigningKey=true,
+            ClockSkew=TimeSpan.Zero
     };
-});
+}).AddCookie("default");
 
 builder.Services.AddAuthorization();
 
@@ -47,7 +60,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
 
+app.UseCors(options => 
+{
+    options.WithOrigins("http://localhost:3000")
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+});
 
 app.UseAuthentication();
 
