@@ -1,6 +1,7 @@
 
 
 using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Models.Responses;
 
@@ -39,11 +40,9 @@ public class LoginController : ControllerBase
                             var token=GenerateVozac(user);
                             var refresh=GenerateRefresh();
                             CreateCookie(token);
-                            return Ok(new AuthResponse
-                            {
-                                AcessToken=token,
-                                RefreshToken=refresh
-                            });
+                            return Ok(
+                               user
+                            );
                         }
                         else 
                         {
@@ -101,6 +100,39 @@ public class LoginController : ControllerBase
             }
     }
 
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("Profile")]
+    public IActionResult Profile()
+    {
+        var cookie="";
+        if (Request.Cookies.TryGetValue("Token", out string cookieValue))
+        {
+            // Cookie value is available in the 'cookieValue' variable
+            cookie=cookieValue;
+        }
+        if(cookie!="")
+        {
+            var jwtHendler= new JwtSecurityTokenHandler();
+            var jwtToken = jwtHendler.ReadJwtToken(cookie);
+            
+            var idClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "Id");
+            var roleClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            var emailClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
+            var userNameClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            if (idClaim != null && roleClaim != null)
+            {
+                var idValue = idClaim.Value;
+                var roleValue = roleClaim.Value;
+                var emailValue = emailClaim.Value;
+                var userNameValue = userNameClaim.Value;
+                var profileData = new { Id = idValue, Role = roleValue, Email = emailValue, UserName = userNameValue };
+                return Ok(profileData);
+            }
+        }
+
+        return BadRequest("Pogresan token");
+        }
     [Authorize]
     [HttpPost] 
     [Route("Logout")]

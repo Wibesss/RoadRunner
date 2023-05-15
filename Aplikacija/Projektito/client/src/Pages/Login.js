@@ -1,22 +1,25 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {useState} from 'react'
+import {useContext,useState} from 'react'
 import axios from 'axios'
 import {Navigate} from 'react-router-dom'
+import { UserContext } from '../UserContext'
+import Cookies from 'js-cookie';
+import jwt_decode from "jwt-decode";
 
-const Login = () => {
-  const [email,setEmail] = useState('');
+const Login = ({userName,setUserName}) => {
+  const[email,setEmail] = useState('');
   const[pass,setPass]= useState('');
   const[redirect,setRedirect] = useState(false)
+  const {setUser} = useContext(UserContext)
   async function loginUser(e){
     e.preventDefault();
     try {
-      const userInfo = await axios.post('http://localhost:5026/Login',{
-        email:email,
-        password: pass
-
-      });
-      alert('Login successful');
+      const encodedEmail = encodeURIComponent(email);
+      const encodedPass = encodeURIComponent(pass)
+      const userInfo = await axios.post(`/Login/Login/${encodedEmail}/${encodedPass}`);
+      setUser(userInfo.data)
+      alert('Successfull login')
 
       setRedirect(true);
     }
@@ -25,7 +28,6 @@ const Login = () => {
       alert('Login failed')
     }
   }
-
   if(redirect)
   {
     return <Navigate to={'/'} />
@@ -35,7 +37,7 @@ const Login = () => {
         <div className="my-20">
             <h1 className="text-2xl text-center bold mb-4">Login:</h1>
             <form className="max-w-lg mx-auto" onSubmit={loginUser}>
-                <input type="email" placeholder={'unesiEmail@gmail.com'}
+                <input type="email" placeholder={'email@gmail.com'}
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
                 />

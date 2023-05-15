@@ -12,7 +12,7 @@ using Models;
 namespace Projektito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230512221608_V1")]
+    [Migration("20230515123038_V1")]
     partial class V1
     {
         /// <inheritdoc />

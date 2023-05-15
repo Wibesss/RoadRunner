@@ -179,5 +179,19 @@ public class VozacController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+    [AllowAnonymous]
+    [Route("GetVozaca/{id}")]
+    [HttpGet]
+    public async Task<IActionResult>GetVozace(int id)
+    {
+        try{
+            var Vozac = await Context.Vozac!.FindAsync(id);
+            return Ok(Vozac);
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
     
 }
