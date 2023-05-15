@@ -58,11 +58,9 @@ public class LoginController : ControllerBase
                             var token=GenerateKompanija(user);
                             var refresh=GenerateRefresh();
                             CreateCookie(token);
-                            return Ok(new AuthResponse
-                            {
-                                AcessToken=token,
-                                RefreshToken=refresh
-                            });
+                            return Ok(
+                                user
+                            );
                         }
                         else 
                         {
@@ -78,11 +76,9 @@ public class LoginController : ControllerBase
                             var token=GenerateDispecer(user);
                             var refresh=GenerateRefresh();
                             CreateCookie(token);
-                            return Ok(new AuthResponse
-                            {
-                                AcessToken=token,
-                                RefreshToken=refresh
-                            });
+                            return Ok(
+                                user
+                            );
                         }
                         else 
                         {
@@ -126,7 +122,7 @@ public class LoginController : ControllerBase
                 var roleValue = roleClaim.Value;
                 var emailValue = emailClaim.Value;
                 var userNameValue = userNameClaim.Value;
-                var profileData = new { Id = idValue, Role = roleValue, Email = emailValue, UserName = userNameValue };
+                var profileData = new { Id = idValue, Role = roleValue, Email = emailValue, korisnickoIme = userNameValue };
                 return Ok(profileData);
             }
         }

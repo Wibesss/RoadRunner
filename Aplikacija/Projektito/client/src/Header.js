@@ -41,7 +41,7 @@ const Header = ({userName}) => {
         </div>
         {!!user &&
           <div>
-            {user.userName}
+            {user.korisnickoIme}
           </div>
         }
         </Link>
