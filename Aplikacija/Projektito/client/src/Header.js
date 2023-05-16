@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { UserContext } from './UserContext';
 
 const Header = ({userName}) => {
-  const {user} = useContext(UserContext);
-  
+  const {user,ready} = useContext(UserContext);
+  if(!ready)
+  {
+    return "loading...";
+  }
   
   
   return (

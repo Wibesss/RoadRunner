@@ -40,8 +40,12 @@ public class LoginController : ControllerBase
                             var token=GenerateVozac(user);
                             var refresh=GenerateRefresh();
                             CreateCookie(token);
-                            return Ok(
-                               user
+                            return Ok(new {
+                                id = user.ID,
+                                korisnickoIme = user.KorisnickoIme,
+                                email = user.Email,
+                                role = "Vozac"
+                            }
                             );
                         }
                         else 
@@ -125,10 +129,14 @@ public class LoginController : ControllerBase
                 var profileData = new { Id = idValue, Role = roleValue, Email = emailValue, korisnickoIme = userNameValue };
                 return Ok(profileData);
             }
+            else
+            {
+                return Ok(null);
+            }
         }
 
-        return BadRequest("Pogresan token");
-        }
+        return Ok(null);
+    }
     [Authorize]
     [HttpPost] 
     [Route("Logout")]
