@@ -45,6 +45,12 @@ public class LoginController : ControllerBase
                                 korisnickoIme = user.KorisnickoIme,
                                 email = user.Email,
                                 role = "Vozac"
+                            });
+                            return Ok(new {
+                                id = user.ID,
+                                korisnickoIme = user.KorisnickoIme,
+                                email = user.Email,
+                                role = "Vozac"
                             }
                             );
                         }
@@ -62,9 +68,12 @@ public class LoginController : ControllerBase
                             var token=GenerateKompanija(user);
                             var refresh=GenerateRefresh();
                             CreateCookie(token);
-                            return Ok(
-                                user
-                            );
+                            return Ok(new {
+                                id = user.ID,
+                                korisnickoIme = user.KorisnickoIme,
+                                email = user.Email,
+                                role = "Kompanija"
+                            });
                         }
                         else 
                         {
@@ -80,9 +89,12 @@ public class LoginController : ControllerBase
                             var token=GenerateDispecer(user);
                             var refresh=GenerateRefresh();
                             CreateCookie(token);
-                            return Ok(
-                                user
-                            );
+                            return Ok(new {
+                                id = user.ID,
+                                korisnickoIme = user.KorisnickoIme,
+                                email = user.Email,
+                                role = "Dispecer"
+                            });
                         }
                         else 
                         {
@@ -128,6 +140,10 @@ public class LoginController : ControllerBase
                 var userNameValue = userNameClaim.Value;
                 var profileData = new { Id = idValue, Role = roleValue, Email = emailValue, korisnickoIme = userNameValue };
                 return Ok(profileData);
+            }
+            else
+            {
+                return Ok(null);
             }
             else
             {

@@ -8,7 +8,6 @@ namespace Models{
         public int Broj {get; set;}
         [MaxLength(300)]
         public required string Opis { get; set; }
-
         public Kompanija? Kompanija;
         public Vozac? Vozac;
     }
