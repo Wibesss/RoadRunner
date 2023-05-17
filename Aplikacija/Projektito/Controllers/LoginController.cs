@@ -46,13 +46,7 @@ public class LoginController : ControllerBase
                                 email = user.Email,
                                 role = "Vozac"
                             });
-                            return Ok(new {
-                                id = user.ID,
-                                korisnickoIme = user.KorisnickoIme,
-                                email = user.Email,
-                                role = "Vozac"
-                            }
-                            );
+                            
                         }
                         else 
                         {
@@ -144,11 +138,7 @@ public class LoginController : ControllerBase
             else
             {
                 return Ok(null);
-            }
-            else
-            {
-                return Ok(null);
-            }
+            }   
         }
 
         return Ok(null);

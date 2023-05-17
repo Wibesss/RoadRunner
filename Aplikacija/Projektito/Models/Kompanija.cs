@@ -24,6 +24,7 @@ namespace Models
         [JsonIgnore]
         public List<Tura>? Ture { get; set; }
        
+       [JsonIgnore]
         public List<Ocena>? Ocene { get; set; }
 
     } 
