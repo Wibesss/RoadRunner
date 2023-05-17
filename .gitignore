@@ -65,6 +65,7 @@ obj/
 
 # Visual Studio Code
 .vscode/
+Migrations/
 
 # User-specific files
 *.suo
