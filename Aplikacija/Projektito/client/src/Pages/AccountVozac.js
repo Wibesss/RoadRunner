@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { UserContext } from "../UserContext";
 import { Link, useParams } from "react-router-dom";
 import VozacProfil from "./VozacProfil";
+import VozacVozila from "./VozacVozila";
 
 const AccountVozac = () => {
   const { user } = useContext(UserContext);
@@ -40,6 +41,7 @@ const AccountVozac = () => {
         </Link>
       </nav>
       {subpage === "profil" && <VozacProfil />}
+      {subpage === "vozila" && <VozacVozila />}
     </div>
   );
 };

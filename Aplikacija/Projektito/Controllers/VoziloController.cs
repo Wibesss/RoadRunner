@@ -92,6 +92,7 @@ public class VoziloController : ControllerBase
             vozilo.Model=v.Model;
             vozilo.Slika=v.Slika;
             vozilo.Tablice=v.Tablice;
+            vozilo.CenaPoKilometru=v.CenaPoKilometru;
             try
             { 
                 Context.Vozilo!.Update(vozilo);

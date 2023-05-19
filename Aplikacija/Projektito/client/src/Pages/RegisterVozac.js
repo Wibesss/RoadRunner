@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { storage } from "./Firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 
 const RegisterVozac = () => {
   const [name, setName] = useState("");
@@ -11,25 +14,40 @@ const RegisterVozac = () => {
   const [username, setUserName] = useState("");
   const [pass, setPass] = useState("");
   const [number, setNumber] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   async function registerVozac(e) {
     e.preventDefault();
     try {
-      const response = await axios.post("/Vozac/AddVozac", {
-        ime: name,
-        prezime: lastName,
-        jmbg: jmbg,
-        email: email,
-        korisnickoIme: username,
-        sifra: pass,
-        brojTelefona: number,
-        slika: photo,
-      });
-      if (response.ok) {
-        const data = await response.text();
-        console.log(JSON.parse(data));
+      if (photo === null) {
       } else {
-        console.log("Server returned status code " + response.status);
+        const imageRef = ref(storage, `vozaci/${photo.name + v4()}`);
+
+        console.log(imageRef);
+        let photourl = "";
+        uploadBytes(imageRef, photo).then(() => {
+          getDownloadURL(imageRef).then((res) => {
+            console.log(typeof res);
+            photourl = res;
+          });
+        });
+
+        const response = await axios.post("/Vozac/AddVozac", {
+          ime: name,
+          prezime: lastName,
+          jmbg: jmbg,
+          email: email,
+          korisnickoIme: username,
+          sifra: pass,
+          brojTelefona: number,
+          slika: photourl,
+        });
+
+        if (response.ok) {
+          const data = await response.text();
+          console.log(JSON.parse(data));
+        } else {
+          console.log("Server returned status code " + response.status);
+        }
       }
     } catch (err) {
       console.log("Error:", err.message);
@@ -84,10 +102,9 @@ const RegisterVozac = () => {
             onChange={(e) => setNumber(e.target.value)}
           />
           <input
-            type="text"
-            placeholder={"Slika:"}
-            value={photo}
-            onChange={(e) => setPhoto(e.target.value)}
+            type="file"
+            placeholder={"Dodaj sliku"}
+            onChange={(e) => setPhoto(e.target.files[0])}
           />
           <button className={"bg-blue-300 text-white rounded-xl p-2 w-full"}>
             Registruj se

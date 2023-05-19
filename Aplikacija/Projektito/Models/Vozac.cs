@@ -39,7 +39,5 @@ namespace Models
         public List<PrihvacenaTura>? PrihvaceneTure {get; set;}
 
         public List<DodeljenaTuraa>? DodeljeneTure{get; set;}
-
-     
     }
 }
