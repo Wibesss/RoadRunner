@@ -32,7 +32,6 @@ const VozacVozila = () => {
   const [obrisano, setObrisano] = useState(false);
   const [formaZaUpdateVozila, setFormaZaUpdateVozila] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [vozilo, setVozilo] = useState();
   const [azurirano, setAzurirano] = useState(false);
   useEffect(() => {
     axios.get(`/Vozilo/GetVozilo/${user.id}`, config).then((response) => {
@@ -40,7 +39,9 @@ const VozacVozila = () => {
       setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
       setReady(true);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, dodato, currentPage, obrisano, azurirano]);
+
   const handleClickNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -48,12 +49,22 @@ const VozacVozila = () => {
   };
 
   const handleUpdateForm = (e) => {
-    setVozilo(currentItems.filter((x) => x.id == e.target.id)[0]);
-    setPhoto(currentItems.filter((x) => x.id == e.target.id)[0].slika);
-    setCena(currentItems.filter((x) => x.id == e.target.id)[0].cenaPoKilometru);
-    setModel(currentItems.filter((x) => x.id == e.target.id)[0].model);
-    setMarka(currentItems.filter((x) => x.id == e.target.id)[0].marka);
-    setTablice(currentItems.filter((x) => x.id == e.target.id)[0].tablice);
+    setPhoto(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].slika
+    );
+    setCena(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0]
+        .cenaPoKilometru
+    );
+    setModel(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].model
+    );
+    setMarka(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].marka
+    );
+    setTablice(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].tablice
+    );
     formaZaDodavanje && setFormaZaDodavanje(false);
     if (lastUpdate === e.target.id) {
       setLastUpdate(e.target.id);
@@ -155,7 +166,7 @@ const VozacVozila = () => {
   };
 
   return (
-    <div className="overflow-hidden  m-5 flex-col">
+    <div className="overflow-hidden w-full m-5 flex-col">
       <div className="flex flex-col items-center mt-10">
         <div className="flex justify-center w-1/2 ">
           <button

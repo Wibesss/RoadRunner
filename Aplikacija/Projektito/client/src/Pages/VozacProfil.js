@@ -23,11 +23,12 @@ const VozacProfil = () => {
   };
 
   useEffect(() => {
+    console.log(user);
     axios.get(`/Vozac/GetVozaca/${user.id}`, config).then((response) => {
       setVozac(response.data);
       setVozacReady(true);
     });
-  }, [user]);
+  }, []);
 
   if (!ready) {
     return "Loading...";
@@ -41,7 +42,6 @@ const VozacProfil = () => {
     setPromenasifre(!promenaSifre);
   };
 
-  console.log(vozac);
   return (
     <form className="w-2/3 file-upload">
       <div className="flex justify-end mb-5 gap-5">
