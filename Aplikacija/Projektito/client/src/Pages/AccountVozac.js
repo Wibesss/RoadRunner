@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import { UserContext } from "../UserContext";
 import { Link, Navigate, useParams } from "react-router-dom";
 import VozacProfil from "./VozacProfil";
+import VozacVozila from "./VozacVozila";
 
 const AccountVozac = () => {
   const { user } = useContext(UserContext);
 
   let { subpage } = useParams();
-  
+
   if (subpage === undefined) {
     subpage = "profil";
   }
@@ -21,7 +22,7 @@ const AccountVozac = () => {
   };
 
   return (
-    <div className="font-bold">
+    <div className=" font-bold">
       <nav className="w-full  flex justify-center mt-8 gap-2">
         <Link className={linkClasses("profil")} to={"/account"}>
           Profil
@@ -42,11 +43,10 @@ const AccountVozac = () => {
       {subpage === "profil" && (
         <div className="text-center max-w-lg mx-auto">
           Logged in as {user.korisnickoIme} ({user.email})<br />
-          <button className="rounded-lg px-4 py-2 border-primary border-2 bg-primary text-white hover:bg-white hover:text-primary duration-300">
-            Logout
-          </button>
+          <button className="btn-primary ">Logout</button>
         </div>
       )}
+      {subpage === "vozila" && <VozacVozila />}
     </div>
   );
 };

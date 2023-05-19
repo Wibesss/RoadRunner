@@ -129,8 +129,8 @@ public class LoginController : ControllerBase
             {
                 var idValue = idClaim.Value;
                 var roleValue = roleClaim.Value;
-                var emailValue = emailClaim.Value;
-                var userNameValue = userNameClaim.Value;
+                var emailValue = emailClaim?.Value;
+                var userNameValue = userNameClaim?.Value;
                 var profileData = new { Id = idValue, Role = roleValue, Email = emailValue, korisnickoIme = userNameValue };
                 return Ok(profileData);
             }
@@ -144,22 +144,15 @@ public class LoginController : ControllerBase
     }
     [Authorize]
     [HttpPost] 
-    [Route("Logout")]
+    [Route("SadCeDaNestanem")]
     public async Task<IActionResult> Logout()
     {
         try
         {
-            var userIdentity=HttpContext.User.Identity;
-            if(userIdentity !=null && userIdentity.IsAuthenticated)
-            {
-
             
-            string id=HttpContext.User.FindFirstValue("Id")!;
-            string role=HttpContext.User.FindFirstValue(ClaimTypes.Role)!;
-            RemoveCookie();
+             Response.Cookies.Delete("Token");
             return Ok("Uspesno ste izlogovani!");
-            }
-            return Unauthorized();
+            
         }
         catch(Exception ex)
         {
