@@ -50,54 +50,128 @@ const VozacPrikolice = () => {
   }, [ready, dodato, currentPage, obrisano, azurirano]);
 
   const handleDelete = (id) => {
-    axios.delete(`/Prikolica/DeltePrikolica/${id}`, config).then(() => {
+    axios.delete(`/Prikolica/DeletePrikolica/${id}`, config).then(() => {
       setObrisano(!obrisano);
     });
   };
-  // const handleUpdate = (e) => {
-  //   e.preventDefault();
-  //   if (typeof photo === "string") {
-  //     axios
-  //       .put(
-  //         `Vozilo/UpdateVozilo/${lastUpdate}`,
-  //         {
-  //           cenaPoKilometru: cena,
-  //           marka: marka,
-  //           model: model,
-  //           slika: photo,
-  //           tablice: tablice,
-  //         },
-  //         config
-  //       )
-  //       .then(() => {
-  //         setFormaZaUpdateVozila(!formaZaUpdateVozila);
-  //         setAzurirano(!azurirano);
-  //       });
-  //   } else {
-  //     const imageRef = ref(storage, `vozila/${photo.name + v4()}`);
-  //     uploadBytes(imageRef, photo).then(() => {
-  //       getDownloadURL(imageRef).then((res) => {
-  //         photourl = res;
-  //         axios
-  //           .put(
-  //             `Vozilo/UpdateVozilo/${lastUpdate}`,
-  //             {
-  //               cenaPoKilometru: cena,
-  //               marka: marka,
-  //               model: model,
-  //               slika: photourl,
-  //               tablice: tablice,
-  //             },
-  //             config
-  //           )
-  //           .then(() => {
-  //             setFormaZaUpdateVozila(!formaZaUpdateVozila);
-  //             setAzurirano(!azurirano);
-  //           });
-  //       });
-  //     });
-  //   }
-  // };
+  let photourl = "";
+  const handleSubmit = (e) => {
+    try {
+      e.preventDefault();
+      setFormaZaDodavanjePrikolice(!FormaZaDodavanjePrikolice);
+      if (photo === null) {
+      } else {
+        const imageRef = ref(storage, `prikolice/${photo.name + v4()}`);
+        uploadBytes(imageRef, photo).then(() => {
+          getDownloadURL(imageRef).then((res) => {
+            photourl = res;
+            {console.log(tip)}
+            axios
+              .post(
+                `Prikolica/AddPrikolica/${user.id}/${tip}`,
+                {
+                  zapremina: zapremina,
+                  duzina: duzina,
+                  sirina: sirina,
+                  visina: visina,
+                  nosivost: nosivost,
+                  tablice: tablice,
+                  slika:photourl,
+                },
+                config
+              )
+              .then(() => {
+                setFormaZaDodavanjePrikolice(!formaZaDodavanjePrikolice);
+                setDodato(!dodato);
+              });
+          });
+        });
+      }
+    } catch (ex) {
+      console.log("ERROR: " + ex.message);
+    }
+  };
+  const handleUpdateForm = (e) => {
+    setTip(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].tip
+    );
+    setZapremina(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0]
+        .zapremina
+    );
+    setSirina(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].sirina
+    );
+    setVisina(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].visina
+    );
+    setNosivost(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].nosivost
+    );
+    setTablice(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].tablice
+    );
+    setPhoto(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].photo
+    );
+    formaZaDodavanjePrikolice && setFormaZaDodavanjePrikolice(false);
+    {console.log(lastUpdate)}
+    if (lastUpdate === e.target.id) {
+      setLastUpdate(e.target.id);
+      setFormaZaUpdatePrikolice(!formaZaUpdatePrikolice);
+    } else {
+      setLastUpdate(e.target.id);
+      setFormaZaUpdatePrikolice(true);
+    }
+  };
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    if (typeof photo === "string") {
+      axios
+        .put(
+          `Prikolica/UpdatePrikolica/${user.id}/${tip}`,
+          {
+            zapremina: zapremina,
+            duzina: duzina,
+            sirina: sirina,
+            visina: visina,
+            nosivost: nosivost,
+            tablice: tablice,
+            slika:photourl,
+          },
+          config
+        )
+        .then(() => {
+          setFormaZaUpdatePrikolice(!formaZaUpdatePrikolice);
+          setAzurirano(!azurirano);
+        });
+    } else {
+      const imageRef = ref(storage, `vozila/${photo.name + v4()}`);
+      uploadBytes(imageRef, photo).then(() => {
+        getDownloadURL(imageRef).then((res) => {
+          photourl = res;
+          axios
+            .put(
+              `Prikolica/UpdatePrikolica/${user.id}/${tip}`,
+              {
+                zapremina: zapremina,
+                duzina: duzina,
+                sirina: sirina,
+                visina: visina,
+                nosivost: nosivost,
+                tablice: tablice,
+                slika:photourl,
+              },
+              config
+            )
+            .then(() => {
+              setFormaZaUpdatePrikolice(!formaZaUpdatePrikolice);
+              setAzurirano(!azurirano);
+            });
+        });
+      });
+    }
+  };
   const handleClickNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -109,7 +183,7 @@ const VozacPrikolice = () => {
     }
   };
   const handleDodajClick = () => {
-    //formaZaUpdatePrikolce && setFormaZaUpdatePrikolice(false);
+    formaZaUpdatePrikolice && setFormaZaUpdatePrikolice(false);
     setFormaZaDodavanjePrikolice(!formaZaDodavanjePrikolice);
   };
 
@@ -127,8 +201,36 @@ const VozacPrikolice = () => {
             Dodaj Novu Prikolicu
           </button>
         </div>
-        {formaZaDodavanjePrikolice && <FormaZaDodavanjePrikolice />}
-        {formaZaUpdatePrikolice && <FormaZaUpdatePrikolice />}
+        {formaZaDodavanjePrikolice && <FormaZaDodavanjePrikolice 
+          handleSubmit={handleSubmit}
+          setTip={setTip}
+          setZapremina={setZapremina}
+          setNosivost={setNosivost}
+          setDuzina={setDuzina}
+          setSirina={setSirina}
+          setVisina={setVisina}
+          setTablice={setTablice}
+          setPhoto={setPhoto}
+        />}
+        {formaZaUpdatePrikolice && <FormaZaUpdatePrikolice 
+          handleUpdate={handleUpdate}
+          setTip={setTip}
+          setZapremina={setZapremina}
+          setNosivost={setNosivost}
+          setDuzina={setDuzina}
+          setSirina={setSirina}
+          setVisina={setVisina}
+          setTablice={setTablice}
+          setPhoto={setPhoto}
+          tip={tip}
+          zapremina={zapremina}
+          nosivost={nosivost}
+          duzina={duzina}
+          sirina={sirina}
+          visina={visina}
+          tablice={tablice}
+          photo={photo}
+        />}
       </div>
       <div className="flex justify-center gap-5 mt-10">
         <button onClick={handleClickPrev} disabled={currentPage === 1}>
@@ -146,7 +248,7 @@ const VozacPrikolice = () => {
               <PrikoliceListItem
                 prikolica={prikolica}
                 handleDelete={handleDelete}
-                // handleUpdate={handleUpdateForm}
+                handleUpdate={handleUpdateForm}
                 key={prikolica.id}
               ></PrikoliceListItem>
             ))}

@@ -193,5 +193,19 @@ public class VozacController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+    [Authorize(Roles ="Vozac")]
+    [Route("GetOcene/{id}")]
+    [HttpGet]
+    public async Task<IActionResult>GetOcene(int id)
+    {
+        try{
+            var Ocene = await Context.Ocena!.Include(p=>p.Kompanija).Include(p=>p.Vozac).Where(p=> p!.Vozac!.ID==id).ToListAsync();
+            return Ok(Ocene);
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
     
 }

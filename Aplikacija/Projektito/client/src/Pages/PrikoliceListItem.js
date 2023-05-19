@@ -4,7 +4,7 @@ const PrikolicaListItem = ({ prikolica, handleDelete, handleUpdate }) => {
   return (
     <tr className="hover:bg-gray-50 h-40">
       <td className=" h-full w-1/5 px-14 font-normal text-gray-900 ">
-        <img className="h-full w-full rounded-2g" src="" alt="" />{" "}
+        <img className="h-full w-full rounded-2g" src={prikolica.slika} alt="Slika" />
       </td>
       <td className="px-6 py-4">
         <div className="text-sm">

@@ -3,6 +3,7 @@ import { UserContext } from "../UserContext";
 import { Link, useParams } from "react-router-dom";
 import VozacProfil from "./VozacProfil";
 import VozacVozila from "./VozacVozila";
+import VozacOcene from "./VozacOcene";
 import VozacPrikolice from "./VozacPrikolice";
 
 const AccountVozac = () => {
@@ -43,6 +44,9 @@ const AccountVozac = () => {
       </nav>
       {subpage === "profil" && <VozacProfil />}
       {subpage === "vozila" && <VozacVozila />}
+      {subpage === "ocene" && (
+        <VozacOcene />
+        )}
       {subpage === "prikolice" && <VozacPrikolice />}
     </div>
   );
