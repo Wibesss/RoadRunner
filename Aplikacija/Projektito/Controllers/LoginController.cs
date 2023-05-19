@@ -144,22 +144,13 @@ public class LoginController : ControllerBase
     }
     [Authorize]
     [HttpPost] 
-    [Route("Logout")]
+    [Route("SadCeDaNestanem")]
     public async Task<IActionResult> Logout()
     {
         try
         {
-            var userIdentity=HttpContext.User.Identity;
-            if(userIdentity !=null && userIdentity.IsAuthenticated)
-            {
-
-            
-            string id=HttpContext.User.FindFirstValue("Id")!;
-            string role=HttpContext.User.FindFirstValue(ClaimTypes.Role)!;
-            RemoveCookie();
+            Response.Cookies.Delete("Token");
             return Ok("Uspesno ste izlogovani!");
-            }
-            return Unauthorized();
         }
         catch(Exception ex)
         {
