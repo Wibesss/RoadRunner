@@ -28,26 +28,26 @@ const RegisterVozac = () => {
           getDownloadURL(imageRef).then((res) => {
             console.log(typeof res);
             photourl = res;
+
+            const response = axios.post("/Vozac/AddVozac", {
+              ime: name,
+              prezime: lastName,
+              jmbg: jmbg,
+              email: email,
+              korisnickoIme: username,
+              sifra: pass,
+              brojTelefona: number,
+              slika: photourl,
+            });
+
+            if (response.ok) {
+              const data = response.text();
+              console.log(JSON.parse(data));
+            } else {
+              console.log("Server returned status code " + response.status);
+            }
           });
         });
-
-        const response = await axios.post("/Vozac/AddVozac", {
-          ime: name,
-          prezime: lastName,
-          jmbg: jmbg,
-          email: email,
-          korisnickoIme: username,
-          sifra: pass,
-          brojTelefona: number,
-          slika: photourl,
-        });
-
-        if (response.ok) {
-          const data = await response.text();
-          console.log(JSON.parse(data));
-        } else {
-          console.log("Server returned status code " + response.status);
-        }
       }
     } catch (err) {
       console.log("Error:", err.message);
