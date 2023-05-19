@@ -49,13 +49,7 @@ const Login = () => {
             value={pass}
             onChange={(e) => setPass(e.target.value)}
           />
-          <button
-            className={
-              "text-bold p-2 w-full rounded-lg px-4 py-2 border-primary border-4 bg-primary text-white hover:bg-white hover:text-primary duration-300"
-            }
-          >
-            Login
-          </button>
+          <button className={"btn-primary w-full"}>Login</button>
           <div className="text-center py-2">
             <h5>
               Nemate nalog? <Link to={"/registration"}>Kreirajte nalog</Link>

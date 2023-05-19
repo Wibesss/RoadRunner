@@ -165,7 +165,7 @@ public class VozacController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [Authorize(Roles ="Kompanija,Dispecer")]
+   [Authorize(Roles ="Kompanija,Dispecer")]
     [Route("GetVozace")]
     [HttpGet]
     public async Task<IActionResult>GetVozace()

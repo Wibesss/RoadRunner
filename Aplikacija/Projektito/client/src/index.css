@@ -7,3 +7,23 @@ input[type="password"],
 input[type="email"] {
   @apply w-full border my-1 py-2 px-3 rounded-full;
 }
+
+.btn-primary {
+  @apply font-bold text-lg p-2 rounded-lg px-4 py-2 border-primary border-2 bg-primary text-white hover:bg-white hover:text-primary duration-300;
+}
+
+.btn-danger {
+  @apply font-bold text-lg p-2 rounded-lg px-4 py-2 border-red-600 border-2 bg-red-600 text-white hover:bg-white hover:text-red-600 duration-300;
+}
+
+.file-upload .square {
+  @apply h-64 w-64 m-auto align-middle border-solid border-primary border-2 rounded-md;
+}
+
+.form-control {
+  @apply block w-full py-2 px-4 text-base font-normal leading-7 text-black bg-white bg-clip-padding border border-solid border-primary appearance-none rounded-md;
+}
+
+.bg-secondary-soft {
+  @apply bg-slate-400 bg-opacity-20;
+}
