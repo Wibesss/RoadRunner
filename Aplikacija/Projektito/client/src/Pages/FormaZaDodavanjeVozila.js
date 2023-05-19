@@ -52,7 +52,7 @@ const FormaZaDodavanjeVozila = ({
             }}
           ></input>
         </div>
-        <div>
+        <div className="flex justify-center">
           <input
             type="file"
             placeholder="Slika"
