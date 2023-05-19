@@ -63,7 +63,7 @@ public class PrikolicaController : ControllerBase
                 {
                     p.Zapremina=null;
                 }
-                else if(tipPrikolice=="autoVoz")
+                else if(tipPrikolice=="AutoVoz")
                 {
                     p.Zapremina=null;
                 }
@@ -120,7 +120,7 @@ public class PrikolicaController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-   [Route("DeltePrikolica/{idPrikolica}")]
+   [Route("DeletePrikolica/{idPrikolica}")]
    [HttpDelete]
    public async Task<IActionResult> DeletePrikolica (int idPrikolica)
    {
