@@ -4,32 +4,39 @@ const PrikolicaListItem = ({ prikolica, handleDelete, handleUpdate }) => {
   return (
     <tr className="hover:bg-gray-50 h-40">
       <td className=" h-full w-1/5 px-14 font-normal text-gray-900 ">
-        <img className="h-full w-full rounded-2g" src={prikolica.slika} alt="Slika" />
+        <img
+          className="h-full w-full rounded-2g"
+          src={prikolica.slika}
+          alt="Slika"
+        />
       </td>
       <td className="px-6 py-4">
         <div className="text-sm">
-          <div className="font-medium text-gray-700">
+          <div className="">
             Zapremina:{" "}
             {prikolica.zapremina === null ? "-" : prikolica.zapremina}
           </div>
-          <div className="text-gray-400">
+          <div className="">
             Nosivost: {prikolica.nosivost === null ? "-" : prikolica.nosivost}
           </div>
         </div>
       </td>
       <td className="px-6 py-4">
-        <div className="font-medium text-gray-700">
+        <div className="">
           Duzina: {prikolica.duzina === null ? "-" : prikolica.duzina}
         </div>
-        <div className="font-medium text-gray-700">
+        <div className="">
           Sirina: {prikolica.sirina === null ? "-" : prikolica.sirina}
         </div>
-        <div className="font-medium text-gray-700">
+        <div className="">
           Visina: {prikolica.visina === null ? "-" : prikolica.visina}
         </div>
       </td>
 
-      <td className="px-6 py-4">Tablice: {prikolica.tablice}</td>
+      <td className="px-6 py-4">
+        <div>Tablice: {prikolica.tablice}</div>{" "}
+        <div>Tip: {prikolica.tipPrikolice.tip}</div>
+      </td>
 
       <td className="px-6 py-4">
         <div className="flex justify-end gap-4">

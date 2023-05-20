@@ -76,6 +76,7 @@ const VozacVozila = () => {
   };
   const handleUpdate = (e) => {
     e.preventDefault();
+    console.log("Slicka " + photo);
     if (typeof photo === "string") {
       axios
         .put(

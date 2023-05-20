@@ -41,7 +41,6 @@ const VozacPrikolice = () => {
 
   useEffect(() => {
     axios.get(`/Prikolica/GetPrikolica/${user.id}`, config).then((response) => {
-      console.log(response.data);
       setTotalPages(Math.ceil(response.data.length / itemsPerPage));
       setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
       setReady(true);
@@ -65,7 +64,6 @@ const VozacPrikolice = () => {
         uploadBytes(imageRef, photo).then(() => {
           getDownloadURL(imageRef).then((res) => {
             photourl = res;
-            {console.log(tip)}
             axios
               .post(
                 `Prikolica/AddPrikolica/${user.id}/${tip}`,
@@ -76,7 +74,7 @@ const VozacPrikolice = () => {
                   visina: visina,
                   nosivost: nosivost,
                   tablice: tablice,
-                  slika:photourl,
+                  slika: photourl,
                 },
                 config
               )
@@ -92,12 +90,9 @@ const VozacPrikolice = () => {
     }
   };
   const handleUpdateForm = (e) => {
-    setTip(
-      currentItems.filter((x) => x.id.toString() === e.target.id)[0].tip
-    );
+    setTip(currentItems.filter((x) => x.id.toString() === e.target.id)[0].tip);
     setZapremina(
-      currentItems.filter((x) => x.id.toString() === e.target.id)[0]
-        .zapremina
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].zapremina
     );
     setSirina(
       currentItems.filter((x) => x.id.toString() === e.target.id)[0].sirina
@@ -112,10 +107,17 @@ const VozacPrikolice = () => {
       currentItems.filter((x) => x.id.toString() === e.target.id)[0].tablice
     );
     setPhoto(
-      currentItems.filter((x) => x.id.toString() === e.target.id)[0].photo
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0].slika
+    );
+    setTip(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0]
+        .tipPrikolice.tip
+    );
+    console.log(
+      currentItems.filter((x) => x.id.toString() === e.target.id)[0]
+        .tipPrikolice.tip
     );
     formaZaDodavanjePrikolice && setFormaZaDodavanjePrikolice(false);
-    {console.log(lastUpdate)}
     if (lastUpdate === e.target.id) {
       setLastUpdate(e.target.id);
       setFormaZaUpdatePrikolice(!formaZaUpdatePrikolice);
@@ -127,9 +129,10 @@ const VozacPrikolice = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     if (typeof photo === "string") {
+      console.log("STRING JE");
       axios
         .put(
-          `Prikolica/UpdatePrikolica/${user.id}/${tip}`,
+          `Prikolica/UpdatePrikolica/${lastUpdate}/${tip}`,
           {
             zapremina: zapremina,
             duzina: duzina,
@@ -137,7 +140,7 @@ const VozacPrikolice = () => {
             visina: visina,
             nosivost: nosivost,
             tablice: tablice,
-            slika:photourl,
+            slika: photo,
           },
           config
         )
@@ -146,6 +149,7 @@ const VozacPrikolice = () => {
           setAzurirano(!azurirano);
         });
     } else {
+      console.log("STRING NIJE");
       const imageRef = ref(storage, `vozila/${photo.name + v4()}`);
       uploadBytes(imageRef, photo).then(() => {
         getDownloadURL(imageRef).then((res) => {
@@ -160,7 +164,7 @@ const VozacPrikolice = () => {
                 visina: visina,
                 nosivost: nosivost,
                 tablice: tablice,
-                slika:photourl,
+                slika: photourl,
               },
               config
             )
@@ -201,36 +205,40 @@ const VozacPrikolice = () => {
             Dodaj Novu Prikolicu
           </button>
         </div>
-        {formaZaDodavanjePrikolice && <FormaZaDodavanjePrikolice 
-          handleSubmit={handleSubmit}
-          setTip={setTip}
-          setZapremina={setZapremina}
-          setNosivost={setNosivost}
-          setDuzina={setDuzina}
-          setSirina={setSirina}
-          setVisina={setVisina}
-          setTablice={setTablice}
-          setPhoto={setPhoto}
-        />}
-        {formaZaUpdatePrikolice && <FormaZaUpdatePrikolice 
-          handleUpdate={handleUpdate}
-          setTip={setTip}
-          setZapremina={setZapremina}
-          setNosivost={setNosivost}
-          setDuzina={setDuzina}
-          setSirina={setSirina}
-          setVisina={setVisina}
-          setTablice={setTablice}
-          setPhoto={setPhoto}
-          tip={tip}
-          zapremina={zapremina}
-          nosivost={nosivost}
-          duzina={duzina}
-          sirina={sirina}
-          visina={visina}
-          tablice={tablice}
-          photo={photo}
-        />}
+        {formaZaDodavanjePrikolice && (
+          <FormaZaDodavanjePrikolice
+            handleSubmit={handleSubmit}
+            setTip={setTip}
+            setZapremina={setZapremina}
+            setNosivost={setNosivost}
+            setDuzina={setDuzina}
+            setSirina={setSirina}
+            setVisina={setVisina}
+            setTablice={setTablice}
+            setPhoto={setPhoto}
+          />
+        )}
+        {formaZaUpdatePrikolice && (
+          <FormaZaUpdatePrikolice
+            handleUpdate={handleUpdate}
+            setTip={setTip}
+            setZapremina={setZapremina}
+            setNosivost={setNosivost}
+            setDuzina={setDuzina}
+            setSirina={setSirina}
+            setVisina={setVisina}
+            setTablice={setTablice}
+            setPhoto={setPhoto}
+            tip={tip}
+            zapremina={zapremina}
+            nosivost={nosivost}
+            duzina={duzina}
+            sirina={sirina}
+            visina={visina}
+            tablice={tablice}
+            photo={photo}
+          />
+        )}
       </div>
       <div className="flex justify-center gap-5 mt-10">
         <button onClick={handleClickPrev} disabled={currentPage === 1}>
@@ -241,8 +249,8 @@ const VozacPrikolice = () => {
           Next
         </button>
       </div>
-      <table className="w-3/5  bg-white text-left text-sm text-gray-500 rounded-lg border border-gray-200 shadow-md  ml-auto mr-auto">
-        <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+      <table className="w-3/5  bg-white text-left text-sm text-gray-500 rounded-lg border border-gray-200 shadow-md  ml-auto mr-auto border-collapse">
+        <tbody className="divide-y divide-gray-100 border-t border-gray-100 ">
           {ready &&
             currentItems.map((prikolica) => (
               <PrikoliceListItem
