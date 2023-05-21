@@ -178,25 +178,26 @@ public class KompanijaController : ControllerBase
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).FirstOrDefaultAsync();
-        if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
-        {
+        // var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).FirstOrDefaultAsync();
+        // if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
+        // {
             o.Kompanija=kompanija;
             o.Vozac=vozac;
             try
             {
                 Context.Ocena!.Add(o);
-                return Ok();
+                await Context.SaveChangesAsync();
+                return Ok(o);
             }
             catch(Exception ex)
             {
-            return BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-        }
-        else
-        {
-            return BadRequest("Tura nije zavrsena ili ne postoji");
-        }
+        // }
+        // else
+        // {
+        //     return BadRequest("Tura nije zavrsena ili ne postoji");
+        // }
     }
 
      [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]

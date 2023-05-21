@@ -26,6 +26,7 @@ namespace Models
         public required string BrojTelefona { get; set;}
         public required string Slika { get; set; }
         public List<Favorizacija>? Favorizacije { get; set; }
+        [JsonIgnore]
         public List<Ocena>? Ocene { get; set; }
 
         [JsonIgnore]

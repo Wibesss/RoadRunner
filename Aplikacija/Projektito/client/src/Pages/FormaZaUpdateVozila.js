@@ -59,7 +59,7 @@ const FormaZaUpdateVozila = ({
             }}
           ></input>
         </div>
-        <div>
+        <div className="flex justify-center">
           <input
             type="file"
             onChange={(e) => setPhoto(e.target.files[0])}

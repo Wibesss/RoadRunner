@@ -1,11 +1,16 @@
 import React from "react";
 import Header from "./Header.js";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer.js";
+
 const Layout = () => {
   return (
-    <div className="p-4 flex flex-col min-h-screen">
+    <div className="flex-col justify-between">
       <Header />
-      <Outlet />
+      <div className="min-h-screen">
+        <Outlet />
+      </div>
+      <Footer />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { UserContext } from "../UserContext";
 import { Link, useParams } from "react-router-dom";
 import VozacProfil from "./VozacProfil";
 import VozacVozila from "./VozacVozila";
+import VozacOcene from "./VozacOcene";
+import VozacPrikolice from "./VozacPrikolice";
 
 const AccountVozac = () => {
   const { user } = useContext(UserContext);
@@ -14,9 +16,9 @@ const AccountVozac = () => {
   }
 
   const linkClasses = (type = null) => {
-    let classes = "p-2 px-6 text-xl";
+    let classes = "p-2 px-6 text-xl hover:text-primary duration-300";
     if (type === subpage) {
-      classes += " bg-primary text-white rounded-full";
+      classes = "p-2 px-6 text-xl bg-primary text-white rounded-full";
     }
     return classes;
   };
@@ -42,6 +44,8 @@ const AccountVozac = () => {
       </nav>
       {subpage === "profil" && <VozacProfil />}
       {subpage === "vozila" && <VozacVozila />}
+      {subpage === "ocene" && <VozacOcene />}
+      {subpage === "prikolice" && <VozacPrikolice />}
     </div>
   );
 };

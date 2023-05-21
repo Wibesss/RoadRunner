@@ -76,6 +76,7 @@ const VozacVozila = () => {
   };
   const handleUpdate = (e) => {
     e.preventDefault();
+    console.log("Slicka " + photo);
     if (typeof photo === "string") {
       axios
         .put(
@@ -90,6 +91,7 @@ const VozacVozila = () => {
           config
         )
         .then(() => {
+          setFormaZaUpdateVozila(!formaZaUpdateVozila);
           setAzurirano(!azurirano);
         });
     } else {
@@ -110,6 +112,7 @@ const VozacVozila = () => {
               config
             )
             .then(() => {
+              setFormaZaUpdateVozila(!formaZaUpdateVozila);
               setAzurirano(!azurirano);
             });
         });
@@ -146,7 +149,10 @@ const VozacVozila = () => {
                 },
                 config
               )
-              .then(() => setDodato(!dodato));
+              .then(() => {
+                setFormaZaDodavanje(!formaZaDodavanje);
+                setDodato(!dodato);
+              });
           });
         });
       }
@@ -166,9 +172,9 @@ const VozacVozila = () => {
   };
 
   return (
-    <div className="overflow-hidden w-full m-5 flex-col">
-      <div className="flex flex-col items-center mt-10">
-        <div className="flex justify-center w-1/2 ">
+    <div className=" overflow-hidden w-full m-5 flex-col">
+      <div className="flex flex-col  items-center mt-10">
+        <div className="flex justify-center w-1/2">
           <button
             type="submit"
             className="btn-primary py-2 px-4"

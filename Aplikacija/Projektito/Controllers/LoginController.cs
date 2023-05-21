@@ -46,6 +46,7 @@ public class LoginController : ControllerBase
                                 email = user.Email,
                                 role = "Vozac"
                             });
+                            
                         }
                         else 
                         {
@@ -137,7 +138,7 @@ public class LoginController : ControllerBase
             else
             {
                 return Ok(null);
-            }
+            }   
         }
 
         return Ok(null);
