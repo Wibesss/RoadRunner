@@ -16,9 +16,9 @@ const AccountVozac = () => {
   }
 
   const linkClasses = (type = null) => {
-    let classes = "p-2 px-6 text-xl";
+    let classes = "p-2 px-6 text-xl hover:text-primary duration-300";
     if (type === subpage) {
-      classes += " bg-primary text-white rounded-full";
+      classes = "p-2 px-6 text-xl bg-primary text-white rounded-full";
     }
     return classes;
   };
@@ -44,9 +44,7 @@ const AccountVozac = () => {
       </nav>
       {subpage === "profil" && <VozacProfil />}
       {subpage === "vozila" && <VozacVozila />}
-      {subpage === "ocene" && (
-        <VozacOcene />
-        )}
+      {subpage === "ocene" && <VozacOcene />}
       {subpage === "prikolice" && <VozacPrikolice />}
     </div>
   );

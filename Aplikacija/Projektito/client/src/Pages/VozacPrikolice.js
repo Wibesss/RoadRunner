@@ -156,7 +156,7 @@ const VozacPrikolice = () => {
           photourl = res;
           axios
             .put(
-              `Prikolica/UpdatePrikolica/${user.id}/${tip}`,
+              `Prikolica/UpdatePrikolica/${lastUpdate}/${tip}`,
               {
                 zapremina: zapremina,
                 duzina: duzina,

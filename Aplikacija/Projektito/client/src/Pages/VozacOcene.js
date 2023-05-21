@@ -3,9 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 import { UserContext } from "../UserContext";
 import Cookies from "js-cookie";
-import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 
 const VozacOcene = () => {
   const { user } = useContext(UserContext);
@@ -21,13 +21,13 @@ const VozacOcene = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
-  useEffect(()=> {
+  useEffect(() => {
     axios.get(`/Vozac/GetOcene/${user.id}`, config).then((response) => {
       setTotalPages(Math.ceil(response.data.length / itemsPerPage));
       setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
       setReady(true);
     });
-  },[currentPage,ready])
+  }, [currentPage, ready]);
   const handleClickNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -54,9 +54,9 @@ const VozacOcene = () => {
           currentItems.map((ocena) => (
             <li className="pb-3 sm:pb-4" key={ocena.id}>
               <div className="flex items-center space-x-4">
-              <div className="flex-shrink-0">
+                <div className="flex-shrink-0">
                   <p>Slika</p>
-              </div>
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-400">
                     Kompanija: {ocena?.kompanija.naziv}
@@ -68,16 +68,12 @@ const VozacOcene = () => {
                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">
                   {
                     <Box
-                    sx={{
-                      '& > legend': { mt: 2 },
-                    }}
-                  >
-                    <Typography component="legend">Ocena:</Typography>
-                    <Rating
-                      name="read-only"
-                      value={ocena?.broj}
-                      readOnly
-                    />
+                      sx={{
+                        "& > legend": { mt: 2 },
+                      }}
+                    >
+                      <Typography component="legend">Ocena:</Typography>
+                      <Rating name="read-only" value={ocena?.broj} readOnly />
                     </Box>
                   }
                 </div>

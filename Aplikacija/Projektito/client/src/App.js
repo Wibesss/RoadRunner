@@ -18,28 +18,23 @@ axios.defaults.withCredentials = true;
 
 function App() {
   return (
-    <div>
-      <UserContextProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Index />} />
-            <Route path="/login" element={<Login />} />
+    <UserContextProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Index />} />
+          <Route path="/login" element={<Login />} />
 
-            <Route path="/registration" element={<Register />}>
-              <Route
-                path="/registration/regKompanija"
-                element={<RegisterKompanija />}
-              />
-              <Route
-                path="/registration/regVozac"
-                element={<RegisterVozac />}
-              />
-            </Route>
-            <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/registration" element={<Register />}>
+            <Route
+              path="/registration/regKompanija"
+              element={<RegisterKompanija />}
+            />
+            <Route path="/registration/regVozac" element={<RegisterVozac />} />
           </Route>
-        </Routes>
-      </UserContextProvider>
-    </div>
+          <Route path="/account/:subpage?" element={<AccountPage />} />
+        </Route>
+      </Routes>
+    </UserContextProvider>
   );
 }
 

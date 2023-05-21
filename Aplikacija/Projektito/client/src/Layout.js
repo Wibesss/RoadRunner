@@ -1,11 +1,16 @@
 import React from "react";
 import Header from "./Header.js";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer.js";
+
 const Layout = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-100 to-gray-300">
+    <div className="flex-col justify-between">
       <Header />
-      <Outlet />
+      <div className="min-h-screen">
+        <Outlet />
+      </div>
+      <Footer />
     </div>
   );
 };
