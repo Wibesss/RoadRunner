@@ -21,18 +21,20 @@ public class KompanijaController : ControllerBase
   {
     try{
         if(komp.Naziv.Length<1 || komp.Naziv.Length>20 || Regex.IsMatch(komp.Naziv,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
-            return BadRequest("Pogresan format naziva");
+            ModelState.AddModelError("Naziv", "Naziv treba da ima između 1 i 20 karaktera.");
         if(komp.Email.Length<1 || Regex.IsMatch(komp.Email,@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")==false)
-            return BadRequest("Pogresan format emaila");
+            ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
         if(komp.KorisnickoIme.Length<1 || komp.KorisnickoIme.Length>20 || Regex.IsMatch(komp.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
-            return BadRequest("Pogresan format korisnickog imena");
+            ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
         if(komp.Sifra.Length<1 || komp.Sifra.Length>20 || Regex.IsMatch(komp.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-            return BadRequest("Pogresan format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
+            ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
         if(komp.Adresa.Length<1 || komp.Adresa.Length>40)
-            return BadRequest("Pogresan format adrese");
+            ModelState.AddModelError("Adresa", "Adresa treba da ima između 1 i 40 karaktera.");
         if(komp.Vlasnik.Length<1 || komp.Vlasnik.Length>40 || Regex.IsMatch(komp.Vlasnik,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
-            return BadRequest("Pogresan format vlasnika");
-              string sifra= BCrypt.Net.BCrypt.HashPassword(komp.Sifra,10);
+            ModelState.AddModelError("Vlasnik", "Vlasnik treba da ima između 1 i 40 karaktera.");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        string sifra= BCrypt.Net.BCrypt.HashPassword(komp.Sifra,10);
         komp.Sifra=sifra;    
         var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == komp.Email).FirstOrDefault();
         var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == komp.KorisnickoIme).FirstOrDefault();
@@ -63,17 +65,19 @@ public class KompanijaController : ControllerBase
             if(Kompanija!=null)
             {
                 if(komp.Naziv.Length<1 || komp.Naziv.Length>20 || Regex.IsMatch(komp.Naziv,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
-                    return BadRequest("Pogresan format naziva");
+                    ModelState.AddModelError("Naziv", "Naziv treba da ima između 1 i 20 karaktera.");
                 if(komp.Email.Length<1 || Regex.IsMatch(komp.Email,@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")==false)
-                    return BadRequest("Pogresan format emaila");
+                    ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
                 if(komp.KorisnickoIme.Length<1 || komp.KorisnickoIme.Length>20 || Regex.IsMatch(komp.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
-                    return BadRequest("Pogresan format korisnickog imena");
+                    ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
                 if(komp.Sifra.Length<1 || komp.Sifra.Length>20 || Regex.IsMatch(komp.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-                    return BadRequest("Pogresan format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
+                    ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
                 if(komp.Adresa.Length<1 || komp.Adresa.Length>40)
-                    return BadRequest("Pogresan format adrese");
+                    ModelState.AddModelError("Adresa", "Adresa treba da ima između 1 i 40 karaktera.");
                 if(komp.Vlasnik.Length<1 || komp.Vlasnik.Length>40 || Regex.IsMatch(komp.Vlasnik,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
-                    return BadRequest("Pogresan format vlasnika");
+                    ModelState.AddModelError("Vlasnik", "Vlasnik treba da ima između 1 i 40 karaktera.");
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
                 if( komp.Email != Kompanija.Email)
                 {
                     var KompanijaEmail = Context.Kompanija.Where( p => p.Email == komp.Email).FirstOrDefault();
