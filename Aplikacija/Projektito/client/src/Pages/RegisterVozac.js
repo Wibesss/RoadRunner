@@ -15,39 +15,35 @@ const RegisterVozac = () => {
   const [pass, setPass] = useState("");
   const [number, setNumber] = useState("");
   const [photo, setPhoto] = useState(null);
+
   async function registerVozac(e) {
     e.preventDefault();
     try {
-      if (photo === null) {
-      } else {
+      if (photo !== null) {
         const imageRef = ref(storage, `vozaci/${photo.name + v4()}`);
-
-        console.log(imageRef);
         let photourl = "";
         uploadBytes(imageRef, photo).then(() => {
-          getDownloadURL(imageRef).then((res) => {
-            console.log(typeof res);
+          getDownloadURL(imageRef).then(async (res) => {
             photourl = res;
+            const response = await axios.post("/Vozac/AddVozac", {
+              ime: name,
+              prezime: lastName,
+              jmbg: jmbg,
+              email: email,
+              korisnickoIme: username,
+              sifra: pass,
+              brojTelefona: number,
+              slika: photourl,
+            });
+
+            if (response.ok) {
+              const data = await response.text();
+              console.log(JSON.parse(data));
+            } else {
+              console.log("Server returned status code " + response.status);
+            }
           });
         });
-
-        const response = await axios.post("/Vozac/AddVozac", {
-          ime: name,
-          prezime: lastName,
-          jmbg: jmbg,
-          email: email,
-          korisnickoIme: username,
-          sifra: pass,
-          brojTelefona: number,
-          slika: photourl,
-        });
-
-        if (response.ok) {
-          const data = await response.text();
-          console.log(JSON.parse(data));
-        } else {
-          console.log("Server returned status code " + response.status);
-        }
       }
     } catch (err) {
       console.log("Error:", err.message);

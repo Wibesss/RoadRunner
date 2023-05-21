@@ -111,7 +111,7 @@ public class LoginController : ControllerBase
     public IActionResult Profile()
     {
         var cookie="";
-        if (Request.Cookies.TryGetValue("Token", out string cookieValue))
+        if (Request.Cookies.TryGetValue("Token", out string? cookieValue))
         {
             // Cookie value is available in the 'cookieValue' variable
             cookie=cookieValue;
@@ -142,10 +142,11 @@ public class LoginController : ControllerBase
 
         return Ok(null);
     }
+    
     [Authorize]
     [HttpPost] 
     [Route("SadCeDaNestanem")]
-    public async Task<IActionResult> Logout()
+    public IActionResult Logout()
     {
         try
         {
@@ -173,7 +174,6 @@ public class LoginController : ControllerBase
             new("Id",v.ID.ToString())
         };
     
-
         var token=new JwtSecurityToken(Config["Jwt:Issuer"],Config["Jwt:Audience"],claims,expires:DateTime.Now.AddHours(1),signingCredentials:creditendals);
 
         var token2=new JwtSecurityTokenHandler().WriteToken(token);
@@ -218,7 +218,6 @@ public class LoginController : ControllerBase
         var token=new JwtSecurityToken(Config["Jwt:Issuer"],Config["Jwt:Audience"],claims,DateTime.Now,DateTime.Now.AddHours(1),signingCredentials:creditendals);
 
         var token2=new JwtSecurityTokenHandler().WriteToken(token);
-
 
         return token2;
     }

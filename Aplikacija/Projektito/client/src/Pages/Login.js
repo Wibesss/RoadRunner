@@ -36,18 +36,24 @@ const Login = () => {
     <div className="mt-4 text-bold grow flex items-center justify-around">
       <div className="my-20">
         <h1 className="text-2xl text-center mb-4">Login:</h1>
-        <form className="max-w-lg mx-auto" onSubmit={loginUser}>
+        <form
+          className="max-w-lg mx-auto"
+          onSubmit={loginUser}
+          autoComplete="off"
+        >
           <input
             type="email"
             placeholder={"email@gmail.com"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
           />
           <input
             type="password"
             placeholder="password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
+            autoComplete="off"
           />
           <button className={"btn-primary w-full"}>Login</button>
           <div className="text-center py-2">

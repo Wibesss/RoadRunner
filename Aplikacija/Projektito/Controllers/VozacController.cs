@@ -33,7 +33,7 @@ public class VozacController : ControllerBase
             return BadRequest("Los format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
         if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
             return BadRequest("Los format broja telefona");
-         string sifra= BCrypt.Net.BCrypt.HashPassword(Vozac.Sifra,10);
+        string sifra= BCrypt.Net.BCrypt.HashPassword(Vozac.Sifra,10);
         Vozac.Sifra=sifra;    
         var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == Vozac.Email).FirstOrDefault();
         var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == Vozac.KorisnickoIme).FirstOrDefault();
@@ -74,8 +74,6 @@ public class VozacController : ControllerBase
                 return BadRequest("Los format Emaila");
             if(Vozac.KorisnickoIme.Length>20 || Vozac.KorisnickoIme.Length<1 || Regex.IsMatch(Vozac.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
                 return BadRequest("Los format korisnickog imena");
-            if(Vozac.Sifra.Length>20 || Vozac.Sifra.Length<1 || Regex.IsMatch(Vozac.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-                return BadRequest("Los format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
             if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
                 return BadRequest("Los format broja telefona");
             if(Vozac.Email != Voz.Email)
@@ -99,7 +97,6 @@ public class VozacController : ControllerBase
                 Voz.JMBG = Vozac.JMBG;
                 Voz.Email = Vozac.Email;
                 Voz.KorisnickoIme = Vozac.KorisnickoIme;
-                Voz.Sifra= Vozac.Sifra;
                 Voz.Slika=Vozac.Slika;
                 Voz.BrojTelefona=Vozac.BrojTelefona;
                 Context.Vozac.Update(Voz);
@@ -139,19 +136,32 @@ public class VozacController : ControllerBase
         }
    }
    [Authorize(Roles ="Vozac,Dispecer")]
-   [Route("UpdateSifra/{id}/{sifra}")]
+   [Route("UpdateSifra/{id}/{staraSifra}/{novaSifra}")]
    [HttpPut]
-  public async Task<IActionResult>UpdateSifra(int id,string sifra)
+  public async Task<IActionResult>UpdateSifra(int id,string staraSifra,string novaSifra)
     {
-         try{
+        try{
              var Vozac = Context.Vozac!.Find(id);
-             if(Vozac!=null)
+             
+             
+            if(Vozac!=null)
             {
+                string sifra;
+                
+                if(BCrypt.Net.BCrypt.Verify(staraSifra,Vozac.Sifra))
+                {
+                    sifra = novaSifra;
+                }
+                else{
+                    return BadRequest("Pogresna stara šifra");
+                }
+
                 if(sifra.Length<8 || sifra.Length>20 || Regex.IsMatch(sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
                     return BadRequest("Pogresan format nove sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
-                if(sifra==Vozac.Sifra)
-                    return BadRequest("Nova sifra je ista kao stara");
-                Vozac.Sifra=sifra;
+                
+                string cryptNovaSifra =BCrypt.Net.BCrypt.HashPassword(sifra,10);
+                
+                Vozac.Sifra=cryptNovaSifra;
                 Context.Vozac.Update(Vozac);
                 await Context.SaveChangesAsync();
                 return Ok($"Sifra uspesno izmenjena");
