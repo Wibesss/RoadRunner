@@ -226,10 +226,11 @@ const AccountDispecer = () => {
     if (novaSifra !== potvrdaSifra)
       return alert("Nova i potrvdra šifra se ne poklapaju");
     try {
-      console.log(`Stara: ${staraSifra}, nova: ${novaSifra}`)
+      const encodedStaraSifra = encodeURIComponent(staraSifra);
+      const encodedNovaSifra = encodeURIComponent(novaSifra);
       axios
         .put(
-          `/Dispecer/UpdateSifra/${dispecer.id}/${staraSifra}/${novaSifra}`,
+          `/Dispecer/UpdateSifra/${dispecer.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
           {},
           config
         )

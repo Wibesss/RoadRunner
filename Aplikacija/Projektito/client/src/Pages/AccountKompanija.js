@@ -1,9 +1,9 @@
 import React from "react";
-import KompanijaFavorizovani from "./KompanijaFavorizovani";
-import KompanijaProfil from "./KompanijaProfil";
-import { UserContext } from "../UserContext";
 import { Link, useParams } from "react-router-dom";
+import KompanijaFavorizovani from "./KompanijaFavorizovani";
+import { UserContext } from "../UserContext";
 import { useContext } from "react";
+import KompanijaProfil from "./KompanijaProfil";
 
 const AccountKompanija = () => {
   const { user } = useContext(UserContext);

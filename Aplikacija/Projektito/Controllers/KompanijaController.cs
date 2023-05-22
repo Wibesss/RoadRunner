@@ -70,8 +70,6 @@ public class KompanijaController : ControllerBase
                     ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
                 if(komp.KorisnickoIme.Length<1 || komp.KorisnickoIme.Length>20 || Regex.IsMatch(komp.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
                     ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
-                if(komp.Sifra.Length<1 || komp.Sifra.Length>20 || Regex.IsMatch(komp.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-                    ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
                 if(komp.Adresa.Length<1 || komp.Adresa.Length>40)
                     ModelState.AddModelError("Adresa", "Adresa treba da ima između 1 i 40 karaktera.");
                 if(komp.Vlasnik.Length<1 || komp.Vlasnik.Length>40 || Regex.IsMatch(komp.Vlasnik,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
@@ -97,7 +95,6 @@ public class KompanijaController : ControllerBase
                 Kompanija.Naziv=komp.Naziv;
                 Kompanija.Email=komp.Email;
                 Kompanija.KorisnickoIme=komp.KorisnickoIme;
-                Kompanija.Sifra=komp.Sifra;
                 Kompanija.Adresa=komp.Adresa;
                 Kompanija.Vlasnik=komp.Vlasnik;
                 Kompanija.Logo=komp.Logo;
@@ -114,6 +111,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [Route("DeleteKompanija/{id}")]
     [HttpDelete]
     public async Task<IActionResult> DeleteKompanija (int id)
@@ -136,19 +134,32 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [Route("UpdateSifra/{id}/{sifra}")]
+
+    [Route("UpdateSifra/{id}/{staraSifra}/{novaSifra}")]
     [HttpPut]
-    public async Task<IActionResult>UpdateSifra(int id,string sifra)
+    public async Task<IActionResult>UpdateSifra(int id,string staraSifra, string novaSifra)
     {
          try{
              var Kompanija = Context.Kompanija!.Find(id);
-             if(Kompanija!=null)
+            
+            if(Kompanija!=null)
             {
+                string sifra;
+
+                if(BCrypt.Net.BCrypt.Verify(staraSifra,Kompanija.Sifra))
+                {
+                    sifra = novaSifra;
+                }
+                else{
+                    return BadRequest("Pogresna stara šifra");
+                }
+
                 if(sifra.Length<8 || sifra.Length>20 || Regex.IsMatch(sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
                     return BadRequest("Pogresan format nove sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
-                if(sifra==Kompanija.Sifra)
-                    return BadRequest("Nova sifra je ista kao stara");
-                Kompanija.Sifra=sifra;
+                
+                string cryptNovaSifra =BCrypt.Net.BCrypt.HashPassword(sifra,10);
+
+                Kompanija.Sifra=cryptNovaSifra;
                 Context.Kompanija.Update(Kompanija);
                 await Context.SaveChangesAsync();
                 return Ok($"Sifra uspesno izmenjena");
@@ -162,6 +173,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [Route("GetKompanije")]
     [HttpGet]
     public async Task<IActionResult> GetKompanije()
@@ -204,18 +216,44 @@ public class KompanijaController : ControllerBase
         // }
     }
 
-     [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
-     [HttpPost]
+    [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
+    [HttpPost]
     public async Task<IActionResult> FavorizujVozaca(int idKompanije,int idVozaca)
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        var fav=new Favorizacija();
-        fav.Kompanija=kompanija;
-        fav.Vozac=vozac;
+        var favPostojeca=await Context.Favorizacija!.Where(p => p.Kompanija!.ID==idKompanije && p.Vozac!.ID==idVozaca).FirstOrDefaultAsync();
+        if(favPostojeca==null)
+        {
+            var fav=new Favorizacija();
+            fav.Kompanija=kompanija;
+            fav.Vozac=vozac;
+                try
+                {
+                    Context.Favorizacija!.Add(fav);
+                    await Context.SaveChangesAsync();
+                    return Ok();
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+        }
+        else
+        {
+            return BadRequest("Nije moguce da ista kompanija favorizuje 2 puta istog vozaca");
+        }
+    }
+    [Authorize(Roles ="Kompanija")]
+    [Route("BrisanjeFavorizovanog/{idKompanije}/{idVozaca}")]
+    [HttpDelete]
+    public async Task<IActionResult> BrisanjeFavorizovanog(int idKompanije,int idVozaca)
+    {
+        var fav=await Context.Favorizacija!.Where(p => p.Kompanija!.ID==idKompanije && p.Vozac!.ID==idVozaca).FirstOrDefaultAsync();
         try
         {
-            Context.Favorizacija!.Add(fav);
+            if(fav!=null)
+            Context.Favorizacija!.Remove(fav);
             await Context.SaveChangesAsync();
             return Ok();
         }
