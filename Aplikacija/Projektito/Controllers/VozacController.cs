@@ -29,7 +29,7 @@ public class VozacController : ControllerBase
             ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
         if(Vozac.KorisnickoIme.Length>20 || Vozac.KorisnickoIme.Length<1 || Regex.IsMatch(Vozac.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
             ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
-        if(Vozac.Sifra.Length>20 || Vozac.Sifra.Length<1 || Regex.IsMatch(Vozac.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
+        if(Vozac.Sifra.Length>20 || Vozac.Sifra.Length<1 || Regex.IsMatch(Vozac.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#!@$^&*-]).{8,}$")==false)
             ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera");
         if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
             ModelState.AddModelError("BrojTelefona","Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11");
@@ -160,7 +160,7 @@ public class VozacController : ControllerBase
                     return BadRequest("Pogresna stara šifra");
                 }
 
-                if(sifra.Length<8 || sifra.Length>20 || Regex.IsMatch(sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
+                if(sifra.Length<8 || sifra.Length>20 || Regex.IsMatch(sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#!@$^&*-]).{8,}$")==false)
                     return BadRequest("Pogresan format nove sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
                 
                 string cryptNovaSifra =BCrypt.Net.BCrypt.HashPassword(sifra,10);
