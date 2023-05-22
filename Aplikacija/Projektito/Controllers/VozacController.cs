@@ -76,8 +76,6 @@ public class VozacController : ControllerBase
                 ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
             if(Vozac.KorisnickoIme.Length>20 || Vozac.KorisnickoIme.Length<1 || Regex.IsMatch(Vozac.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
                 ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
-            if(Vozac.Sifra.Length>20 || Vozac.Sifra.Length<1 || Regex.IsMatch(Vozac.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-                ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera");
             if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
                 ModelState.AddModelError("BrojTelefona","Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11");
             if (!ModelState.IsValid)
@@ -90,7 +88,7 @@ public class VozacController : ControllerBase
                     if(KompanijaEmail!=null || VozacEmail!=null || DispecerEmail!=null)
                         return BadRequest("Vec postoji nalog sa tim emailom");
                 }
-            else if ( Vozac.KorisnickoIme!= Vozac.KorisnickoIme)
+            else if ( Vozac.KorisnickoIme!= Voz.KorisnickoIme)
                 {
                     var VozacUsername = Context.Vozac.Where(p=>p.KorisnickoIme == Vozac.KorisnickoIme).FirstOrDefault();
                     var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == Vozac.KorisnickoIme).FirstOrDefault();

@@ -42,8 +42,6 @@ const VozacProfil = () => {
     });
   }, [updateUser]);
 
-  
-
   const { ready, user, setUser } = useContext(UserContext);
 
   if (!ready) {
@@ -65,109 +63,113 @@ const VozacProfil = () => {
     }
   };
 
-  const handlePotrvdu = (e) => {
+  const handlePotrvdu = async (e) => {
     e.preventDefault();
     try {
       const validationErrors = {};
-    
-    if (ime.length < 3 || ime.length > 30 || !/^[a-zA-Z]+$/.test(ime)) {
-      validationErrors.Ime =
-        "Ime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.";
-    }
 
-    if (prezime.length < 3 || prezime.length > 30 || !/^[a-zA-Z]+$/.test(prezime)) {
-      validationErrors.Prezime =
-        "Prezime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.";
-    }
+      if (ime.length < 3 || ime.length > 30 || !/^[a-zA-Z]+$/.test(ime)) {
+        validationErrors.Ime =
+          "Ime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.";
+      }
 
-    if (jmbg.length !== 13 || !/^\d+$/.test(jmbg)) {
-      validationErrors.JMBG = "JMBG treba da ima tačno 13 cifara.";
-    }
+      if (
+        prezime.length < 3 ||
+        prezime.length > 30 ||
+        !/^[a-zA-Z]+$/.test(prezime)
+      ) {
+        validationErrors.Prezime =
+          "Prezime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.";
+      }
 
-    if (
-      email.length < 6 ||
-      email.length > 30 ||
-      !/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
-        email
-      )
-    ) {
-      validationErrors.Email =
-        "Email treba da bude između 6 i 30 karaktera i u validnom formatu.";
-    }
+      if (jmbg.length !== 13 || !/^\d+$/.test(jmbg)) {
+        validationErrors.JMBG = "JMBG treba da ima tačno 13 cifara.";
+      }
 
-    if (
-      korisnickoIme.length < 1 ||
-      korisnickoIme.length > 20 ||
-      !/^[a-zA-Z][a-zA-Z0-9]*$/.test(korisnickoIme)
-    ) {
-      validationErrors.KorisnickoIme =
-        "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.";
-    }
-    if(
-      !/^\+?[0-9][0-9\s.-]{7,11}$/.test(brojTelefona)
-    ) {
-      validationErrors.Broj =
-        "Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11.";
-    }
+      if (
+        email.length < 6 ||
+        email.length > 30 ||
+        !/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
+          email
+        )
+      ) {
+        validationErrors.Email =
+          "Email treba da bude između 6 i 30 karaktera i u validnom formatu.";
+      }
 
-    if (Object.keys(validationErrors).length > 0) {
-      // Validation failed, display error messages
-      Object.keys(validationErrors).forEach((property) => {
-        alert(`Greška u polju ${property}: ${validationErrors[property]}`);
-      });
-      return;
-    }
+      if (
+        korisnickoIme.length < 1 ||
+        korisnickoIme.length > 20 ||
+        !/^[a-zA-Z][a-zA-Z0-9]*$/.test(korisnickoIme)
+      ) {
+        validationErrors.KorisnickoIme =
+          "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.";
+      }
+      if (!/^\+?[0-9][0-9\s.-]{7,11}$/.test(brojTelefona)) {
+        validationErrors.Broj =
+          "Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11.";
+      }
+
+      if (Object.keys(validationErrors).length > 0) {
+        // Validation failed, display error messages
+        Object.keys(validationErrors).forEach((property) => {
+          alert(`Greška u polju ${property}: ${validationErrors[property]}`);
+        });
+        return;
+      }
       if (slika === null) {
-        try{
-          const response =  axios
-            .put(
-              `/Vozac/UpdateVozac/${vozac.id}`,
-              {
-                ime: ime,
-                prezime: prezime,
-                jmbg: jmbg,
-                email: email,
-                korisnickoIme: korisnickoIme,
-                sifra: "",
-                brojTelefona: brojTelefona,
-                slika: vozac.slika,
-              },
-              config
-            )
-            
-              if (response.status === 200) {
-                setUpdateUser(!updateUser);
-              }else {
-                console.log("Server returned status code " + response.status);
-              }
+        try {
+          const response = await axios.put(
+            `/Vozac/UpdateVozac/${vozac.id}`,
+            {
+              ime: ime,
+              prezime: prezime,
+              jmbg: jmbg,
+              email: email,
+              korisnickoIme: korisnickoIme,
+              sifra: "",
+              brojTelefona: brojTelefona,
+              slika: vozac.slika,
+            },
+            config
+          );
 
-          
-        }catch(error){
+          if (response.status === 200) {
+            setUpdateUser(!updateUser);
+          } else {
+            console.log(response.status);
+            console.log("Server returned status code " + response.status);
+          }
+        } catch (error) {
           if (error.response && error.response.status === 400) {
             // Bad request response
             const errorMessage = error.response.data;
             if (errorMessage === "Vec postoji nalog sa tim emailom") {
               alert("Vec postoji nalog sa tim emailom");
-            } else if (errorMessage === "Vec postoji nalog sa tim korisnickim imenom") {
+              window.location.reload();
+            } else if (
+              errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
+            ) {
               alert("Vec postoji nalog sa tim korisnickim imenom");
+              window.location.reload();
             } else {
               // Handle other validation errors or unexpected error messages
               console.log(errorMessage);
+              window.location.reload();
             }
           } else {
             // Other error
             console.log("Error:", error.message);
           }
-        } 
+        }
       } else {
         const imageRef = ref(storage, `vozaci/${slika.name + v4()}`);
         let slikaurl = "";
         uploadBytes(imageRef, slika).then(() => {
           getDownloadURL(imageRef).then((res) => {
             slikaurl = res;
-            try{
-            const response = axios
-              .put(
+            try {
+              const response = axios.put(
                 `/Vozac/UpdateVozac/${vozac.id}`,
                 {
                   ime: ime,
@@ -180,31 +182,35 @@ const VozacProfil = () => {
                   slika: slikaurl,
                 },
                 config
-              )
-              
+              );
+
               if (response.status === 200) {
                 setUpdateUser(!updateUser);
               } else {
                 console.log("Server returned status code " + response.status);
               }
-             
-            }catch(error){
+            } catch (error) {
               if (error.response && error.response.status === 400) {
                 // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
                   alert("Vec postoji nalog sa tim emailom");
-                } else if (errorMessage === "Vec postoji nalog sa tim korisnickim imenom") {
+                  window.location.reload();
+                } else if (
+                  errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
+                ) {
                   alert("Vec postoji nalog sa tim korisnickim imenom");
+                  window.location.reload();
                 } else {
                   // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
+                  window.location.reload();
                 }
               } else {
                 // Other error
                 console.log("Error:", error.message);
               }
-            } 
+            }
           });
         });
       }
