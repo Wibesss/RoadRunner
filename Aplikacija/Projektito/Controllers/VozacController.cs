@@ -145,8 +145,7 @@ public class VozacController : ControllerBase
   public async Task<IActionResult>UpdateSifra(int id,string staraSifra,string novaSifra)
     {
         try{
-             var Vozac = Context.Vozac!.Find(id);
-             
+            var Vozac = Context.Vozac!.Find(id);
              
             if(Vozac!=null)
             {
@@ -163,7 +162,7 @@ public class VozacController : ControllerBase
                 if(sifra.Length<8 || sifra.Length>20 || Regex.IsMatch(sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#!@$^&*-]).{8,}$")==false)
                     return BadRequest("Pogresan format nove sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
                 
-                string cryptNovaSifra =BCrypt.Net.BCrypt.HashPassword(sifra,10);
+                string cryptNovaSifra = BCrypt.Net.BCrypt.HashPassword(sifra,10);
                 
                 Vozac.Sifra=cryptNovaSifra;
                 Context.Vozac.Update(Vozac);
@@ -179,7 +178,8 @@ public class VozacController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-   [Authorize(Roles ="Kompanija,Dispecer")]
+
+    [Authorize(Roles ="Kompanija,Dispecer")]
     [Route("GetVozace")]
     [HttpGet]
     public async Task<IActionResult>GetVozace()
@@ -193,6 +193,7 @@ public class VozacController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+
     [AllowAnonymous]
     [Route("GetVozaca/{id}")]
     [HttpGet]
@@ -207,6 +208,7 @@ public class VozacController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+
     [Authorize(Roles ="Vozac")]
     [Route("GetOcene/{id}")]
     [HttpGet]

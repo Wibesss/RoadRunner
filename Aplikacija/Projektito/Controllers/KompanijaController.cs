@@ -114,6 +114,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [Route("DeleteKompanija/{id}")]
     [HttpDelete]
     public async Task<IActionResult> DeleteKompanija (int id)
@@ -136,19 +137,32 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [Route("UpdateSifra/{id}/{sifra}")]
+
+    [Route("UpdateSifra/{id}/{staraSifra}/{novaSifra}")]
     [HttpPut]
-    public async Task<IActionResult>UpdateSifra(int id,string sifra)
+    public async Task<IActionResult>UpdateSifra(int id,string staraSifra, string novaSifra)
     {
          try{
              var Kompanija = Context.Kompanija!.Find(id);
-             if(Kompanija!=null)
+            
+            if(Kompanija!=null)
             {
+                string sifra;
+
+                if(BCrypt.Net.BCrypt.Verify(staraSifra,Kompanija.Sifra))
+                {
+                    sifra = novaSifra;
+                }
+                else{
+                    return BadRequest("Pogresna stara šifra");
+                }
+
                 if(sifra.Length<8 || sifra.Length>20 || Regex.IsMatch(sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
                     return BadRequest("Pogresan format nove sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
-                if(sifra==Kompanija.Sifra)
-                    return BadRequest("Nova sifra je ista kao stara");
-                Kompanija.Sifra=sifra;
+                
+                string cryptNovaSifra =BCrypt.Net.BCrypt.HashPassword(sifra,10);
+
+                Kompanija.Sifra=cryptNovaSifra;
                 Context.Kompanija.Update(Kompanija);
                 await Context.SaveChangesAsync();
                 return Ok($"Sifra uspesno izmenjena");
@@ -162,6 +176,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [Route("GetKompanije")]
     [HttpGet]
     public async Task<IActionResult> GetKompanije()
@@ -204,8 +219,8 @@ public class KompanijaController : ControllerBase
         // }
     }
 
-     [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
-     [HttpPost]
+    [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
+    [HttpPost]
     public async Task<IActionResult> FavorizujVozaca(int idKompanije,int idVozaca)
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
@@ -223,6 +238,7 @@ public class KompanijaController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+
     [AllowAnonymous]
     [Route("GetKompanija/{id}")]
     [HttpGet]
