@@ -64,11 +64,12 @@ const KompanijaProfil = () => {
     try {
       const validationErrors = {};
 
-      if (naziv.length < 3 ||
+      if (
+        naziv.length < 3 ||
         naziv.length > 30 ||
-        !/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(naziv)) {
-        validationErrors.Naziv =
-          "Naziv treba da ima između 1 i 20 karaktera..";
+        !/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(naziv)
+      ) {
+        validationErrors.Naziv = "Naziv treba da ima između 1 i 20 karaktera..";
       }
 
       if (
@@ -90,13 +91,11 @@ const KompanijaProfil = () => {
         validationErrors.KorisnickoIme =
           "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.";
       }
-      if ( adresa.length < 1 ||
-        adresa.length > 40) {
+      if (adresa.length < 1 || adresa.length > 40) {
         validationErrors.Adresa =
           "Adresa treba da ima između 1 i 40 karaktera.";
       }
-      if ( vlasnik.length < 1 ||
-        vlasnik.length > 40) {
+      if (vlasnik.length < 1 || vlasnik.length > 40) {
         validationErrors.Vlasnik =
           "Vlasnik treba da ima između 1 i 40 karaktera.";
       }
@@ -111,7 +110,7 @@ const KompanijaProfil = () => {
       }
       if (slika === null) {
         try {
-          console.log("kurcina")
+          console.log("kurcina");
           const response = await axios.put(
             `/Kompanija/UpdateKompanija/${kompanija.id}`,
             {
@@ -440,5 +439,3 @@ const KompanijaProfil = () => {
 };
 
 export default KompanijaProfil;
-
-export default KompanijaProfil

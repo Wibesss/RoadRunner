@@ -19,6 +19,7 @@ const KompanijaFavorizovani = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const [currentItems, setCurrentItems] = useState([]);
   const [oceneReady, setOceneReady] = useState(false);
+  const [obrisano, setObrisano] = useState(false);
 
   useEffect(() => {
     axios
@@ -26,11 +27,25 @@ const KompanijaFavorizovani = () => {
       .then((response) => {
         setTotalPages(Math.ceil(response.data.length / itemsPerPage));
         setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
+        if (
+          response.data.slice(indexOfFirstItem, indexOfLastItem).length == 0 &&
+          currentPage != 1
+        )
+          setCurrentPage(currentPage - 1);
         setReady(true);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, obrisano]);
 
+  const handleOdfavorizuj = (idVozaca) => {
+    axios
+      .delete(`Kompanija/BrisanjeFavorizovanog/${user?.id}/${idVozaca}`, config)
+      .then((response) => {
+        if (response.status === 200) {
+          setObrisano(!obrisano);
+        } else alert("Doslo je do greske!");
+      });
+  };
   const handleClickNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -73,8 +88,11 @@ const KompanijaFavorizovani = () => {
               item={item}
               oceneReady={oceneReady}
               setOceneReady={setOceneReady}
-              currentPage={currentPage}
+              user={user}
               key={ind}
+              setObrisano={setObrisano}
+              obirsano={obrisano}
+              handleDelete={handleOdfavorizuj}
             />
           ))}
       </div>

@@ -11,7 +11,10 @@ const FavorizacijaListItem = ({
   item,
   oceneReady,
   setOceneReady,
-  currentPage,
+  user,
+  setObrisano,
+  obrisano,
+  handleDelete,
 }) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -24,15 +27,12 @@ const FavorizacijaListItem = ({
         `/Vozac/GetSrednjuOcenu/${item.id}`,
         config
       );
-      console.log(response.data);
       setOcene(response.data);
       setOceneReady(true);
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item.id]);
-
-  const handleOdfavorizuj = () => {};
+  }, [item.id, obrisano]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -73,7 +73,7 @@ const FavorizacijaListItem = ({
                   role="menuitem"
                   tabIndex="-1"
                   id="menu-item-3"
-                  onClick={handleOdfavorizuj}
+                  onClick={() => handleDelete(item.id)}
                 >
                   Odfavorizuj
                 </button>
