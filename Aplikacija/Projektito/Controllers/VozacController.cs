@@ -20,19 +20,21 @@ public class VozacController : ControllerBase
     try
     {
         if(Vozac.Ime.Length<3 || Vozac.Ime.Length>30 || Regex.IsMatch(Vozac.Ime,"^[a-zA-z]+$")==false)
-            return BadRequest("Los format imena");
+            ModelState.AddModelError("Ime", "Ime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.");
         if(Vozac.Prezime.Length<3 || Vozac.Prezime.Length>30 || Regex.IsMatch(Vozac.Prezime,"^[a-zA-z]+$")==false)
-            return BadRequest("Los format prezimena");
+            ModelState.AddModelError("Prezime", "Prezime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.");
         if(Vozac.JMBG.Length!= 13 || Regex.IsMatch(Vozac.JMBG,"^[0-9]+$")==false)
-            return BadRequest("Los format JMBG-a");
+            ModelState.AddModelError("JMBG", "JMBG treba da ima tačno 13 cifara.");
         if(Vozac.Email.Length<6 || Vozac.Email.Length>30 || Regex.IsMatch(Vozac.Email,@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")==false)
-            return BadRequest("Los format Emaila");
+            ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
         if(Vozac.KorisnickoIme.Length>20 || Vozac.KorisnickoIme.Length<1 || Regex.IsMatch(Vozac.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
-            return BadRequest("Los format korisnickog imena");
+            ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
         if(Vozac.Sifra.Length>20 || Vozac.Sifra.Length<1 || Regex.IsMatch(Vozac.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-            return BadRequest("Los format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
+            ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera");
         if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
-            return BadRequest("Los format broja telefona");
+            ModelState.AddModelError("BrojTelefona","Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11");
+        if (!ModelState.IsValid)
+                return BadRequest(ModelState);
         string sifra= BCrypt.Net.BCrypt.HashPassword(Vozac.Sifra,10);
         Vozac.Sifra=sifra;    
         var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == Vozac.Email).FirstOrDefault();
@@ -65,17 +67,19 @@ public class VozacController : ControllerBase
         if(Voz!=null)
         {
             if(Vozac.Ime.Length<3 || Vozac.Ime.Length>30 || Regex.IsMatch(Vozac.Ime,"^[a-zA-z]+$")==false)
-                return BadRequest("Los format imena");
+                ModelState.AddModelError("Ime", "Ime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.");
             if(Vozac.Prezime.Length<3 || Vozac.Prezime.Length>30 || Regex.IsMatch(Vozac.Prezime,"^[a-zA-z]+$")==false)
-                return BadRequest("Los format prezimena");
+                ModelState.AddModelError("Prezime", "Prezime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.");
             if(Vozac.JMBG.Length!= 13 || Regex.IsMatch(Vozac.JMBG,"^[0-9]+$")==false)
-                return BadRequest("Los format JMBG-a");
+                ModelState.AddModelError("JMBG", "JMBG treba da ima tačno 13 cifara.");
             if(Vozac.Email.Length<6 || Vozac.Email.Length>30 || Regex.IsMatch(Vozac.Email,@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")==false)
-                return BadRequest("Los format Emaila");
+                ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
             if(Vozac.KorisnickoIme.Length>20 || Vozac.KorisnickoIme.Length<1 || Regex.IsMatch(Vozac.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
-                return BadRequest("Los format korisnickog imena");
+                ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
             if(Regex.IsMatch(Vozac.BrojTelefona,@"^\+?[0-9][0-9\s.-]{7,11}$")==false)
-                return BadRequest("Los format broja telefona");
+                ModelState.AddModelError("BrojTelefona","Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11");
+            if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
             if(Vozac.Email != Voz.Email)
                 {
                     var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == Vozac.Email).FirstOrDefault();
@@ -84,7 +88,7 @@ public class VozacController : ControllerBase
                     if(KompanijaEmail!=null || VozacEmail!=null || DispecerEmail!=null)
                         return BadRequest("Vec postoji nalog sa tim emailom");
                 }
-            else if ( Vozac.KorisnickoIme!= Vozac.KorisnickoIme)
+            else if ( Vozac.KorisnickoIme!= Voz.KorisnickoIme)
                 {
                     var VozacUsername = Context.Vozac.Where(p=>p.KorisnickoIme == Vozac.KorisnickoIme).FirstOrDefault();
                     var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == Vozac.KorisnickoIme).FirstOrDefault();
