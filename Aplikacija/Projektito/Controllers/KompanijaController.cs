@@ -225,12 +225,39 @@ public class KompanijaController : ControllerBase
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        var fav=new Favorizacija();
-        fav.Kompanija=kompanija;
-        fav.Vozac=vozac;
+        var favPostojeca=await Context.Favorizacija!.Where(p => p.Kompanija!.ID==idKompanije && p.Vozac!.ID==idVozaca).FirstOrDefaultAsync();
+        if(favPostojeca==null)
+        {
+            var fav=new Favorizacija();
+            fav.Kompanija=kompanija;
+            fav.Vozac=vozac;
+                try
+                {
+                    Context.Favorizacija!.Add(fav);
+                    await Context.SaveChangesAsync();
+                    return Ok();
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+        }
+        else
+        {
+            return BadRequest("Nije moguce da ista kompanija favorizuje 2 puta istog vozaca");
+        }
+    }
+    [Authorize(Roles ="Kompanija")]
+    [Route("BrisanjeFavorizovanog/{idKompanije}/{idVozaca}")]
+    [HttpDelete]
+    public async Task<IActionResult> BrisanjeFavorizovanog(int idKompanije,int idVozaca)
+    {
+        var fav=await Context.Favorizacija!.Where(p => p.Kompanija!.ID==idKompanije && p.Vozac!.ID==idVozaca).FirstOrDefaultAsync();
         try
         {
-            Context.Favorizacija!.Add(fav);
+            if(fav!=null)
+            Context.Favorizacija!.Remove(fav);
+            await Context.SaveChangesAsync();
             return Ok();
         }
         catch(Exception ex)
