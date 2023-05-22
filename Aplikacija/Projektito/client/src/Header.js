@@ -27,9 +27,15 @@ const Header = () => {
         </svg>
         <span className="font-bold ">RoadRunner</span>
       </Link>
-      <div className="flex justify-end w-1/5">
-        {user && (
-          <div className="flex gap-2  py-2 px-4 shadow-gray-300">
+      <div className="flex justify-between w-3/5">
+        {user?.role.toString() === "Vozac" && (
+          <div className="flex gap-8  py-2 px-4 shadow-gray-300">
+            <Link
+              to={"/mojeTure"}
+              className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300"
+            >
+              Moje Ture
+            </Link>
             <Link to={"/"} className=" hover:text-primary duration-300">
               Home
             </Link>
@@ -54,7 +60,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {!!user && <div>{user.korisnickoIme}</div>}
+            {user && <div>{user.korisnickoIme}</div>}
           </Link>
         ) : (
           <div className="flex gap-2 px-2">

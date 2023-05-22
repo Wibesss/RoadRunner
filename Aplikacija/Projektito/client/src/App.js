@@ -13,6 +13,7 @@ import axios from "axios";
 import { UserContextProvider } from "./UserContext.js";
 import { useState } from "react";
 import AccountPage from "./Pages/AccountPage.js";
+import IndexVozac from "./Pages/IndexVozac.js";
 axios.defaults.baseURL = "http://localhost:5026";
 axios.defaults.withCredentials = true;
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="/registration/regVozac" element={<RegisterVozac />} />
           </Route>
           <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/mojeTure" element={<IndexVozac />}></Route>
         </Route>
       </Routes>
     </UserContextProvider>
