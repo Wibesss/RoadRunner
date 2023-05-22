@@ -236,9 +236,12 @@ const VozacProfil = () => {
     if (novaSifra !== potvrdaSifra)
       return alert("Nova i potrvdra šifra se ne poklapaju");
     try {
+      const encodedStaraSifra = encodeURIComponent(staraSifra);
+      const encodedNovaSifra = encodeURIComponent(novaSifra);
+      console.log(`${encodedStaraSifra} i ${encodedNovaSifra}`)
       axios
         .put(
-          `/Vozac/UpdateSifra/${vozac.id}/${staraSifra}/${novaSifra}`,
+          `/Vozac/UpdateSifra/${vozac.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
           {},
           config
         )

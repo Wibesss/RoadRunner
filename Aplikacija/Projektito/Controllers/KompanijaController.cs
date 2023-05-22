@@ -70,8 +70,6 @@ public class KompanijaController : ControllerBase
                     ModelState.AddModelError("Email", "Email treba da bude između 6 i 30 karaktera i u validnom formatu.");
                 if(komp.KorisnickoIme.Length<1 || komp.KorisnickoIme.Length>20 || Regex.IsMatch(komp.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
                     ModelState.AddModelError("KorisnickoIme", "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.");
-                if(komp.Sifra.Length<1 || komp.Sifra.Length>20 || Regex.IsMatch(komp.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-                    ModelState.AddModelError("Sifra", "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
                 if(komp.Adresa.Length<1 || komp.Adresa.Length>40)
                     ModelState.AddModelError("Adresa", "Adresa treba da ima između 1 i 40 karaktera.");
                 if(komp.Vlasnik.Length<1 || komp.Vlasnik.Length>40 || Regex.IsMatch(komp.Vlasnik,"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$")==false)
@@ -97,7 +95,6 @@ public class KompanijaController : ControllerBase
                 Kompanija.Naziv=komp.Naziv;
                 Kompanija.Email=komp.Email;
                 Kompanija.KorisnickoIme=komp.KorisnickoIme;
-                Kompanija.Sifra=komp.Sifra;
                 Kompanija.Adresa=komp.Adresa;
                 Kompanija.Vlasnik=komp.Vlasnik;
                 Kompanija.Logo=komp.Logo;
