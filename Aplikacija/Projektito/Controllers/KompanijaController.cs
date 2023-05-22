@@ -216,6 +216,7 @@ public class KompanijaController : ControllerBase
         try
         {
             Context.Favorizacija!.Add(fav);
+            await Context.SaveChangesAsync();
             return Ok();
         }
         catch(Exception ex)
@@ -223,6 +224,23 @@ public class KompanijaController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+     [Route("GetFavorizacije/{idKompanije}")]
+     [HttpGet]
+    public async Task<IActionResult> GetFavorizacije(int idKompanije)
+    {
+         try
+        {
+             var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
+             var vozaci=await Context.Favorizacija!.Where(p=>p.Kompanija!.ID==idKompanije).Select(p=>p.Vozac).ToListAsync();
+
+             return Ok(vozaci);
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
+
     [AllowAnonymous]
     [Route("GetKompanija/{id}")]
     [HttpGet]

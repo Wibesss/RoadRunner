@@ -59,7 +59,7 @@ const VozacOcene = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-400">
-                    Kompanija: {ocena?.kompanija.naziv}
+                    {/* Kompanija: {ocena?.kompanija.naziv} */}
                   </p>
                   <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                     Opis: {ocena?.opis}

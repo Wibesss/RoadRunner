@@ -27,8 +27,8 @@ const Header = () => {
         </svg>
         <span className="font-bold ">RoadRunner</span>
       </Link>
-      <div className="flex justify-between w-3/5">
-        {user?.role.toString() === "Vozac" && (
+      
+        {user?.role === "Vozac" && (
           <div className="flex gap-8  py-2 px-4 shadow-gray-300">
             <Link
               to={"/mojeTure"}
@@ -72,7 +72,7 @@ const Header = () => {
             </Link>
           </div>
         )}
-      </div>
+      
     </header>
   );
 };
