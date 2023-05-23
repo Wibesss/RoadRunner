@@ -44,24 +44,24 @@ public class TuraController : ControllerBase
         {
         try
         {  
-            if(t.TipRobe==await Context!.TipTure!.FindAsync("Tecnost"))
+            if(tipTure == "Tecnost")
                 {
                     t.TezinaRobe=null;
                     t.VisinaRobe=null;
                     t.SirinaRobe=null;
                     t.DuzinaRobe=null;
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Hrana"))
+                else if(tipTure == "Hrana")
                 {
                     t.Zapremina=null;
             
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Cvrst Materijal"))
+                else if(tipTure == "Cvrst Materijal")
                 {
                     t.Zapremina=null;
                 
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Automobil"))
+                else if(tipTure == "Automobil")
                 {
                     t.Zapremina=null;
                 
@@ -74,7 +74,7 @@ public class TuraController : ControllerBase
             t.PredvidjeniKraj=datum;
             Context!.Tura!.Add(t);
             await Context.SaveChangesAsync();
-            return Ok();
+            return Ok(t);
         }
         catch(Exception e)
         {
@@ -100,7 +100,7 @@ public class TuraController : ControllerBase
             if(tura != null && tura.Status=="Slobodna")
                 {
                     tura.TipRobe=tip;
-                    if(tura.TipRobe!.Tip=="Tecnost")
+                    if(tipTure =="Tecnost")
                     {
                         tura.Zapremina=t.Zapremina;
                         tura.TezinaRobe=null;
@@ -108,7 +108,7 @@ public class TuraController : ControllerBase
                         tura.SirinaRobe=null;
                         tura.DuzinaRobe=null;
                     }
-                    else if(tura.TipRobe!.Tip=="Hrana")
+                    else if(tipTure == "Hrana")
                     {
                         tura.Zapremina=null;
                         tura.TezinaRobe=t.TezinaRobe;
@@ -116,7 +116,7 @@ public class TuraController : ControllerBase
                         tura.SirinaRobe=t.SirinaRobe;
                         tura.DuzinaRobe=t.DuzinaRobe;
                     }
-                    else if(tura.TipRobe!.Tip=="Cvrst Materijal")
+                    else if(tipTure == "Cvrst Materijal")
                     {
                         tura.Zapremina=null;
                         tura.TezinaRobe=t.TezinaRobe;
@@ -124,7 +124,7 @@ public class TuraController : ControllerBase
                         tura.SirinaRobe=t.SirinaRobe;
                         tura.DuzinaRobe=t.DuzinaRobe;
                     }
-                    else if(tura.TipRobe!.Tip=="Automobil")
+                    else if(tipTure == "Automobil")
                     {
                         tura.Zapremina=null;
                         tura.TezinaRobe=t.TezinaRobe;
@@ -420,13 +420,63 @@ public class TuraController : ControllerBase
         }
    }
 
-   [Route("GetPonudjenjaTura/{idVozaca}")]
+   [Route("GetPonudjenjaTuraVozac/{idVozaca}")]
    [HttpGet]
-   public async Task<ActionResult> GetPonudjenjaTura(int idVozaca)
+   public async Task<ActionResult> GetPonudjenjaTuraVozac(int idVozaca)
    {
         try
         {
             var ture= await Context!.PonudjenaTura!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
+            .Include(p=>p.Tura).ThenInclude(p=>p!.TipRobe).Include(p => p.Tura)
+            .ThenInclude(p => p!.Kompanija).Include(p=>p.Vozac)
+            .Select(p => new {
+            p.ID,
+            TipRobe = p.Tura!.TipRobe!.Tip,
+            TezinaRobe = p.Tura!.TezinaRobe,
+            DuzinaRobe = p.Tura!.DuzinaRobe,
+            SirinaRobe = p.Tura!.SirinaRobe,
+            VisinaRobe = p.Tura!.VisinaRobe,
+            ZapreminaRobe = p.Tura!.Zapremina,
+            PocetnaGeografskaSirina = p.Tura!.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p.Tura!.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p.Tura!.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p.Tura!.OdredisnaGeografskaDuzina,
+            Status = p.Tura!.Status,
+            Duzina = p.Tura!.Duzina,
+            DatumPocetka = p.Tura!.DatumPocetka,
+            PredvidjeniKraj = p.Tura!.PredvidjeniKraj,
+            KompanijaNaziv = p.Tura.Kompanija!.Naziv
+    }).ToListAsync();
+            return Ok(ture);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+
+   [Route("GetPrihvacenaTuraVozac/{idVozaca}")]
+   [HttpGet]
+   public async Task<ActionResult> GetPrihvacenaTuraVozac(int idVozaca)
+   {
+        try
+        {
+            var ture= await Context!.PrihvacenaTura!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
+            .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
+            return Ok(ture);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+   [Route("GetDodeljenaTuraVozac/{idVozaca}")]
+   [HttpGet]
+   public async Task<ActionResult> GetDodeljenaTuraVozac(int idVozaca)
+   {
+        try
+        {
+            var ture= await Context!.DodeljeneTure!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
             .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
             return Ok(ture);
         }

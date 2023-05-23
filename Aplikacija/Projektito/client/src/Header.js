@@ -29,15 +29,27 @@ const Header = () => {
       </Link>
       
         {user?.role === "Vozac" && (
-          <div className="flex gap-8  py-2 px-4 shadow-gray-300">
+          <div className="flex  py-2 px-4 shadow-gray-300 justify-center">
+            <Link to={"/"} className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300">
+              Home
+            </Link>
             <Link
-              to={"/mojeTure"}
+              to={"/vozacponudjene"}
+              className=" hover:text-primary duration-300 px-4"
+            >
+              Ponudjene Ture
+            </Link>
+            <Link
+              to={"/vozacprihvacene"}
               className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300"
             >
-              Moje Ture
+              Prihvacene Ture
             </Link>
-            <Link to={"/"} className=" hover:text-primary duration-300">
-              Home
+            <Link
+              to={"/vozacdodeljene"}
+              className=" hover:text-primary duration-300 px-4"
+            >
+              Dodeljene Ture
             </Link>
           </div>
         )}
