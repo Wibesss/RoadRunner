@@ -14,6 +14,7 @@ import { UserContextProvider } from "./UserContext.js";
 import { useState } from "react";
 import AccountPage from "./Pages/AccountPage.js";
 import IndexVozac from "./Pages/IndexVozac.js";
+import KompanijaTure from "./Pages/KompanijaTure.js";
 axios.defaults.baseURL = "http://localhost:5026";
 axios.defaults.withCredentials = true;
 
@@ -34,6 +35,7 @@ function App() {
           </Route>
           <Route path="/account/:subpage?" element={<AccountPage />} />
           <Route path="/mojeTure" element={<IndexVozac />}></Route>
+          <Route path="/KompanijaTure" element={<KompanijaTure />}></Route>
         </Route>
       </Routes>
     </UserContextProvider>

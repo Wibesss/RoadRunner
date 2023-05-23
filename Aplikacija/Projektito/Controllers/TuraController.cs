@@ -44,24 +44,24 @@ public class TuraController : ControllerBase
         {
         try
         {  
-            if(t.TipRobe==await Context!.TipTure!.FindAsync("Tecnost"))
+            if(tipTure=="Tecnost")
                 {
                     t.TezinaRobe=null;
                     t.VisinaRobe=null;
                     t.SirinaRobe=null;
                     t.DuzinaRobe=null;
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Hrana"))
+                else if(tipTure=="Hrana")
                 {
                     t.Zapremina=null;
             
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Cvrst Materijal"))
+                else if(tipTure=="Cvrst Materijal")
                 {
                     t.Zapremina=null;
                 
                 }
-                else if(t.TipRobe==await Context!.TipTure!.FindAsync("Automobil"))
+                else if(tipTure=="Automobil")
                 {
                     t.Zapremina=null;
                 
@@ -490,5 +490,19 @@ public class TuraController : ControllerBase
         {
             return BadRequest("Tura nije u toku!");
         }    
+   }
+
+   [Route("GetTuraKompanija/{idKompanije}")]
+   [HttpGet]
+   public async Task<ActionResult> GetTuraKompanija(int idKompanije)
+   {
+        try{
+            var ture= await Context!.Tura!.Where(p=>p.Kompanija.ID==idKompanije).Include(p=>p.Kompanija).Include(p=>p.TipRobe).ToListAsync();
+            return Ok(ture);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
    }
 }
