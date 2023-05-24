@@ -566,4 +566,18 @@ public class TuraController : ControllerBase
             return BadRequest("Tura nije u toku!");
         }    
    }
+
+   [Route("GetTuraKompanija/{idKompanije}")]
+   [HttpGet]
+   public async Task<ActionResult> GetTuraKompanija(int idKompanije)
+   {
+        try{
+            var ture= await Context!.Tura!.Where(p=>p.Kompanija.ID==idKompanije).Include(p=>p.Kompanija).Include(p=>p.TipRobe).ToListAsync();
+            return Ok(ture);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
 }

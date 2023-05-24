@@ -27,3 +27,9 @@ input[type="email"] {
 .bg-secondary-soft {
   @apply bg-slate-400 bg-opacity-20;
 }
+
+div.leaflet-top.leaflet-right {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+}
