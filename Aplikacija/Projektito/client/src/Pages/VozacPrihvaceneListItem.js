@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-const VozacPonudjeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD }) => {
+const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD }) => {
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">{item.tipRobe}</td>
@@ -19,12 +19,12 @@ const VozacPonudjeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTur
       <td className=" p-4 whitespace-nowrap">
         {item.zapreminaRobe === null ? "-" : item.zapreminaRobe}
       </td>
-      <td className=" p-4 whitespace-nowrap">{`${item.pocetnaGeografskaSirina},${item.pocetnaGeografskaDuzina} `}</td>
-      <td className=" p-4 whitespace-nowrap">{`${item.odredisnaGeografskaSirina},${item.odredisnaGeografskaDuzina} `}</td>
       <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className=" p-4 whitespace-nowrap">{item.duzina}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
+      <td className="p-4 whitespace-nowrap"><img className="rounded-md " src={item.slikaVozila}/></td>
+      <td className="p-4 whitespace-nowrap">{item.cena}</td>
       <td>
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -48,7 +48,7 @@ const VozacPonudjeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTur
         </button>
       </td>
     </tr>
-  );
-};
+  )
+}
 
-export default VozacPonudjeneListItem;
+export default VozacPrihvaceneListItem

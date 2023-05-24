@@ -211,7 +211,8 @@ public class TuraController : ControllerBase
         var dispecer=await Context.Dispecer!.FindAsync(idDispecera);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
         var postojeca=Context.PonudjenaTura!.Where(p=>p.Tura!.ID==idTure && p.Vozac!.ID==idVozaca).FirstOrDefault();
-        if(postojeca==null)
+        var postojecaPrihvacena = Context.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure).FirstOrDefault();
+        if(postojeca==null && postojecaPrihvacena==null)
         {
             if(tura != null && dispecer!=null && vozac!=null)
             {
@@ -277,7 +278,7 @@ public class TuraController : ControllerBase
             return BadRequest("Nije pronadjena prihvacena tura");
         }
     }
-    [Authorize(Roles ="Vozac")]
+    //[Authorize(Roles ="Vozac")]
     [Route("AddPrihvacenaTura/{idPonudjeneTure}/{idVozila}")]
     [HttpPost]
     public async Task<IActionResult> AddPrihvacenaTura(int idPonudjeneTure,int idVozila)
@@ -333,7 +334,7 @@ public class TuraController : ControllerBase
         }
     }
 
-
+   [Authorize(Roles ="Vozac")] 
    [Route("DeletePonudjenaTura/{idTure}/{idVozaca}")]
    [HttpDelete]
    public async Task<IActionResult> DeletePonudjenaTura(int idTure,int idVozaca)
@@ -445,7 +446,8 @@ public class TuraController : ControllerBase
             Duzina = p.Tura!.Duzina,
             DatumPocetka = p.Tura!.DatumPocetka,
             PredvidjeniKraj = p.Tura!.PredvidjeniKraj,
-            KompanijaNaziv = p.Tura.Kompanija!.Naziv
+            KompanijaNaziv = p.Tura.Kompanija!.Naziv,
+            TuraId = p.Tura!.ID
     }).ToListAsync();
             return Ok(ture);
         }
@@ -462,7 +464,30 @@ public class TuraController : ControllerBase
         try
         {
             var ture= await Context!.PrihvacenaTura!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
-            .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
+            .Include(p=>p.Tura).ThenInclude(p=>p!.TipRobe).Include(p => p.Tura)
+            .ThenInclude(p => p!.Kompanija).Include(p=>p.Vozac)
+            .Select(p => new {
+            p.ID,
+            TipRobe = p.Tura!.TipRobe!.Tip,
+            TezinaRobe = p.Tura!.TezinaRobe,
+            DuzinaRobe = p.Tura!.DuzinaRobe,
+            SirinaRobe = p.Tura!.SirinaRobe,
+            VisinaRobe = p.Tura!.VisinaRobe,
+            ZapreminaRobe = p.Tura!.Zapremina,
+            PocetnaGeografskaSirina = p.Tura!.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p.Tura!.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p.Tura!.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p.Tura!.OdredisnaGeografskaDuzina,
+            Status = p.Tura!.Status,
+            Duzina = p.Tura!.Duzina,
+            DatumPocetka = p.Tura!.DatumPocetka,
+            PredvidjeniKraj = p.Tura!.PredvidjeniKraj,
+            KompanijaNaziv = p.Tura.Kompanija!.Naziv,
+            TuraId = p.Tura!.ID,
+            SlikaVozila = p.Vozilo!.Slika,
+            Cena = p.GenerisanaCena
+
+    }).ToListAsync();
             return Ok(ture);
         }
         catch(Exception e)
