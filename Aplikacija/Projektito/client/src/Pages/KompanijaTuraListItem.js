@@ -23,6 +23,7 @@ const KompanijaTuraListItem = ({ item }) => {
       <td className=" p-4 whitespace-nowrap">{`${item.odredisnaGeografskaSirina},${item.odredisnaGeografskaDuzina} `}</td>
       <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
+      <td className="p-4 whitespace-nowrap">{item.duzina}</td>
       <td className="flex items-center px-6 py-4 space-x-3 whitespace-nowrap">
         <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
           Edit
