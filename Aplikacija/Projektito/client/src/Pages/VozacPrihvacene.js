@@ -176,7 +176,6 @@ const VozacPrihvacene = () => {
                   pocetnaGD = {pocetnaGD}
                   krajnjaGS = {krajnjaGS}
                   krajnjaGD = {krajnjaGD}
-                  setObrisano = {setObrisano}
                 />
               )}
       </div>

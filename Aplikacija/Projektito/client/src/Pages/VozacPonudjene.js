@@ -63,9 +63,9 @@ const VozacPonudjene = () => {
   
     return (
       
-      <div className="flex flex-col mt-2 items-center ">
-        <h3>Ponudjene ture</h3>
+      <div className="flex flex-col mt-2 items-center min-h-screen">
         <div className="overflow-auto w-2/3">
+          <h3 className="text-center">Ponudjene ture</h3>
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                       <tr>
