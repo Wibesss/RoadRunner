@@ -41,7 +41,7 @@ function App() {
           <Route path="/vozacponudjene" element={<VozacPonudjene />}></Route>
           <Route path="/vozacprihvacene" element={<VozacPrihvacene />}></Route>
           <Route path="/vozacdodeljene" element={<VozacDodeljene />}></Route>
-          <Route path="/KompanijaTure" element={<KompanijaTure />}></Route>
+          <Route path="/kompanijaTure" element={<KompanijaTure />}></Route>
         </Route>
       </Routes>
     </UserContextProvider>

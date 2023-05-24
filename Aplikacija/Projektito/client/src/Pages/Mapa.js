@@ -29,6 +29,7 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
         routeControl.spliceWaypoints(0, 2);
       }
       const control = L.Routing.control({
+        
         show: false,
         waypoints: [
           L.latLng(marker1[0], marker1[1]),
@@ -51,7 +52,7 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
           },
         }),
         lineOptions: {
-          styles: [{ color: "blue", opacity: 0.6, weight: 4 }],
+          styles: [{ color: "#7c3aed", opacity: 0.8, weight: 4 }],
         },
       });
       control.addTo(mapRef.current);
@@ -62,13 +63,8 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
         if (routes && routes.length > 0) {
           const route = routes[0];
           const distance = route.summary.totalDistance;
-          const time = route.summary.totalTime;
           const distanceInKm = (distance / 1000).toFixed(2);
-
-          const timeInMin = Math.round(time / 60);
           setDuzinaTure(distanceInKm);
-          console.log("Distance:", distanceInKm, "km");
-          console.log("Time:", timeInMin, "min");
         }
       });
     }
