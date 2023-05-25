@@ -572,7 +572,7 @@ public class TuraController : ControllerBase
    public async Task<ActionResult> GetTuraKompanija(int idKompanije)
    {
         try{
-            var ture= await Context!.Tura!.Where(p=>p.Kompanija.ID==idKompanije).Include(p=>p.Kompanija).Include(p=>p.TipRobe).ToListAsync();
+            var ture= await Context!.Tura!.Where(p=>p.Kompanija!.ID==idKompanije).Include(p=>p.Kompanija).Include(p=>p.TipRobe).ToListAsync();
             return Ok(ture);
         }
         catch(Exception e)
@@ -580,4 +580,19 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+
+   [Route("GetVozaceZaTuru/{idTure}")]
+   [HttpGet]
+   public async Task<ActionResult> GetVozaceZaTuru(int idTure)
+   {
+        try{
+            var vozaci= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure && p.Prosledjena==true).Include(p=>p.Vozac).Select(p=>p.Vozac).ToListAsync();
+            return Ok(vozaci);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+
 }

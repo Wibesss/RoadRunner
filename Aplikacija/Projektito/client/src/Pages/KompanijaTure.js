@@ -27,8 +27,11 @@ const KompanijaTure = () => {
   const [ogd, setOgd] = useState(0);
   const [datumPocetka, setDatumPocetka] = useState(new Date());
   const [duzinaTure, setDuzinaTure] = useState(0);
+  const [dodato, setDodato] = useState(false);
+  const [obrisano, setObrisano] = useState(false);
 
   const listref = useRef(null);
+  const tableRef = useRef(null);
   useEffect(() => {
     if (user) {
       axios
@@ -41,28 +44,71 @@ const KompanijaTure = () => {
         .then((response) => setTipovi(response.data));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, formaZaDodavanjeTure]);
+  }, [ready, formaZaDodavanjeTure, dodato, obrisano]);
   const handleDodajClick = () => {
     setFormaZaDodavanjeTure(!formaZaDodavanjeTure);
     flushSync();
     if (listref.current) listref.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  const handlePrikazi=(id)=>
+  {
+      axios.get()
+  }
+
   const handlePotvrdiDodavanje = (e) => {
     e.preventDefault();
-    console.log(e.target);
-    console.log("Tip:" + tip);
-    console.log("Tezina: " + tezina);
-    console.log("Sirina: " + sirina);
-    console.log("Visina: " + visina);
-    console.log("Duzina: " + duzina);
-    console.log("Zapremina: " + zapremina);
-    console.log("PGS: " + pgs);
-    console.log("PGD: " + pgd);
-    console.log("OGS: " + ogs);
-    console.log("OGD: " + ogd);
-    console.log("Datum: " + datumPocetka);
-    console.log("Duzina ture: " + duzinaTure);
+    console.log(datumPocetka.toLocaleDateString());
+    try {
+      axios
+        .post(
+          `Tura/AddTura/${user.id}/${tip}`,
+          {
+            tezinaRobe: tezina,
+            duzinaRobe: duzina,
+            sirinaRobe: sirina,
+            visinaRobe: visina,
+            zapremina: zapremina,
+            pocetnaGeografskaSirina: pgs.toFixed(6),
+            pocetnaGeografskaDuzina: pgd.toFixed(6),
+            odredisnaGeografskaSirina: ogs.toFixed(6),
+            odredisnaGeografskaDuzina: ogd.toFixed(6),
+            status: "status",
+            datumPocetka: datumPocetka.toISOString().split("T")[0],
+            duzina: duzinaTure,
+            predvidjeniKraj: "2023-05-24",
+          },
+          config
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            setDodato(!dodato);
+          } else
+            console.log(
+              "Server responded with status code: " + response.status
+            );
+          setFormaZaDodavanjeTure(false);
+          if (tableRef.current)
+            tableRef.current.scrollIntoView({ behavior: "smooth" });
+        });
+    } catch (Ex) {
+      console.log(Ex.message);
+    }
   };
+
+  const handleDelete = (id) => {
+    try {
+      axios.delete(`Tura/DeleteTura/${id}`, config).then((response) => {
+        if (response.status === 200) {
+          setObrisano(!obrisano);
+        } else
+          console.log("Server responded with status code: " + response.status);
+      });
+    } catch (Ex) {
+      console.log(Ex.message);
+    }
+  };
+
   if (!ready) {
     return "Loading...";
   } else {
@@ -71,7 +117,10 @@ const KompanijaTure = () => {
         <div className="flex ">
           <div className="w-3/5 min-h-screen overflow-auto sm:rounded-lg">
             <div className=" overflow-auto sm:rounded-lg">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md ">
+              <table
+                className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md "
+                ref={tableRef}
+              >
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
@@ -112,7 +161,11 @@ const KompanijaTure = () => {
 
                 <tbody>
                   {currentItems.map((item, ind) => (
-                    <KompanijaTuraListItem item={item} key={ind} />
+                    <KompanijaTuraListItem
+                      item={item}
+                      handleDelete={handleDelete}
+                      key={ind}
+                    />
                   ))}
                   {currentItems.length === 0 && (
                     <tr>

@@ -42,7 +42,9 @@ const FormaZaDodavanjeTura = forwardRef(
             >
               <option value="">Izaberi tip robe</option>
               {tipovi.map((tip) => (
-                <option value={tip}>{tip}</option>
+                <option value={tip} key={tip}>
+                  {tip}
+                </option>
               ))}
             </select>
             <input
@@ -93,7 +95,7 @@ const FormaZaDodavanjeTura = forwardRef(
             <LocalizationProvider dateAdapter={AdapterDayjs} required>
               <DateTimePicker
                 label="Datum pocetka"
-                onChange={(newValue) => setDatumPocetka(newValue)}
+                onChange={(newValue) => setDatumPocetka(newValue.toDate())}
                 required
               />
             </LocalizationProvider>
