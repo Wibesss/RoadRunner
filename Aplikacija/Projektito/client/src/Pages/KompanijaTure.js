@@ -50,6 +50,12 @@ const KompanijaTure = () => {
     flushSync();
     if (listref.current) listref.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  const handlePrikazi=(id)=>
+  {
+      axios.get()
+  }
+
   const handlePotvrdiDodavanje = (e) => {
     e.preventDefault();
     console.log(datumPocetka.toLocaleDateString());

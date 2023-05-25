@@ -29,7 +29,6 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
         routeControl.spliceWaypoints(0, 2);
       }
       const control = L.Routing.control({
-        
         show: false,
         waypoints: [
           L.latLng(marker1[0], marker1[1]),
@@ -52,7 +51,7 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
           },
         }),
         lineOptions: {
-          styles: [{ color: "#7c3aed", opacity: 0.8, weight: 4 }],
+          styles: [{ color: "#7c3aed", opacity: 1, weight: 4 }],
         },
       });
       control.addTo(mapRef.current);

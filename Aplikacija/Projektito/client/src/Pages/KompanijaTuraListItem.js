@@ -33,6 +33,9 @@ const KompanijaTuraListItem = ({ item, handleDelete }) => {
         >
           Remove
         </button>
+        <button className="font-medium" onClick={() => {}}>
+          Prikazi
+        </button>
       </td>
     </tr>
   );
