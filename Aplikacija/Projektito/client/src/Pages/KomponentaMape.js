@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
 import axios from "axios";
 import Cookies from "js-cookie";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD, krajnjaGS, krajnjaGD, setObrisano }) => {
   const config = {
@@ -15,7 +17,14 @@ const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD
   const mapRef = useRef(null);
   const map = useRef(null);
   const routingControl = useRef(null);
-
+  const customMarkerIcon = L.icon({
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
   useEffect(() => {
     if (pocetnaGS !== null && pocetnaGD !== null && krajnjaGS !== null && krajnjaGD !== null) {
       if (!map.current) {
@@ -44,9 +53,15 @@ const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD
       routingControl.current = L.Routing.control({
         waypoints,
         lineOptions: {
-          styles: [{ color: '#3388ff', opacity: 0.6, weight: 4 }],
+          styles: [{ color: '#7c3aed', opacity: 0.6, weight: 4 }],
         },
         routeWhileDragging: true,
+        createMarker: (i, waypoint, n) => {
+          // Kreiranje ikone za waypoint
+          return L.marker(waypoint.latLng, {
+            icon: customMarkerIcon,
+          });
+        },
       }).addTo(map.current);
 
       const bounds = L.latLngBounds(
@@ -93,10 +108,10 @@ const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD
     }
   }
   return( 
-    <div className='w-full justify-center'>
-      <div ref={mapRef} style={{ width: '100%', height: '400px' }}></div>
+    <div className='w-2/3 justify-center'>
+      <div className="mt-5 border border-black"ref={mapRef} style={{ width: '100%', height: '400px' }}></div>
       {auta.length>0 ? (
-          <div className="flex flex-row gap-4 justify-center">
+          <div className="flex flex-row gap-4 justify-center mt-5">
               <select onChange={(e) => setAuto(e.target.value)} id="TipPrikolice" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               <option value="default">
                 Izaberi auto
