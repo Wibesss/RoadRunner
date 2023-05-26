@@ -28,8 +28,8 @@ const KompanijaFavorizovani = () => {
         setTotalPages(Math.ceil(response.data.length / itemsPerPage));
         setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
         if (
-          response.data.slice(indexOfFirstItem, indexOfLastItem).length == 0 &&
-          currentPage != 1
+          response.data.slice(indexOfFirstItem, indexOfLastItem).length === 0 &&
+          currentPage !== 1
         )
           setCurrentPage(currentPage - 1);
         setReady(true);

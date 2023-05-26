@@ -5,88 +5,47 @@ import axios from "axios";
 import Rating from "@mui/material/Rating";
 import { useState } from "react";
 
-const FavorizacijaListItem = ({
-  item,
-  oceneReady,
-  setOceneReady,
-  user,
-  setObrisano,
-  obrisano,
-  handleDelete,
-}) => {
+const VozaciZaTuruListItem = ({ item, onClick, selectedVozac }) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const [ocene, setOcene] = useState([]);
+  const [oceneReady, setOceneReady] = useState(false);
   useEffect(() => {
     (async function pom() {
       const response = await axios.get(
-        `/Vozac/GetSrednjuOcenu/${item.id}`,
+        `/Vozac/GetSrednjuOcenu/${item.vozac.id}`,
         config
       );
       setOcene(response.data);
       setOceneReady(true);
     })();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item.id, obrisano]);
+    console.log(selectedVozac);
+  }, [item.vozac.id, selectedVozac]);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const linkClasses = () => {
+    let classes =
+      "w-full h-fit mx-2 max-w-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50";
+    if (item.vozac.id === selectedVozac)
+      classes =
+        "w-full h-fit mx-2 max-w-sm bg-white border-4  border-gray-200 rounded-lg hover:bg-gray-50  ";
+    return classes;
   };
 
   if (oceneReady && ocene.srednja !== undefined) {
     return (
-      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ">
-        <div className="flex  justify-end px-4 pt-4 relative">
-          <button
-            id="dropdownMenuIconHorizontalButton"
-            data-dropdown-toggle="dropdownDotsHorizontal"
-            className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            type="button"
-            onClick={toggleDropdown}
-          >
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
-            </svg>
-          </button>
-          {isDropdownOpen && (
-            <div
-              className="absolute top-10 z-50 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabIndex="-1"
-            >
-              <div className="py-1" role="none">
-                <button
-                  className="text-red-500 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                  role="menuitem"
-                  tabIndex="-1"
-                  id="menu-item-3"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Odfavorizuj
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+      <div className={linkClasses()} onClick={() => onClick(item.vozac.id)}>
+        <div className="flex  justify-end px-4 pt-4"></div>
         <div className="flex flex-col items-center pb-10">
           <img
             className="w-24 h-24 mb-3 rounded-full shadow-lg z-10"
-            src={item.slika}
+            src={item.vozac.slika}
             alt=""
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-            {item.ime + " " + item.prezime}
+            {item.vozac.ime + " " + item.vozac.prezime}
           </h5>
           <span className="text-sm text-gray-500 dark:text-gray-400">
             {item.korisnickoIme}
@@ -184,10 +143,11 @@ const FavorizacijaListItem = ({
               </span>
             </div>
           </div>
+          <p>Cena:{item.generisanaCena}</p>
         </div>
       </div>
     );
   }
 };
 
-export default FavorizacijaListItem;
+export default VozaciZaTuruListItem;

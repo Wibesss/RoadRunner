@@ -6,12 +6,20 @@ import Cookies from "js-cookie";
 import KompanijaTuraListItem from "./KompanijaTuraListItem";
 import FormaZaDodavanjeTura from "./FormaZaDodavanjeTura";
 import { flushSync } from "react-dom";
+import VozaciZaTuruListItem from "./VozaciZaTuruListItem";
 
 const KompanijaTure = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   const { user, ready } = useContext(UserContext);
+  const itemsPerPageV = 4;
+  const [selectedVozac, setSelectedVozac] = useState(0);
+  const [currentPageV, setCurrentPageV] = useState(1);
+  const [vozaciCurrent, setVozaciCurrent] = useState([]);
+  const [totalPagesV, setTotalPagesV] = useState(0);
+  const indexOfLastItemV = currentPageV * itemsPerPageV;
+  const indexOfFirstItemV = indexOfLastItemV - itemsPerPageV;
   const [currentItems, setCurrentItems] = useState([]);
   const [tipovi, setTipovi] = useState([]);
   const [formaZaDodavanjeTure, setFormaZaDodavanjeTure] = useState(false);
@@ -29,6 +37,9 @@ const KompanijaTure = () => {
   const [duzinaTure, setDuzinaTure] = useState(0);
   const [dodato, setDodato] = useState(false);
   const [obrisano, setObrisano] = useState(false);
+  const [vozaci, setVozaci] = useState();
+  const [lastTura, setLastTura] = useState(0);
+  const [prikaziVozace, setPrikaziVozace] = useState(false);
 
   const listref = useRef(null);
   const tableRef = useRef(null);
@@ -42,23 +53,75 @@ const KompanijaTure = () => {
       axios
         .get(`Tura/GetTipTure`, config)
         .then((response) => setTipovi(response.data));
+
+      if (lastTura !== 0) {
+        setVozaciCurrent(vozaci.slice(indexOfFirstItemV, indexOfLastItemV));
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, formaZaDodavanjeTure, dodato, obrisano]);
+  }, [
+    ready,
+    formaZaDodavanjeTure,
+    dodato,
+    obrisano,
+    vozaci,
+    currentPageV,
+    selectedVozac,
+  ]);
   const handleDodajClick = () => {
     setFormaZaDodavanjeTure(!formaZaDodavanjeTure);
     flushSync();
     if (listref.current) listref.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handlePrikazi=(id)=>
-  {
-      axios.get()
-  }
+  const handleClickPrev = () => {
+    if (currentPageV > 1) {
+      setCurrentPageV(currentPageV - 1);
+    }
+  };
+
+  const handleClickNext = () => {
+    if (currentPageV < totalPagesV) {
+      setCurrentPageV(currentPageV + 1);
+    }
+  };
+
+  const handleIzaberi = () => {
+    try {
+      axios
+        .post(`Tura/AddDodeljenaTura/${selectedVozac}/${lastTura}`, {}, config)
+        .then((response) => {
+          if (response.status === 200) {
+            setVozaciCurrent([]);
+            setObrisano(!obrisano);
+          } else
+            console.log("Server responded with status code " + response.status);
+        });
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const handlePrikazi = (id) => {
+    setLastTura(id);
+    if (lastTura !== id) {
+      axios.get(`Tura/GetVozaceZaTuru/${id}`, config).then((response) => {
+        setVozaci(response.data);
+        setTotalPagesV(Math.ceil(response.data.length / itemsPerPageV));
+        setVozaciCurrent(
+          response.data.slice(indexOfFirstItemV, indexOfLastItemV)
+        );
+        setPrikaziVozace(true);
+        setSelectedVozac(0);
+      });
+    } else {
+      setPrikaziVozace(!prikaziVozace);
+    }
+  };
 
   const handlePotvrdiDodavanje = (e) => {
     e.preventDefault();
-    console.log(datumPocetka.toLocaleDateString());
     try {
       axios
         .post(
@@ -96,6 +159,10 @@ const KompanijaTure = () => {
     }
   };
 
+  const handleSelected = (id) => {
+    setSelectedVozac(id);
+  };
+
   const handleDelete = (id) => {
     try {
       axios.delete(`Tura/DeleteTura/${id}`, config).then((response) => {
@@ -114,8 +181,8 @@ const KompanijaTure = () => {
   } else {
     return (
       <div className="flex flex-col">
-        <div className="flex ">
-          <div className="w-3/5 min-h-screen overflow-auto sm:rounded-lg">
+        <div className="flex flex-col">
+          <div className="w-full min-h-fill overflow-auto sm:rounded-lg">
             <div className=" overflow-auto sm:rounded-lg">
               <table
                 className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md "
@@ -164,6 +231,7 @@ const KompanijaTure = () => {
                     <KompanijaTuraListItem
                       item={item}
                       handleDelete={handleDelete}
+                      handlePrikazi={handlePrikazi}
                       key={ind}
                     />
                   ))}
@@ -184,9 +252,50 @@ const KompanijaTure = () => {
               Nova Tura
             </button>
           </div>
-          <div className="w-2/5"></div>
+          <div className="w-full flex flex-col gap-2 ml-4 flex-wrap ">
+            {vozaciCurrent?.length !== 0 ? (
+              <div className="flex justify-center gap-5 mt-10 flex-wrap">
+                <button onClick={handleClickPrev} disabled={currentPageV === 1}>
+                  Previous
+                </button>
+                <span>{currentPageV}</span>
+                <button
+                  onClick={handleClickNext}
+                  disabled={currentPageV === totalPagesV}
+                >
+                  Next
+                </button>
+              </div>
+            ) : (
+              lastTura !== 0 &&
+              prikaziVozace && (
+                <h1 className="text-center text-2xl">
+                  ZA SADA NEMA VOZACA KOJI SU PRIHVATILI TURU!
+                </h1>
+              )
+            )}
+            <div className="w-full flex gap flex-wrap justify-around">
+              {prikaziVozace === true &&
+                vozaciCurrent?.map((vozac) => (
+                  <VozaciZaTuruListItem
+                    item={vozac}
+                    key={vozac.id}
+                    currentPageV={currentPageV}
+                    onClick={handleSelected}
+                    selectedVozac={selectedVozac}
+                  />
+                ))}
+            </div>
+            {selectedVozac !== 0 && (
+              <div className="flex justify-center">
+                <button className="btn-primary w-1/6" onClick={handleIzaberi}>
+                  Izaberi
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center ">
           {formaZaDodavanjeTure && (
             <FormaZaDodavanjeTura
               ref={listref}
