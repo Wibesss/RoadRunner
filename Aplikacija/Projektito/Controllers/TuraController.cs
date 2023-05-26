@@ -242,7 +242,7 @@ public class TuraController : ControllerBase
             return BadRequest(vozac!.Ime+" "+vozac.Prezime+" je vec dobio ponudu za odredjenu turu");
         }
     }
-    [Authorize(Roles ="Vozac")]
+    [Authorize(Roles ="Kompanija")]
     [Route("AddDodeljenaTura/{idPrihvaceneTure}")]
     [HttpPost]
     public async Task<IActionResult> AddDodeljenaTura(int idPrihvaceneTure)
@@ -261,7 +261,7 @@ public class TuraController : ControllerBase
             dt.Tura=prihvacena.Tura;
             dt.Dispecer=prihvacena.Dispecer;
             dt.GenerisanaCena=prihvacena.GenerisanaCena;
-            dt.Tura!.Status="U toku";
+            dt.Tura!.Status="Dodeljena";
             try
             {
                 Context.DodeljeneTure!.Add(dt);
@@ -285,7 +285,7 @@ public class TuraController : ControllerBase
     {
         var ponudjena=await Context!.PonudjenaTura!.Where(p=> p.ID==idPonudjeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
         var vozilo=await Context.Vozilo!.FindAsync(idVozila);
-        if(ponudjena !=null && vozilo!=null)
+        if(ponudjena !=null)
         {
             var pt=new PrihvacenaTura();
             pt.Prosledjena=false;
@@ -319,6 +319,7 @@ public class TuraController : ControllerBase
         {
             try
             {
+                prihvacena.Tura!.Status="Dodeljena";
                 prihvacena.Prosledjena=true;
                 await Context.SaveChangesAsync();
                 return Ok("Tura uspesno prosledjena!");
@@ -502,7 +503,30 @@ public class TuraController : ControllerBase
         try
         {
             var ture= await Context!.DodeljeneTure!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
-            .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
+            .Include(p=>p.Tura).ThenInclude(p=>p!.TipRobe).Include(p => p.Tura)
+            .ThenInclude(p => p!.Kompanija).Include(p=>p.Vozac)
+            .Select(p => new {
+            p.ID,
+            TipRobe = p.Tura!.TipRobe!.Tip,
+            TezinaRobe = p.Tura!.TezinaRobe,
+            DuzinaRobe = p.Tura!.DuzinaRobe,
+            SirinaRobe = p.Tura!.SirinaRobe,
+            VisinaRobe = p.Tura!.VisinaRobe,
+            ZapreminaRobe = p.Tura!.Zapremina,
+            PocetnaGeografskaSirina = p.Tura!.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p.Tura!.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p.Tura!.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p.Tura!.OdredisnaGeografskaDuzina,
+            Status = p.Tura!.Status,
+            Duzina = p.Tura!.Duzina,
+            DatumPocetka = p.Tura!.DatumPocetka,
+            PredvidjeniKraj = p.Tura!.PredvidjeniKraj,
+            KompanijaNaziv = p.Tura.Kompanija!.Naziv,
+            TuraId = p.Tura!.ID,
+            SlikaVozila = p.Vozilo!.Slika,
+            Cena = p.GenerisanaCena
+
+            }).ToListAsync();
             return Ok(ture);
         }
         catch(Exception e)
@@ -542,7 +566,31 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-[Route("ZavrsiTuru/{idDodeljeneTure}")]
+   [Route("ZapocniTuru/{idDodeljeneTure}")]
+   [HttpPut]
+    public async Task<ActionResult>  ZapocniTuru(int idDodeljeneTure)
+   {
+        var dodeljena=await Context.DodeljeneTure!.Where(p=> p.ID==idDodeljeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
+        if(dodeljena!.Tura!.Status=="Dodeljena")
+        {
+            dodeljena!.Tura!.Status="U toku";
+            try
+            {
+                Context.DodeljeneTure!.Update(dodeljena);
+                await Context.SaveChangesAsync();
+                return Ok("Tura zavrsena!");
+            } 
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        else
+        {
+            return BadRequest("Tura nije u toku!");
+        }    
+   }
+   [Route("ZavrsiTuru/{idDodeljeneTure}")]
    [HttpPut]
     public async Task<ActionResult>  ZavrsiTuru(int idDodeljeneTure)
    {

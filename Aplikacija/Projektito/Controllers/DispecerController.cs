@@ -210,19 +210,22 @@ public class DispecerController : ControllerBase
                             p=1;
                     }
                     var z=0;
-                    foreach(var tura in v.DodeljeneTure!)
+                    if(p==1)
                     {
-                        if((tura.Tura!.DatumPocetka<Turaa.DatumPocetka! && tura.Tura!.PredvidjeniKraj>Turaa.DatumPocetka!)||(tura.Tura!.DatumPocetka<Turaa.PredvidjeniKraj! && tura.Tura!.PredvidjeniKraj>Turaa.PredvidjeniKraj!))
-                            z=1;
-                    }
-                    foreach(var tura in v.PonudjeneTure!)
-                    {
-                        if((tura.Tura!.DatumPocetka<Turaa.DatumPocetka! && tura.Tura!.PredvidjeniKraj>Turaa.DatumPocetka!)||(tura.Tura!.DatumPocetka<Turaa.PredvidjeniKraj! && tura.Tura!.PredvidjeniKraj>Turaa.PredvidjeniKraj!))
-                            z=1;
-                    }
-                    if(p==1 && z==0)
-                    {
-                        Lista.Add(v);
+                        foreach(var tura in v.DodeljeneTure!)
+                        {
+                            if((tura.Tura!.DatumPocetka<Turaa.DatumPocetka! && tura.Tura!.PredvidjeniKraj>Turaa.DatumPocetka!)||(tura.Tura!.DatumPocetka<Turaa.PredvidjeniKraj! && tura.Tura!.PredvidjeniKraj>Turaa.PredvidjeniKraj!))
+                                z=1;
+                        }
+                        foreach(var tura in v.PonudjeneTure!)
+                        {
+                            if((tura.Tura!.DatumPocetka<Turaa.DatumPocetka! && tura.Tura!.PredvidjeniKraj>Turaa.DatumPocetka!)||(tura.Tura!.DatumPocetka<Turaa.PredvidjeniKraj! && tura.Tura!.PredvidjeniKraj>Turaa.PredvidjeniKraj!))
+                                z=1;
+                        }
+                        if(z==0)
+                        {
+                            Lista.Add(v);
+                        }
                     }
                 }   
             }
