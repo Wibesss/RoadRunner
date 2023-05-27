@@ -1,6 +1,6 @@
 import React from 'react'
 
-const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD }) => {
+const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,vozaci,setVozaci }) => {
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">{item.tipRobe}</td>
@@ -19,19 +19,16 @@ const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTu
       <td className=" p-4 whitespace-nowrap">
         {item.zapreminaRobe === null ? "-" : item.zapreminaRobe}
       </td>
-      <td className=" p-4 whitespace-nowrap">{item.turaId}</td>
+      <td className=" p-4 whitespace-nowrap">{item.id}</td>
       <td className=" p-4 whitespace-nowrap">{item.duzina}</td>
+      <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
-      <td className="p-4 whitespace-nowrap"><img className="rounded-md " src={item.slikaVozila}/></td>
-      <td className="p-4 whitespace-nowrap">{item.cena}</td>
       <td>
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           onClick={() =>{
             setMapa(!mapa);
-            setTuraId(item.turaId);
-            setPonudjenaTuraId(item.id);
             setPocetnaGS(item.pocetnaGeografskaSirina);
             setPocetnaGD(item.pocetnaGeografskaDuzina);
             setKrajnjaGS(item.odredisnaGeografskaSirina);
@@ -47,8 +44,20 @@ const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTu
           </svg>
         </button>
       </td>
+      <td>
+        <button
+          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          onClick={() =>{
+            setVozaci(!vozaci);
+            setTuraId(item.turaId)
+          }}
+        >
+        <img src="https://www.freeiconspng.com/uploads/driver-icon-10.png" className='w-12 h-12' alt="Driver Svg Icon" />
+
+        </button>
+      </td>
     </tr>
   )
 }
 
-export default VozacPrihvaceneListItem
+export default DispecerNoveTureListItem

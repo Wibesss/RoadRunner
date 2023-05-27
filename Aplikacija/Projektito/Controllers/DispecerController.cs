@@ -186,55 +186,76 @@ public class DispecerController : ControllerBase
     [HttpGet]
     public async Task<IActionResult>IzlistajVozaceZaTuru(int idTure)
     {
-        try{
-            var Turaa = await Context.Tura!.Include(p=>p.TipRobe).Where(p=>p.ID==idTure).FirstOrDefaultAsync();
-            List<Vozac> Lista= new List<Vozac>();
-            if(Turaa != null)
-            {
-                var tip = Turaa.TipRobe!.Tip;
-                var Vozaci = Context.Vozac!.Include(p=>p.DodeljeneTure).Include(p=>p.Prikolice).Include(p=>p.PrihvaceneTure);
-                foreach(var v in Vozaci)
-                {
-                    var p=0;
-                    foreach(var prikolica in v.Prikolice!)
-                    {
-                        if(Turaa.TipRobe.Tip=="Tecnost" && prikolica.TipPrikolice!.Tip=="Cisterna")
-                            p=1;
-                        else if(Turaa.TipRobe.Tip=="Cvrst Materijal" && prikolica.TipPrikolice!.Tip=="Prikolica sa ciradom")
-                            p=1;
-                        else if(Turaa.TipRobe.Tip=="Cvrst Materijal" && prikolica.TipPrikolice!.Tip=="Prikolica bez cirade")
-                            p=1;
-                        else if(Turaa.TipRobe.Tip=="Hrana" && prikolica.TipPrikolice!.Tip=="Hladnjaca")
-                            p=1;
-                        else if(Turaa.TipRobe.Tip=="Automobili" && prikolica.TipPrikolice!.Tip=="Auto voz")
-                            p=1;
-                    }
-                    var z=0;
-                    if(p==1)
-                    {
-                        foreach(var tura in v.DodeljeneTure!)
-                        {
-                            if((tura.Tura!.DatumPocetka<Turaa.DatumPocetka! && tura.Tura!.PredvidjeniKraj>Turaa.DatumPocetka!)||(tura.Tura!.DatumPocetka<Turaa.PredvidjeniKraj! && tura.Tura!.PredvidjeniKraj>Turaa.PredvidjeniKraj!))
-                                z=1;
-                        }
-                        foreach(var tura in v.PonudjeneTure!)
-                        {
-                            if((tura.Tura!.DatumPocetka<Turaa.DatumPocetka! && tura.Tura!.PredvidjeniKraj>Turaa.DatumPocetka!)||(tura.Tura!.DatumPocetka<Turaa.PredvidjeniKraj! && tura.Tura!.PredvidjeniKraj>Turaa.PredvidjeniKraj!))
-                                z=1;
-                        }
-                        if(z==0)
-                        {
-                            Lista.Add(v);
-                        }
-                    }
-                }   
-            }
-            return Ok(Lista);
-        }
-        catch(Exception ex)
+        try
+    {
+        var Turaa = await Context.Tura!.Include(p => p.TipRobe).Where(p => p.ID == idTure).FirstOrDefaultAsync();
+        List<Vozac> Lista = new List<Vozac>();
+        if (Turaa != null && Turaa.TipRobe != null)
         {
-            return BadRequest(ex.Message);
+            var tip = Turaa.TipRobe!.Tip;
+            var Vozaci = Context.Vozac!.Include(p => p.Prikolice)!.ThenInclude(p => p.TipPrikolice);
+            foreach (var v in Vozaci)
+            {
+                var p = 0;
+                foreach (var prikolica in v.Prikolice!)
+                {
+                    if (Turaa.TipRobe.Tip != null && prikolica.TipPrikolice!.Tip != null)
+                    {
+                        if (Turaa.TipRobe.Tip == "Tecnost" && prikolica.TipPrikolice.Tip == "Cisterna" && Turaa.Zapremina < prikolica.Zapremina)
+                            p = 1;
+                        else if (Turaa.TipRobe.Tip == "Cvrst Materijal" && prikolica.TipPrikolice.Tip == "Prikolica sa ciradom" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                            p = 1;
+                        else if (Turaa.TipRobe.Tip == "Cvrst Materijal" && prikolica.TipPrikolice.Tip == "Prikolica bez cirade" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                            p = 1;
+                        else if (Turaa.TipRobe.Tip == "Hrana" && prikolica.TipPrikolice.Tip == "Hladnjaca" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                            p = 1;
+                        else if (Turaa.TipRobe.Tip == "Automobili" && prikolica.TipPrikolice.Tip == "Auto voz" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                            p = 1;
+                    }
+                    else
+                    {
+                        return Ok("Vozaci");
+                    }
+                }
+                var z = 0;
+                if (p == 1)
+                {
+                    if (v.DodeljeneTure != null)
+                    {
+                        foreach (var tura in v.DodeljeneTure)
+                        {
+                            if (tura.Tura != null && Turaa.DatumPocetka != null && Turaa.PredvidjeniKraj != null)
+                            {
+                                if ((tura.Tura.DatumPocetka < Turaa.DatumPocetka && tura.Tura.PredvidjeniKraj > Turaa.DatumPocetka) || (tura.Tura.DatumPocetka < Turaa.PredvidjeniKraj && tura.Tura.PredvidjeniKraj > Turaa.PredvidjeniKraj))
+                                    z = 1;
+                            }
+                        }
+                    }
+                    if (v.PonudjeneTure != null)
+                    {
+                        foreach (var tura in v.PonudjeneTure)
+                        {
+                            if (tura.Tura != null && Turaa.DatumPocetka != null && Turaa.PredvidjeniKraj != null)
+                            {
+                                if ((tura.Tura.DatumPocetka < Turaa.DatumPocetka && tura.Tura.PredvidjeniKraj > Turaa.DatumPocetka) || (tura.Tura.DatumPocetka < Turaa.PredvidjeniKraj && tura.Tura.PredvidjeniKraj > Turaa.PredvidjeniKraj))
+                                    z = 1;
+                            }
+                        }
+                    }
+                    if (z == 0)
+                    {
+                        if (v != null)
+                            Lista.Add(v);
+                    }
+                }
+            }
         }
+        return Ok(Lista);
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
     }
     [AllowAnonymous]
     [Route("GetDispecer/{id}")]

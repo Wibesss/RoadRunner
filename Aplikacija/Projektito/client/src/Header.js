@@ -89,7 +89,7 @@ const Header = () => {
           </Link>
           <Link
             to={"/dispecerVozaci"}
-            className=" hover:text-primary duration-300 px-4"
+            className=" hover:text-primary duration-300 border-x-2 px-4  border-gray-300"
           >
             Vozaci
           </Link>

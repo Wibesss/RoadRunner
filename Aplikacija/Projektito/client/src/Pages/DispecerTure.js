@@ -1,9 +1,20 @@
 import React from 'react'
-
+import { UserContext } from "../UserContext";
+import { useState, useContext } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useEffect } from "react";
+import DispecerNoveTure from './DispecerNoveTure';
+import DispecerPrihvaceneTure from './DispecerPrihvaceneTure';
 const DispecerTure = () => {
   return (
-    <div>
-        kurac1
+    <div className = "flex flex-row">
+      <div className = "w-1/2">
+          <DispecerNoveTure />
+      </div>
+      <div className = "w-1/2">
+          <DispecerPrihvaceneTure />
+      </div> 
     </div>
   )
 }

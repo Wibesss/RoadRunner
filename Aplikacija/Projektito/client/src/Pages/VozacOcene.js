@@ -12,7 +12,7 @@ const VozacOcene = () => {
   const [ocene, setOcene] = useState([]);
   const [ready, setReady] = useState(false);
   const [value, setValue] = React.useState();
-  const itemsPerPage = 2;
+  const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -55,11 +55,11 @@ const VozacOcene = () => {
             <li className="pb-3 sm:pb-4" key={ocena.id}>
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <p>Slika</p>
+                <img src={ocena.kompanija.logo} className='w-12 h-12' alt="Driver Svg Icon" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-400">
-                    {/* Kompanija: {ocena?.kompanija.naziv} */}
+                    Kompanija: {ocena?.kompanija.naziv}
                   </p>
                   <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                     Opis: {ocena?.opis}
