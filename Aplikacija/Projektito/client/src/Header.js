@@ -27,46 +27,83 @@ const Header = () => {
         </svg>
         <span className="font-bold ">RoadRunner</span>
       </Link>
-      <div className="flex justify-end w-1/5">
-        {user && (
-          <div className="flex gap-2  py-2 px-4 shadow-gray-300">
-            <Link to={"/"} className=" hover:text-primary duration-300">
-              Home
-            </Link>
-          </div>
-        )}
-        {user ? (
+
+      {user?.role === "Vozac" && (
+        <div className="flex  py-2 px-4 shadow-gray-300 justify-center">
           <Link
-            to={user ? `/account` : "/login"}
-            className="flex items-center gap-2 border border-zinc-400 rounded-full py-2 px-4  hover:text-primary duration-300"
+            to={"/"}
+            className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300"
           >
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-6 h-6 border border-gray-300 shadow-gray-300 rounded-full"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            {!!user && <div>{user.korisnickoIme}</div>}
+            Home
           </Link>
-        ) : (
-          <div className="flex gap-2 px-2">
-            <Link to="/login" className="btn-primary">
-              Login
-            </Link>
-            <Link to="/registration" className="btn-primary">
-              Register
-            </Link>
+          <Link
+            to={"/vozacponudjene"}
+            className=" hover:text-primary duration-300 px-4"
+          >
+            Ponudjene Ture
+          </Link>
+          <Link
+            to={"/vozacprihvacene"}
+            className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300"
+          >
+            Prihvacene Ture
+          </Link>
+          <Link
+            to={"/vozacdodeljene"}
+            className=" hover:text-primary duration-300 px-4"
+          >
+            Dodeljene Ture
+          </Link>
+        </div>
+      )}
+
+      {user?.role === "Kompanija" && (
+        <div className="flex  py-2 px-4 shadow-gray-300 justify-center">
+          <Link
+            to={"/"}
+            className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300"
+          >
+            Home
+          </Link>
+          <Link
+            to={"/kompanijaTure"}
+            className=" hover:text-primary duration-300 px-4"
+          >
+            Moje Ture
+          </Link>
+        </div>
+      )}
+      {user ? (
+        <Link
+          to={user ? `/account` : "/login"}
+          className="flex items-center gap-2 border border-zinc-400 rounded-full py-2 px-4  hover:text-primary duration-300"
+        >
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6 border border-gray-300 shadow-gray-300 rounded-full"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
+                clipRule="evenodd"
+              />
+            </svg>
           </div>
-        )}
-      </div>
+          {user && <div>{user.korisnickoIme}</div>}
+        </Link>
+      ) : (
+        <div className="flex gap-2 px-2">
+          <Link to="/login" className="btn-primary">
+            Login
+          </Link>
+          <Link to="/registration" className="btn-primary">
+            Register
+          </Link>
+        </div>
+      )}
     </header>
   );
 };

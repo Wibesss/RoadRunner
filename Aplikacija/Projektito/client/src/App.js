@@ -13,6 +13,12 @@ import axios from "axios";
 import { UserContextProvider } from "./UserContext.js";
 import { useState } from "react";
 import AccountPage from "./Pages/AccountPage.js";
+import IndexVozac from "./Pages/IndexVozac.js";
+import DodeljeneTureVozac from "./Pages/DodeljeneTureVozac.js";
+import VozacPonudjene from "./Pages/VozacPonudjene.js";
+import VozacPrihvacene from "./Pages/VozacPrihvacene.js";
+import VozacDodeljene from "./Pages/VozacDodeljene.js";
+import KompanijaTure from "./Pages/KompanijaTure.js";
 axios.defaults.baseURL = "http://localhost:5026";
 axios.defaults.withCredentials = true;
 
@@ -32,6 +38,10 @@ function App() {
             <Route path="/registration/regVozac" element={<RegisterVozac />} />
           </Route>
           <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/vozacponudjene" element={<VozacPonudjene />}></Route>
+          <Route path="/vozacprihvacene" element={<VozacPrihvacene />}></Route>
+          <Route path="/vozacdodeljene" element={<VozacDodeljene />}></Route>
+          <Route path="/kompanijaTure" element={<KompanijaTure />}></Route>
         </Route>
       </Routes>
     </UserContextProvider>

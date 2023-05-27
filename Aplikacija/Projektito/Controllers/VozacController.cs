@@ -223,5 +223,45 @@ public class VozacController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+
+    [AllowAnonymous]
+    [Route("GetSrednjuOcenu/{id}")]
+    [HttpGet]
+    public async Task<IActionResult>GetSrednjuOcenu(int id)
+    {
+        try{
+            var Ocene = await Context.Ocena!.Where(p=> p!.Vozac!.ID==id).ToListAsync();
+            var ukupniBrojOcena = Ocene.Count;
+            var ukupneOcene = Ocene.Sum(item => item.Broj);
+            decimal srednja = 0;
+            if(ukupniBrojOcena != 0)
+            {
+                srednja = (decimal)ukupneOcene/ukupniBrojOcena;
+            }
+            var brojJedinicafunkcija = await Context.Ocena!.Where(p=> p!.Vozac!.ID==id && p!.Broj==1).ToListAsync();
+            var brojDvojkefunkcija = await Context.Ocena!.Where(p=> p!.Vozac!.ID==id && p!.Broj==2).ToListAsync();
+            var brojTrojkefunkcija = await Context.Ocena!.Where(p=> p!.Vozac!.ID==id && p!.Broj==3).ToListAsync();
+            var brojCetvorkefunkcija = await Context.Ocena!.Where(p=> p!.Vozac!.ID==id && p!.Broj==4).ToListAsync();
+            var brojPeticefunkcija = await Context.Ocena!.Where(p=> p!.Vozac!.ID==id && p!.Broj==5).ToListAsync();
+            decimal brojJedinica = Math.Floor(ukupniBrojOcena == 0? 0: (decimal)brojJedinicafunkcija.Count*100/ukupniBrojOcena);
+            decimal brojDvojki = Math.Floor(ukupniBrojOcena == 0? 0: (decimal)brojDvojkefunkcija.Count*100/ukupniBrojOcena);
+            decimal brojTrojki = Math.Floor(ukupniBrojOcena == 0? 0: (decimal)brojTrojkefunkcija.Count*100/ukupniBrojOcena);
+            decimal brojCetvorke = Math.Floor(ukupniBrojOcena == 0? 0: (decimal)brojCetvorkefunkcija.Count*100/ukupniBrojOcena);
+            decimal brojPetica =Math.Floor( ukupniBrojOcena == 0? 0: (decimal)brojPeticefunkcija.Count*100/ukupniBrojOcena);
+            return Ok(new {
+                ukupniBrojOcena,
+                srednja,
+                brojJedinica,
+                brojDvojki,
+                brojTrojki,
+                brojCetvorke,
+                brojPetica
+            });
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
     
 }

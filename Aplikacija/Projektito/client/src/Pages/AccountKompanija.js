@@ -23,7 +23,7 @@ const AccountKompanija = () => {
   };
 
   return (
-    <div className="flex flex-col items-center font-bold">
+    <div className="flex flex-col items-center font-bold min-h-screen">
       <nav className="w-full flex justify-center mt-8 gap-2 mb-8">
         <Link className={linkClasses("profil")} to={"/account"}>
           Profil
@@ -33,7 +33,7 @@ const AccountKompanija = () => {
           className={linkClasses("favorizovani")}
           to={"/account/favorizovani"}
         >
-          Fovorizovani Vozaci
+          Favorizovani Vozaci
         </Link>
       </nav>
       {subpage === "profil" && <KompanijaProfil />}

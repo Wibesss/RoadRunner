@@ -14,11 +14,10 @@ const KompanijaProfil = () => {
   const [edit, setEdit] = useState(false);
 
   const [naziv, setNaziv] = useState("");
-  const [vlasnik, setVlasnik] = useState("");
-  const [adresa, setAdresa] = useState("");
-  const [jmbg, setJmbg] = useState("");
   const [email, setEmail] = useState("");
   const [korisnickoIme, setKorisnickoIme] = useState("");
+  const [adresa, setAdresa] = useState("");
+  const [vlasnik, setVlasnik] = useState("");
   const [slika, setSlika] = useState(null);
   const [updateUser, setUpdateUser] = useState(false);
 
@@ -65,22 +64,12 @@ const KompanijaProfil = () => {
     try {
       const validationErrors = {};
 
-      if (ime.length < 3 || ime.length > 30 || !/^[a-zA-Z]+$/.test(ime)) {
-        validationErrors.Ime =
-          "Ime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.";
-      }
-
       if (
-        prezime.length < 3 ||
-        prezime.length > 30 ||
-        !/^[a-zA-Z]+$/.test(prezime)
+        naziv.length < 3 ||
+        naziv.length > 30 ||
+        !/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(naziv)
       ) {
-        validationErrors.Prezime =
-          "Prezime treba da ima između 3 i 30 karaktera i sadrži samo slovne karaktere.";
-      }
-
-      if (jmbg.length !== 13 || !/^\d+$/.test(jmbg)) {
-        validationErrors.JMBG = "JMBG treba da ima tačno 13 cifara.";
+        validationErrors.Naziv = "Naziv treba da ima između 1 i 20 karaktera..";
       }
 
       if (
@@ -102,31 +91,36 @@ const KompanijaProfil = () => {
         validationErrors.KorisnickoIme =
           "Korisničko ime treba da ima između 1 i 20 karaktera i može sadržati samo slovne karaktere i brojeve.";
       }
-      if (!/^\+?[0-9][0-9\s.-]{7,11}$/.test(brojTelefona)) {
-        validationErrors.Broj =
-          "Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11.";
+      if (adresa.length < 1 || adresa.length > 40) {
+        validationErrors.Adresa =
+          "Adresa treba da ima između 1 i 40 karaktera.";
+      }
+      if (vlasnik.length < 1 || vlasnik.length > 40) {
+        validationErrors.Vlasnik =
+          "Vlasnik treba da ima između 1 i 40 karaktera.";
       }
 
       if (Object.keys(validationErrors).length > 0) {
         // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
           alert(`Greška u polju ${property}: ${validationErrors[property]}`);
+          window.location.reload();
         });
         return;
       }
       if (slika === null) {
         try {
+          console.log("kurcina");
           const response = await axios.put(
-            `/Vozac/UpdateVozac/${vozac.id}`,
+            `/Kompanija/UpdateKompanija/${kompanija.id}`,
             {
-              ime: ime,
-              prezime: prezime,
-              jmbg: jmbg,
+              naziv: naziv,
               email: email,
               korisnickoIme: korisnickoIme,
               sifra: "",
-              brojTelefona: brojTelefona,
-              slika: kompanija.slika,
+              adresa: adresa,
+              vlasnik: vlasnik,
+              logo: kompanija.logo,
             },
             config
           );
@@ -152,7 +146,7 @@ const KompanijaProfil = () => {
             } else {
               // Handle other validation errors or unexpected error messages
               console.log(errorMessage);
-              window.location.reload();
+              //window.location.reload();
             }
           } else {
             // Other error
@@ -160,23 +154,22 @@ const KompanijaProfil = () => {
           }
         }
       } else {
-        const imageRef = ref(storage, `vozaci/${slika.name + v4()}`);
+        const imageRef = ref(storage, `kompanije/${slika.name + v4()}`);
         let slikaurl = "";
         uploadBytes(imageRef, slika).then(() => {
           getDownloadURL(imageRef).then((res) => {
             slikaurl = res;
             try {
               const response = axios.put(
-                `/Vozac/UpdateVozac/${vozac.id}`,
+                `/Kompanija/UpdateKompanija/${kompanija.id}`,
                 {
-                  ime: ime,
-                  prezime: prezime,
-                  jmbg: jmbg,
+                  naziv: naziv,
                   email: email,
                   korisnickoIme: korisnickoIme,
                   sifra: "",
-                  brojTelefona: brojTelefona,
-                  slika: slikaurl,
+                  adresa: adresa,
+                  vlasnik: vlasnik,
+                  logo: slikaurl,
                 },
                 config
               );
@@ -232,9 +225,11 @@ const KompanijaProfil = () => {
     if (novaSifra !== potvrdaSifra)
       return alert("Nova i potrvdra šifra se ne poklapaju");
     try {
+      const encodedStaraSifra = encodeURIComponent(staraSifra);
+      const encodedNovaSifra = encodeURIComponent(novaSifra);
       axios
         .put(
-          `/Kompanija/UpdateSifra/${kompanija.id}/${staraSifra}/${novaSifra}`,
+          `/Kompanija/UpdateSifra/${kompanija.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
           {},
           config
         )
