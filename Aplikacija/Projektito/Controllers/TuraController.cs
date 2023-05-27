@@ -595,13 +595,59 @@ public class TuraController : ControllerBase
    public async Task<ActionResult> GetVozaceZaTuru(int idTure)
    {
         try{
-            var vozaci= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure && p.Prosledjena==true).Include(p=>p.Vozac).Select(p=>new {p.Vozac,  p.GenerisanaCena }).ToListAsync();
-            return Ok(vozaci);
+           var vozaci = await Context!.PrihvacenaTura!
+            .Where(p => p.Tura!.ID == idTure && p.Prosledjena == true)
+            .Include(p => p.Vozac)
+            .Select(p => new { p.Vozac, p.GenerisanaCena })
+            .ToListAsync();
+
+        var vozaciWithSrednja = new List<(dynamic Vozac, decimal Srednja,double GenerisanaCena)>();
+
+        foreach (var v in vozaci)
+        {
+            decimal srednja = 0;
+            var ocene = await Context.Ocena!
+                .Where(p => p!.Vozac!.ID == v.Vozac!.ID)
+                .ToListAsync();
+            var ukupniBrojOcena = ocene.Count;
+            var ukupneOcene = ocene.Sum(item => item.Broj);
+            if (ukupniBrojOcena != 0)
+            {
+                srednja = (decimal)ukupneOcene / ukupniBrojOcena;
+            }
+            vozaciWithSrednja.Add((v.Vozac!, srednja,v.GenerisanaCena));
+        }
+
+        var sortedVozaci = vozaciWithSrednja.OrderByDescending(v => v.Srednja).Select(v => new { v.Vozac, v.GenerisanaCena }).ToList();
+        return Ok(sortedVozaci);
+
         }
         catch(Exception e)
         {
             return BadRequest(e.Message);
         }
    }
+
+   [Route("GetVozacaZaTuru/{idTure}")]
+   [HttpGet]
+   public async Task<ActionResult> GetVozacaZaTuru(int idTure)
+   {
+        try{
+           var vozac = await Context!.DodeljeneTure!
+            .Where(p => p.Tura!.ID == idTure )
+            .Include(p => p.Vozac)
+            .Select(p =>  p.Vozac)
+            .FirstOrDefaultAsync();
+
+            return Ok(vozac);
+
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+
+
 
 }
