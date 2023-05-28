@@ -4,9 +4,10 @@ import { useState, useContext } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useEffect } from "react";
-import DispecerNoveTureVozaciListItem from './DispecerNoveTureVozaciListItem';
+import DispecerPrihvaceneTureVozaciListItem from './DispecerPrihvaceneTureVozaciListItem';
+import DispecerPrihvaceneTureFavorizacije from './DispecerPrihvaceneTureFavorizacije';
 
-const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => {
+const DispecerPrihvaceneTureVozaci = ({turaId,poslati,setPoslati,setVozaci,kompanijaID,obrisano,setObrisano}) => {
     const {user, setUser } = useContext(UserContext);
     const config = {
         headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -27,7 +28,7 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
       if(user)
         {
         try{
-          axios.get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config).then((response) => {
+          axios.get(`/Tura/GetVozaceZaTuruDispecer/${turaId}`, config).then((response) => {
             setCurrentItems(response.data);
             setReady(true);
           });
@@ -61,8 +62,10 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
         try{
             if(odabraneStavke!="")
             {
-                axios.post(`Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`, config).then((response) => {
+                axios.put(`/Tura/ProslediTuru/${turaId}/${odabraneStavke}`,{}, config).then((response) => {
+                    console.log(response.data)
                     setPoslati(!poslati);
+                    setObrisano(!obrisano);
                     setVozaci("");
                 });
             }
@@ -87,7 +90,8 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
     return (
       
       <div className="flex flex-col mt-2">
-        <div className="overflow-auto w-full">
+        {console.log(odabraneStavke)}
+        <div className="overflow-auto ">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                       <tr>
@@ -107,12 +111,6 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
                             Prezime
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 ml-1 mb-0" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512" onClick={()=>sorting("tezinaRobe")}><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                           </div>
-                        </th>
-                        <th scope="col" className="px-6 py-3 whitespace-nowrap " >
-                          <div className="flex flex-row">
-                            JMBG
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 ml-1 mb-0" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512" onClick={()=>sorting("duzinaRobe")}><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                          </div>                        
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap " >
                           <div className="flex flex-row">
@@ -140,6 +138,27 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap" >
                           <div className="flex flex-row">
+                            Cena
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 ml-1 mb-0" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512" onClick={()=>sorting("cena")}><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap" >
+                          <div className="flex flex-row">
+                            Marka vozila
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap" >
+                          <div className="flex flex-row">
+                            Model vozila
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap" >
+                          <div className="flex flex-row">
+                            Slika
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap" >
+                          <div className="flex flex-row">
                             Ponudi
                           </div>
                         </th>
@@ -148,10 +167,10 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
 
                     <tbody className='text-center'>
                       {currentItems.map((item) => (
-                        <DispecerNoveTureVozaciListItem 
+                        <DispecerPrihvaceneTureVozaciListItem 
                         item={item} 
-                        key={item.id}
-                        checked={odabraneStavke.includes(item.id)}
+                        key={item.vozac.id}
+                        checked={odabraneStavke.includes(item.vozac.id)}
                         toggleOdabranaStavka={toggleOdabranaStavka}
                         />
                       ))}
@@ -167,10 +186,15 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
                   </table>
               </div>
               {currentItems.length !== 0 && (
-                        <div className="flex justify-center mt-5">
-                            <button className="font-bold text-lg p-2 rounded-lg px-4 py-2 border-primary border-2 bg-primary text-white hover:bg-white hover:text-primary duration-300 text-center" onClick={handlePrihvati}>
-                                Ponudi Turu
-                            </button>
+                        <div className="flex flex-row justify-center mt-5">
+                            <div className='w-1/2 justify-center'>
+                                <DispecerPrihvaceneTureFavorizacije kompanijaID={kompanijaID}/>
+                            </div>
+                            <div className='w-1/2 justify-center'>
+                                <button className="font-bold text-lg p-2 rounded-lg px-4 py-2 border-primary border-2 bg-primary text-white hover:bg-white hover:text-primary duration-300 text-center" onClick={handlePrihvati}>
+                                    Ponudi Vozaca
+                                </button>
+                            </div>
                         </div>
              )}
               
@@ -179,4 +203,4 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
   }
 }
 
-export default DispecerNoveTureVozaci
+export default DispecerPrihvaceneTureVozaci

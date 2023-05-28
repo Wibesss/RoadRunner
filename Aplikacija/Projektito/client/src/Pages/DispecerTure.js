@@ -8,12 +8,16 @@ import DispecerNoveTure from './DispecerNoveTure';
 import DispecerPrihvaceneTure from './DispecerPrihvaceneTure';
 const DispecerTure = () => {
   return (
-    <div className = "flex flex-row">
+    <div className = "flex flex-row flex-wrap wrap">
       <div className = "w-1/2">
+        <div className = "w-11/12">
           <DispecerNoveTure />
+         </div>
       </div>
       <div className = "w-1/2">
+        <div className = "w-11/12">
           <DispecerPrihvaceneTure />
+        </div>
       </div> 
     </div>
   )

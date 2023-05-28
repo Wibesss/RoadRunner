@@ -61,6 +61,7 @@ const VozacPonudjene = () => {
         try{
           axios.delete(`Tura/DeletePonudjenaTura/${tID}/${vID}`, config).then((response) => {
             setObrisano(true);
+            setMapa(!mapa);
           });
          }
          catch(err)
@@ -216,6 +217,8 @@ const VozacPonudjene = () => {
                   krajnjaGS = {krajnjaGS}
                   krajnjaGD = {krajnjaGD}
                   setObrisano = {setObrisano}
+                  mapa={mapa}
+                  setMapa={setMapa}
                 />
               )}
       </div>
