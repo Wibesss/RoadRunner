@@ -1,6 +1,11 @@
 import React from "react";
 
-const KompanijaTuraListItem = ({ item, handleDelete }) => {
+const KompanijaTuraListItem = ({
+  item,
+  handleDelete,
+  handlePrikazi,
+  handlePrikaziVozaca,
+}) => {
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="p-4 whitespace-nowrap">{item.tipRobe.tip}</td>
@@ -31,11 +36,28 @@ const KompanijaTuraListItem = ({ item, handleDelete }) => {
             handleDelete(item.id);
           }}
         >
-          Remove
+          Obrisi
         </button>
-        <button className="font-medium" onClick={() => {}}>
-          Prikazi
-        </button>
+        {item.status === "Slobodna" && (
+          <button
+            className="font-medium text-blue-400"
+            onClick={() => {
+              handlePrikazi(item.id);
+            }}
+          >
+            Vozaci
+          </button>
+        )}
+        {item.status !== "Slobodna" && (
+          <button
+            className="font-medium text-green-400"
+            onClick={() => {
+              handlePrikaziVozaca(item.id);
+            }}
+          >
+            Vozac
+          </button>
+        )}
       </td>
     </tr>
   );
