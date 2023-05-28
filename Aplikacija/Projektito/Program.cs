@@ -48,6 +48,10 @@ builder.Services.AddAuthentication(x=>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
+
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -71,6 +75,13 @@ app.UseCors(options =>
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    // ...
+
+    endpoints.MapHub<NotificationsHub>("/notificationHub"); // Replace with your actual hub class and desired path
+});
 
 app.MapControllers();
 

@@ -14,3 +14,5 @@ global using System.IdentityModel.Tokens.Jwt;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authentication.Cookies;
+global using Microsoft.AspNetCore.SignalR;
+global using Notifications;

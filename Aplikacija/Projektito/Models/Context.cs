@@ -3,6 +3,8 @@ namespace Models
     public class Context:DbContext
     {
         public Context(DbContextOptions options):base(options){}
+
+        public DbSet<ConnectionInfoo>? ConnectionInfoo {get; set;}
         public DbSet<Dispecer>? Dispecer{get; set;}
         public DbSet<Favorizacija>? Favorizacija{get; set;}
         public DbSet<Kompanija>? Kompanija{get; set;}
