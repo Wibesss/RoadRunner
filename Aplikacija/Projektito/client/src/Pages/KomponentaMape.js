@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD, krajnjaGS, krajnjaGD, setObrisano }) => {
+const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD, krajnjaGS, krajnjaGD, setObrisano, mapa,setMapa }) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
@@ -96,6 +96,7 @@ const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD
         });
         axios.delete(`Tura/DeletePonudjenaTura/${turaId}/${vozacId}`, config).then((response) => {
           setObrisano(true);
+          setMapa(!mapa);
         });
        }
        catch(err)

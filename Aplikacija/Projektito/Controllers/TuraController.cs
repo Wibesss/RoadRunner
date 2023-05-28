@@ -205,45 +205,41 @@ public class TuraController : ControllerBase
         }
 
    }
-    [Authorize(Roles ="Dispecer")]
-    [Route("AddPonudjenaTura/{idTure}/{idDispecera}/{idVozaca}")]
+    //[Authorize(Roles ="Dispecer")]
+    [Route("AddPonudjenaTura/{idTure}/{idDispecera}/{idieviVozaca}")]
     [HttpPost]
-    public async Task<IActionResult> AddPonudjenaTura(int idTure,int idDispecera,int idVozaca)
+    public async Task<IActionResult> AddPonudjenaTura(int idTure,int idDispecera,string idieviVozaca)
     {
-        var tura=await Context.Tura!.FindAsync(idTure);
-        var dispecer=await Context.Dispecer!.FindAsync(idDispecera);
-        var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        var postojeca=Context.PonudjenaTura!.Where(p=>p.Tura!.ID==idTure && p.Vozac!.ID==idVozaca).FirstOrDefault();
-        var postojecaPrihvacena = Context.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure && p.Vozac!.ID==idVozaca).FirstOrDefault();
-        if(postojeca==null && postojecaPrihvacena==null)
-        {
-            if(tura != null && dispecer!=null && vozac!=null)
+        try{
+            var tura=await Context.Tura!.FindAsync(idTure);
+            var dispecer=await Context.Dispecer!.FindAsync(idDispecera);
+            int[] idieviVozacaArray = idieviVozaca.Split(',').Select(int.Parse).ToArray();
+            var vozaci = await Context.Vozac!.Where(p => idieviVozacaArray.Contains(p.ID)).ToListAsync();
+            foreach ( var vozac in vozaci)
             {
-                PonudjenaTura pt=new PonudjenaTura();
-                pt.Vozac=vozac;
-                pt.Dispecer=dispecer;
-                pt.Tura=tura;
-
-                try
+                var postojeca=Context.PonudjenaTura!.Where(p=>p.Tura!.ID==idTure && p.Vozac!.ID==vozac.ID).FirstOrDefault();
+                var postojecaPrihvacena = Context.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure).FirstOrDefault();
+                if(postojeca==null && postojecaPrihvacena==null)
                 {
-                    Context.PonudjenaTura!.Add(pt);
-                    await Context.SaveChangesAsync();
-                    return Ok();
-                }
-                catch(Exception e)
-                {
-                    return BadRequest(e.Message);
+                    if(tura != null && dispecer!=null && vozac!=null)
+                    {
+                        PonudjenaTura pt=new PonudjenaTura();
+                        pt.Vozac=vozac;
+                        pt.Dispecer=dispecer;
+                        pt.Tura=tura;
+                        Context.PonudjenaTura!.Add(pt);
+                        await Context.SaveChangesAsync();
+                        
+                    }
                 }
             }
-            else
-            {
-                return BadRequest("Nije pronadjena tura ili dispecer ili vozac");
-            }
+            return Ok("Dodato");
         }
-        else
+        catch(Exception e)
         {
-            return BadRequest(vozac!.Ime+" "+vozac.Prezime+" je vec dobio ponudu za odredjenu turu");
+            return BadRequest(e.Message);
         }
+        
     }
     [Authorize(Roles ="Kompanija")]
     [Route("AddDodeljenaTura/{idVozaca}/{idTure}")]
@@ -307,7 +303,7 @@ public class TuraController : ControllerBase
     {
         var ponudjena=await Context!.PonudjenaTura!.Where(p=> p.ID==idPonudjeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
         var vozilo=await Context.Vozilo!.FindAsync(idVozila);
-        if(ponudjena !=null && vozilo!=null)
+        if(ponudjena !=null)
         {
             var pt=new PrihvacenaTura();
             pt.Prosledjena=false;
@@ -332,24 +328,32 @@ public class TuraController : ControllerBase
             return BadRequest("Nije pronadjeno vozilo ili ponudjena tura");
         }
     }
-     [Authorize(Roles ="Dispecer")]
-    [Route("ProslediTuru/{idPrihvaceneTure}")]
+    [Authorize(Roles ="Dispecer")]
+    [Route("ProslediTuru/{idTure}/{idieviVozaca}")]
     [HttpPut]
-    public async Task<IActionResult> ProslediTuru(int idPrihvaceneTure)
+    public async Task<IActionResult> ProslediTuru(int idTure,string idieviVozaca)
     {
-        var prihvacena=await Context.PrihvacenaTura!.FindAsync(idPrihvaceneTure);
-        if(prihvacena!=null)
+        int[] idieviVozacaArray = idieviVozaca.Split(',').Select(int.Parse).ToArray();
+        int kurac =0;
+        var prihvacene=await Context.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure && idieviVozacaArray.Contains(p.Vozac!.ID)).ToListAsync();
+        if(prihvacene!=null)
         {
-            try
+            foreach(var prihvacena in prihvacene)
             {
                 prihvacena.Prosledjena=true;
                 await Context.SaveChangesAsync();
-                return Ok("Tura uspesno prosledjena!");
+                kurac++;
             }
-            catch(Exception e)
+            var prihvacenee = await Context.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure).ToListAsync();
+            foreach(var prihvacenaa in prihvacenee)
             {
-                return BadRequest(e.Message);
+                if(prihvacenaa.Prosledjena==false)
+                {
+                    Context.PrihvacenaTura!.Remove(prihvacenaa);
+                    await Context.SaveChangesAsync();
+                }
             }
+            return Ok(kurac);
         }
         else
         {
@@ -525,7 +529,30 @@ public class TuraController : ControllerBase
         try
         {
             var ture= await Context!.DodeljeneTure!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
-            .Include(p=>p.Tura).Include(p=>p.Vozac).ToListAsync();
+            .Include(p=>p.Tura).ThenInclude(p=>p!.TipRobe).Include(p => p.Tura)
+            .ThenInclude(p => p!.Kompanija).Include(p=>p.Vozac)
+            .Select(p => new {
+            p.ID,
+            TipRobe = p.Tura!.TipRobe!.Tip,
+            TezinaRobe = p.Tura!.TezinaRobe,
+            DuzinaRobe = p.Tura!.DuzinaRobe,
+            SirinaRobe = p.Tura!.SirinaRobe,
+            VisinaRobe = p.Tura!.VisinaRobe,
+            ZapreminaRobe = p.Tura!.Zapremina,
+            PocetnaGeografskaSirina = p.Tura!.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p.Tura!.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p.Tura!.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p.Tura!.OdredisnaGeografskaDuzina,
+            Status = p.Tura!.Status,
+            Duzina = p.Tura!.Duzina,
+            DatumPocetka = p.Tura!.DatumPocetka,
+            PredvidjeniKraj = p.Tura!.PredvidjeniKraj,
+            KompanijaNaziv = p.Tura.Kompanija!.Naziv,
+            TuraId = p.Tura!.ID,
+            SlikaVozila = p.Vozilo!.Slika,
+            Cena = p.GenerisanaCena
+
+            }).ToListAsync();
             return Ok(ture);
         }
         catch(Exception e)
@@ -533,16 +560,56 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+   [Authorize(Roles ="Dispecer")]
    [Route("GetPrihvacenaTura/{idDispecera}")]
    [HttpGet]
    public async Task<ActionResult> GetPrihvacenaTura(int idDispecera)
    {
         try
         {
-            var ture= await Context!.PrihvacenaTura!.Where(p=>p.Dispecer!.ID==idDispecera && p.Prosledjena==false).Include(p=>p.Dispecer)
-            .Include(p=>p.Tura).Include(p=>p.Vozac).Include(p=>p.Vozilo).ToListAsync();
-            return Ok(ture);
+            var distinctTuraIds = await Context!.PrihvacenaTura!
+            .Include(p => p.Tura)
+            .Where(p => p.Dispecer!.ID == idDispecera && p.Prosledjena == false)
+            .Select(p => p.Tura!.ID)
+            .Distinct()
+            .ToListAsync();
+
+             var ture = await Context!.PrihvacenaTura!
+            .Include(p => p.Dispecer)
+            .Include(p => p.Tura)
+            .ThenInclude(p=>p!.TipRobe)
+            .Include(p => p.Tura)
+            .ThenInclude(p=>p!.Kompanija)
+            .Include(p => p.Vozac)
+            .Include(p => p.Vozilo)
+            .Where(p => p.Dispecer!.ID == idDispecera && p.Prosledjena == false && distinctTuraIds.Contains(p.Tura!.ID))
+            .GroupBy(p => p.Tura!.ID)
+            .Select(g => g.OrderBy(p => p.ID).First())
+            .ToListAsync();
+
+            var filtriraneTure = ture.Select(p => new {
+            p.ID,
+            TipRobe = p.Tura?.TipRobe?.Tip,
+            TezinaRobe = p.Tura?.TezinaRobe,
+            DuzinaRobe = p.Tura?.DuzinaRobe,
+            SirinaRobe = p.Tura?.SirinaRobe,
+            VisinaRobe = p.Tura?.VisinaRobe,
+            ZapreminaRobe = p.Tura?.Zapremina,
+            PocetnaGeografskaSirina = p.Tura?.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p.Tura?.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p.Tura?.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p.Tura?.OdredisnaGeografskaDuzina,
+            Status = p.Tura?.Status,
+            Duzina = p.Tura?.Duzina,
+            DatumPocetka = p.Tura?.DatumPocetka,
+            PredvidjeniKraj = p.Tura?.PredvidjeniKraj,
+            KompanijaNaziv = p.Tura?.Kompanija?.Naziv,
+            KompanijaId = p.Tura?.Kompanija?.ID,
+            TuraId = p.Tura?.ID,
+            LogoKompanije = p.Tura?.Kompanija?.Logo
+
+            }).ToList();
+            return Ok(filtriraneTure);
         } 
         catch(Exception e)
         {
@@ -565,7 +632,31 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-[Route("ZavrsiTuru/{idDodeljeneTure}")]
+   [Route("ZapocniTuru/{idDodeljeneTure}")]
+   [HttpPut]
+    public async Task<ActionResult>  ZapocniTuru(int idDodeljeneTure)
+   {
+        var dodeljena=await Context.DodeljeneTure!.Where(p=> p.ID==idDodeljeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
+        if(dodeljena!.Tura!.Status=="Dodeljena")
+        {
+            dodeljena!.Tura!.Status="U toku";
+            try
+            {
+                Context.DodeljeneTure!.Update(dodeljena);
+                await Context.SaveChangesAsync();
+                return Ok("Tura zavrsena!");
+            } 
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        else
+        {
+            return BadRequest("Tura nije u toku!");
+        }    
+   }
+   [Route("ZavrsiTuru/{idDodeljeneTure}")]
    [HttpPut]
     public async Task<ActionResult>  ZavrsiTuru(int idDodeljeneTure)
    {
@@ -609,8 +700,90 @@ public class TuraController : ControllerBase
    public async Task<ActionResult> GetVozaceZaTuru(int idTure)
    {
         try{
-            var vozaci= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure && p.Prosledjena==true).Include(p=>p.Vozac).Select(p=>new {p.Vozac,  p.GenerisanaCena }).ToListAsync();
+           var vozaci = await Context!.PrihvacenaTura!
+            .Where(p => p.Tura!.ID == idTure && p.Prosledjena == true)
+            .Include(p => p.Vozac)
+            .Select(p => new { p.Vozac, p.GenerisanaCena })
+            .ToListAsync();
+
+        var vozaciWithSrednja = new List<(dynamic Vozac, decimal Srednja,double GenerisanaCena)>();
+
+        foreach (var v in vozaci)
+        {
+            decimal srednja = 0;
+            var ocene = await Context.Ocena!
+                .Where(p => p!.Vozac!.ID == v.Vozac!.ID)
+                .ToListAsync();
+            var ukupniBrojOcena = ocene.Count;
+            var ukupneOcene = ocene.Sum(item => item.Broj);
+            if (ukupniBrojOcena != 0)
+            {
+                srednja = (decimal)ukupneOcene / ukupniBrojOcena;
+            }
+            vozaciWithSrednja.Add((v.Vozac!, srednja,v.GenerisanaCena));
+        }
+
+        var sortedVozaci = vozaciWithSrednja.OrderByDescending(v => v.Srednja).Select(v => new { v.Vozac, v.GenerisanaCena }).ToList();
+        return Ok(sortedVozaci);
+
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+   [Authorize(Roles ="Dispecer")]
+   [Route("GetVozaceZaTuruDispecer/{idTure}")]
+   [HttpGet]
+   public async Task<ActionResult> GetVozaceZaTuruDispecer(int idTure)
+   {
+        try{
+            var vozaci= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure).Include(p=>p.Vozac)
+            .Select(p=> new {
+                p.Vozac,
+                p.GenerisanaCena,
+                p.Vozilo!.Marka,
+                p.Vozilo!.Model,
+                p.Vozilo!.Slika,
+            
+            }).ToListAsync();
             return Ok(vozaci);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+   [Authorize(Roles ="Dispecer")]
+   [Route("GetNoveTureDispecer")]
+    [HttpGet]
+   public async Task<IActionResult> GetNoveTureDispecer()
+   {
+        try{
+            var ture= await Context!.Tura!.Include(p=>p.Kompanija).Include(p=>p.TipRobe).Where(p=>p.Status!="Dodeljena" && p.Status!= "Zavrsena" && p.Status!= "U toku").ToListAsync();
+            var ponudjeneTure = await Context!.PonudjenaTura!.Include(p=>p.Tura).ToListAsync();
+            var prihvaceneTure = await Context!.PrihvacenaTura!.Include(p=>p.Tura).ToListAsync();
+            ture.RemoveAll(tura => ponudjeneTure.Any(ponudjena => ponudjena.Tura!.ID == tura.ID));
+            ture.RemoveAll(tura => prihvaceneTure.Any(prihvacena => prihvacena.Tura!.ID == tura.ID));
+            var noveTure = ture.Select(p => new {
+            TuraId=p.ID,
+            TipRobe = p.TipRobe!.Tip,
+            TezinaRobe = p!.TezinaRobe,
+            DuzinaRobe = p!.DuzinaRobe,
+            SirinaRobe = p!.SirinaRobe,
+            VisinaRobe = p!.VisinaRobe,
+            ZapreminaRobe = p!.Zapremina,
+            PocetnaGeografskaSirina = p!.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p!.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p!.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p!.OdredisnaGeografskaDuzina,
+            Status = p!.Status,
+            Duzina = p!.Duzina,
+            DatumPocetka = p!.DatumPocetka,
+            PredvidjeniKraj = p!.PredvidjeniKraj,
+            KompanijaNaziv = p.Kompanija!.Naziv
+            });
+            return Ok(noveTure);
         }
         catch(Exception e)
         {

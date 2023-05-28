@@ -1,8 +1,15 @@
 import React from 'react'
+import { UserContext } from "../UserContext";
+import { useState, useContext } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useEffect } from "react";
 
-const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD }) => {
+const DispecerPrihvaceneTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,vozaci,setVozaci,setKompanijaID }) => {
   return (
     <tr className="bg-white border-b">
+      <td className="p-4 whitespace-nowrap"><div className='flex justify-center'><img src={item.logoKompanije} alt="logo" className="w-12 h-12"/></div></td>
+      <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
       <td className="p-4 whitespace-nowrap">{item.tipRobe}</td>
       <td className="p-4 whitespace-nowrap">
         {item.tezinaRobe === null ? "-" : item.tezinaRobe}
@@ -22,16 +29,11 @@ const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTu
       <td className=" p-4 whitespace-nowrap">{item.turaId}</td>
       <td className=" p-4 whitespace-nowrap">{item.duzina}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
-      <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
-      <td className="p-4 whitespace-nowrap"><img className="rounded-md " src={item.slikaVozila}/></td>
-      <td className="p-4 whitespace-nowrap">{item.cena}</td>
       <td>
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           onClick={() =>{
             setMapa(!mapa);
-            setTuraId(item.turaId);
-            setPonudjenaTuraId(item.id);
             setPocetnaGS(item.pocetnaGeografskaSirina);
             setPocetnaGD(item.pocetnaGeografskaDuzina);
             setKrajnjaGS(item.odredisnaGeografskaSirina);
@@ -47,8 +49,21 @@ const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTu
           </svg>
         </button>
       </td>
+      <td>
+        <button
+          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          onClick={() =>{
+            setKompanijaID(item.kompanijaId)
+            setVozaci(!vozaci);
+            setTuraId(item.turaId)
+          }}
+        >
+        <img src="https://www.freeiconspng.com/uploads/driver-icon-10.png" className='w-12 h-12' alt="Driver Svg Icon" />
+
+        </button>
+      </td>
     </tr>
   )
 }
 
-export default VozacPrihvaceneListItem
+export default DispecerPrihvaceneTureListItem

@@ -73,6 +73,34 @@ const Header = () => {
           </Link>
         </div>
       )}
+      {user?.role === "Dispecer" && (
+        <div className="flex  py-2 px-4 shadow-gray-300 justify-center">
+          <Link
+            to={"/"}
+            className=" hover:text-primary duration-300 border-x-2 px-4 border-gray-300"
+          >
+            Home
+          </Link>
+          <Link
+            to={"/dispecerTure"}
+            className=" hover:text-primary duration-300 px-4"
+          >
+            Ture
+          </Link>
+          <Link
+            to={"/dispecerVozaci"}
+            className=" hover:text-primary duration-300 border-x-2 px-4  border-gray-300"
+          >
+            Vozaci
+          </Link>
+          <Link
+            to={"/dispecerKompanije"}
+            className=" hover:text-primary duration-300 px-4"
+          >
+            Kompanije
+          </Link>
+        </div>
+      )}
       {user ? (
         <Link
           to={user ? `/account` : "/login"}

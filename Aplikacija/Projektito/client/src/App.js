@@ -19,6 +19,9 @@ import VozacPonudjene from "./Pages/VozacPonudjene.js";
 import VozacPrihvacene from "./Pages/VozacPrihvacene.js";
 import VozacDodeljene from "./Pages/VozacDodeljene.js";
 import KompanijaTure from "./Pages/KompanijaTure.js";
+import DispecerTure from "./Pages/DispecerTure.js";
+import DispecerVozaci from "./Pages/DispecerVozaci.js";
+import DispecerKompanije from "./Pages/DispecerKompanije.js";
 axios.defaults.baseURL = "http://localhost:5026";
 axios.defaults.withCredentials = true;
 
@@ -42,6 +45,10 @@ function App() {
           <Route path="/vozacprihvacene" element={<VozacPrihvacene />}></Route>
           <Route path="/vozacdodeljene" element={<VozacDodeljene />}></Route>
           <Route path="/kompanijaTure" element={<KompanijaTure />}></Route>
+          <Route path="/dispecerTure" element={<DispecerTure />}></Route>
+          <Route path="/dispecerVozaci" element={<DispecerVozaci />}></Route>
+          <Route path="/dispecerKompanije" element={<DispecerKompanije />}></Route>
+
         </Route>
       </Routes>
     </UserContextProvider>

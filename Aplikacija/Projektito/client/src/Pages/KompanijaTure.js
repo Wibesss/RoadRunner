@@ -7,7 +7,7 @@ import KompanijaTuraListItem from "./KompanijaTuraListItem";
 import FormaZaDodavanjeTura from "./FormaZaDodavanjeTura";
 import { flushSync } from "react-dom";
 import VozaciZaTuruListItem from "./VozaciZaTuruListItem";
-
+import PrikazDodeljenogVozaca from "./PrikazDodeljenogVozaca";
 const KompanijaTure = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -40,6 +40,8 @@ const KompanijaTure = () => {
   const [vozaci, setVozaci] = useState();
   const [lastTura, setLastTura] = useState(0);
   const [prikaziVozace, setPrikaziVozace] = useState(false);
+  const [prikaziVozaca, setPrikaziVozaca] = useState(false);
+  const [dodeljenVozac, setDodeljenVozac] = useState();
 
   const listref = useRef(null);
   const tableRef = useRef(null);
@@ -58,7 +60,6 @@ const KompanijaTure = () => {
         setVozaciCurrent(vozaci.slice(indexOfFirstItemV, indexOfLastItemV));
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     ready,
@@ -93,11 +94,28 @@ const KompanijaTure = () => {
         .post(`Tura/AddDodeljenaTura/${selectedVozac}/${lastTura}`, {}, config)
         .then((response) => {
           if (response.status === 200) {
-            setVozaciCurrent([]);
+            setPrikaziVozace(false);
             setObrisano(!obrisano);
           } else
             console.log("Server responded with status code " + response.status);
         });
+    } catch (ex) {
+      console.log(ex.message);
+    }
+  };
+  const handlePrikaziVozaca = (id) => {
+    try {
+      setLastTura(id);
+      if (lastTura !== id) {
+        axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
+          console.log(response.data);
+          setDodeljenVozac(response.data);
+          setPrikaziVozaca(true);
+          setPrikaziVozace(false);
+        });
+      } else {
+        setPrikaziVozaca(!prikaziVozaca);
+      }
     } catch (ex) {
       console.log(ex);
     }
@@ -112,6 +130,7 @@ const KompanijaTure = () => {
         setVozaciCurrent(
           response.data.slice(indexOfFirstItemV, indexOfLastItemV)
         );
+        setPrikaziVozaca(false);
         setPrikaziVozace(true);
         setSelectedVozac(0);
       });
@@ -233,6 +252,7 @@ const KompanijaTure = () => {
                       handleDelete={handleDelete}
                       handlePrikazi={handlePrikazi}
                       key={ind}
+                      handlePrikaziVozaca={handlePrikaziVozaca}
                     />
                   ))}
                   {currentItems.length === 0 && (
@@ -285,8 +305,13 @@ const KompanijaTure = () => {
                     selectedVozac={selectedVozac}
                   />
                 ))}
+              {prikaziVozaca === true && (
+                <PrikazDodeljenogVozaca
+                  vozac={dodeljenVozac}
+                ></PrikazDodeljenogVozaca>
+              )}
             </div>
-            {selectedVozac !== 0 && (
+            {selectedVozac !== 0 && prikaziVozace === true && (
               <div className="flex justify-center">
                 <button className="btn-primary w-1/6" onClick={handleIzaberi}>
                   Izaberi

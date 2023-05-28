@@ -1,6 +1,6 @@
 import React from 'react'
 
-const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD }) => {
+const VozacDodeljeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,handleStart,handleEnd }) => {
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">{item.tipRobe}</td>
@@ -19,7 +19,7 @@ const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTu
       <td className=" p-4 whitespace-nowrap">
         {item.zapreminaRobe === null ? "-" : item.zapreminaRobe}
       </td>
-      <td className=" p-4 whitespace-nowrap">{item.turaId}</td>
+      <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className=" p-4 whitespace-nowrap">{item.duzina}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
@@ -47,8 +47,35 @@ const VozacPrihvaceneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTu
           </svg>
         </button>
       </td>
+      <td>
+        <button
+          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          onClick={() =>{
+            handleStart(item.id)
+          }}
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </svg>
+
+        </button>
+      </td>
+      <td>
+        <button
+          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          onClick={() =>{
+            handleEnd(item.id)
+          }}
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+
+
+        </button>
+      </td>
     </tr>
   )
 }
 
-export default VozacPrihvaceneListItem
+export default VozacDodeljeneListItem
