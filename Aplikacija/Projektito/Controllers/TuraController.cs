@@ -686,8 +686,90 @@ public class TuraController : ControllerBase
    public async Task<ActionResult> GetVozaceZaTuru(int idTure)
    {
         try{
-            var vozaci= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure && p.Prosledjena==true).Include(p=>p.Vozac).Select(p=>p.Vozac).ToListAsync();
+           var vozaci = await Context!.PrihvacenaTura!
+            .Where(p => p.Tura!.ID == idTure && p.Prosledjena == true)
+            .Include(p => p.Vozac)
+            .Select(p => new { p.Vozac, p.GenerisanaCena })
+            .ToListAsync();
+
+        var vozaciWithSrednja = new List<(dynamic Vozac, decimal Srednja,double GenerisanaCena)>();
+
+        foreach (var v in vozaci)
+        {
+            decimal srednja = 0;
+            var ocene = await Context.Ocena!
+                .Where(p => p!.Vozac!.ID == v.Vozac!.ID)
+                .ToListAsync();
+            var ukupniBrojOcena = ocene.Count;
+            var ukupneOcene = ocene.Sum(item => item.Broj);
+            if (ukupniBrojOcena != 0)
+            {
+                srednja = (decimal)ukupneOcene / ukupniBrojOcena;
+            }
+            vozaciWithSrednja.Add((v.Vozac!, srednja,v.GenerisanaCena));
+        }
+
+        var sortedVozaci = vozaciWithSrednja.OrderByDescending(v => v.Srednja).Select(v => new { v.Vozac, v.GenerisanaCena }).ToList();
+        return Ok(sortedVozaci);
+
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+   [Authorize(Roles ="Dispecer")]
+   [Route("GetVozaceZaTuruDispecer/{idTure}")]
+   [HttpGet]
+   public async Task<ActionResult> GetVozaceZaTuruDispecer(int idTure)
+   {
+        try{
+            var vozaci= await Context!.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure).Include(p=>p.Vozac)
+            .Select(p=> new {
+                p.Vozac,
+                p.GenerisanaCena,
+                p.Vozilo!.Marka,
+                p.Vozilo!.Model,
+                p.Vozilo!.Slika,
+            
+            }).ToListAsync();
             return Ok(vozaci);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+   [Authorize(Roles ="Dispecer")]
+   [Route("GetNoveTureDispecer")]
+    [HttpGet]
+   public async Task<IActionResult> GetNoveTureDispecer()
+   {
+        try{
+            var ture= await Context!.Tura!.Include(p=>p.Kompanija).Include(p=>p.TipRobe).Where(p=>p.Status!="Dodeljena" && p.Status!= "Zavrsena" && p.Status!= "U toku").ToListAsync();
+            var ponudjeneTure = await Context!.PonudjenaTura!.Include(p=>p.Tura).ToListAsync();
+            var prihvaceneTure = await Context!.PrihvacenaTura!.Include(p=>p.Tura).ToListAsync();
+            ture.RemoveAll(tura => ponudjeneTure.Any(ponudjena => ponudjena.Tura!.ID == tura.ID));
+            ture.RemoveAll(tura => prihvaceneTure.Any(prihvacena => prihvacena.Tura!.ID == tura.ID));
+            var noveTure = ture.Select(p => new {
+            TuraId=p.ID,
+            TipRobe = p.TipRobe!.Tip,
+            TezinaRobe = p!.TezinaRobe,
+            DuzinaRobe = p!.DuzinaRobe,
+            SirinaRobe = p!.SirinaRobe,
+            VisinaRobe = p!.VisinaRobe,
+            ZapreminaRobe = p!.Zapremina,
+            PocetnaGeografskaSirina = p!.PocetnaGeografskaSirina,
+            PocetnaGeografskaDuzina = p!.PocetnaGeografskaDuzina,
+            OdredisnaGeografskaSirina = p!.OdredisnaGeografskaSirina,
+            OdredisnaGeografskaDuzina = p!.OdredisnaGeografskaDuzina,
+            Status = p!.Status,
+            Duzina = p!.Duzina,
+            DatumPocetka = p!.DatumPocetka,
+            PredvidjeniKraj = p!.PredvidjeniKraj,
+            KompanijaNaziv = p.Kompanija!.Naziv
+            });
+            return Ok(noveTure);
         }
         catch(Exception e)
         {
