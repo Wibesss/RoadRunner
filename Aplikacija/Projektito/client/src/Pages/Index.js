@@ -40,6 +40,9 @@ const Index = () => {
               draggable: true,
               progress: undefined,
               theme: "dark",
+              css: `
+              background-color: white;
+              `,
             });
             // Handle the received message as needed
           });
