@@ -1,6 +1,6 @@
 import React from 'react'
 
-const VozacDodeljeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,handleStart,handleEnd }) => {
+const VozacDodeljeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,handleStart,handleEnd,lastUpdate,setLastUpdate }) => {
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">{item.tipRobe}</td>
@@ -29,7 +29,13 @@ const VozacDodeljeneListItem = ({ item ,mapa, setMapa, setTuraId,setPonudjenaTur
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           onClick={() =>{
-            setMapa(!mapa);
+            if (lastUpdate === item.turaId) {
+              setMapa(false);
+              setLastUpdate(0);
+            } else {
+              setMapa(true);
+              setLastUpdate(item.turaId);
+            }
             setTuraId(item.turaId);
             setPonudjenaTuraId(item.id);
             setPocetnaGS(item.pocetnaGeografskaSirina);

@@ -6,7 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import DispecerNoveTureVozaciListItem from './DispecerNoveTureVozaciListItem';
 
-const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => {
+const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci,setMapa}) => {
     const {user, setUser } = useContext(UserContext);
     const config = {
         headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -37,7 +37,7 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
           console.log(err.message)
         } 
     }        
-    }, [ready,user,poslati]);
+    }, [ready,user,poslati,turaId]);
     const sorting = (col)=> {
       if(order==="ASC")
       {
@@ -63,6 +63,7 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
             {
                 axios.post(`Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`, config).then((response) => {
                     setPoslati(!poslati);
+                    setMapa(false);
                     setVozaci("");
                 });
             }
@@ -87,6 +88,7 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci}) => 
     return (
       
       <div className="flex flex-col mt-2">
+        {turaId}
         <div className="overflow-auto w-full">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">

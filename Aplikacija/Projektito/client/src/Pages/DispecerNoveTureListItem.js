@@ -1,6 +1,7 @@
 import React from 'react'
 
-const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,vozaci,setVozaci }) => {
+const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,vozaci,setVozaci,lastUpdate,
+  setLastUpdate, lastUpdateVozaci,setLastUpdateVozaci}) => {
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">{item.tipRobe}</td>
@@ -19,7 +20,7 @@ const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,
       <td className=" p-4 whitespace-nowrap">
         {item.zapreminaRobe === null ? "-" : item.zapreminaRobe}
       </td>
-      <td className=" p-4 whitespace-nowrap">{item.id}</td>
+      <td className=" p-4 whitespace-nowrap">{item.turaId}</td>
       <td className=" p-4 whitespace-nowrap">{item.duzina}</td>
       <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
@@ -28,7 +29,15 @@ const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           onClick={() =>{
-            setMapa(!mapa);
+            if (lastUpdate === item.turaId) {
+              setMapa(false);
+              setLastUpdate(0);
+            } else {
+              setMapa(true);
+              setVozaci(false);
+              setLastUpdateVozaci(0);
+              setLastUpdate(item.turaId);
+            }
             setPocetnaGS(item.pocetnaGeografskaSirina);
             setPocetnaGD(item.pocetnaGeografskaDuzina);
             setKrajnjaGS(item.odredisnaGeografskaSirina);
@@ -48,7 +57,15 @@ const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           onClick={() =>{
-            setVozaci(!vozaci);
+            if (lastUpdateVozaci === item.turaId) {
+              setVozaci(false);
+              setLastUpdateVozaci(0);
+            } else {
+              setVozaci(true);
+              setMapa(false);
+              setLastUpdate(0)
+              setLastUpdateVozaci(item.turaId);
+            }
             setTuraId(item.turaId)
           }}
         >

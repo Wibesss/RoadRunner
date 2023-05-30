@@ -25,7 +25,10 @@ const DispecerNoveTure = () => {
     const [stanje,setStanje] = useState(0);
     const [obrisano,setObrisano] = useState(false);
     const [vozaci,setVozaci]=useState("");
-    const [poslati,setPoslati] = useState(false)
+    const [poslati,setPoslati] = useState(false);
+    const [lastUpdate,setLastUpdate] = useState(0);
+    const [lastUpdateVozaci,setLastUpdateVozaci] = useState(0);
+
     useEffect(() => {
       if(user)
         {
@@ -40,7 +43,7 @@ const DispecerNoveTure = () => {
           console.log(err.message)
         } 
     }        
-    }, [ready,user,obrisano,stanje,poslati]);
+    }, [ready,user,obrisano,stanje,poslati,turaId,mapa]);
     const sorting = (col)=> {
       if(order==="ASC")
       {
@@ -68,6 +71,7 @@ const DispecerNoveTure = () => {
     return (
       
       <div className="flex flex-col mt-2">
+        {console.log(turaId)}
         <h3 className="text-center">Nove ture</h3>
         <div className="overflow-auto w-full">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
@@ -160,6 +164,10 @@ const DispecerNoveTure = () => {
                         setKrajnjaGD={setKrajnjaGD}
                         vozaci={vozaci}
                         setVozaci={setVozaci}
+                        lastUpdate={lastUpdate}
+                        setLastUpdate={setLastUpdate}
+                        lastUpdateVozaci={lastUpdateVozaci}
+                        setLastUpdateVozaci={setLastUpdateVozaci} 
                         />
                       ))}
                       {currentItems.length === 0 && (
@@ -186,6 +194,7 @@ const DispecerNoveTure = () => {
                   poslati={poslati}
                   setPoslati={setPoslati}
                   setVozaci={setVozaci}
+                  setMapa={setMapa}
                 />
               )}
       </div>

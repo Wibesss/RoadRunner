@@ -38,7 +38,7 @@ const DispecerPrihvaceneTureVozaci = ({turaId,poslati,setPoslati,setVozaci,kompa
           console.log(err.message)
         } 
     }        
-    }, [ready,user,poslati]);
+    }, [ready,user,poslati,turaId]);
     const sorting = (col)=> {
       if(order==="ASC")
       {

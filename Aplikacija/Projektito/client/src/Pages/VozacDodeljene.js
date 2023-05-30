@@ -25,6 +25,7 @@ const VozacDodeljene = () => {
     const [krajnjaGD,setKrajnjaGD] = useState("");
     const [stanje,setStanje] = useState(0);
     const [obrisano,setObrisano] = useState(false);
+    const [lastUpdate,setLastUpdate] = useState(0)
     useEffect(() => {
       if(user)
         {
@@ -192,7 +193,9 @@ const VozacDodeljene = () => {
                         setKrajnjaGS={setKrajnjaGS}
                         setKrajnjaGD={setKrajnjaGD}
                         handleStart={handleStart}
-                        handleEnd={handleEnd}  
+                        handleEnd={handleEnd}
+                        lastUpdate={lastUpdate}
+                        setLastUpdate={setLastUpdate}  
                         />
                       ))}
                       {currentItems.length === 0 && (
