@@ -8,11 +8,14 @@ public class TuraController : ControllerBase
 {
     
    public Context Context {get; set;}
-   
-   public TuraController(Context context)
-   {
-        Context=context;
-   }
+    public readonly IHubContext<NotificationsHub> _hubContext;
+
+        public TuraController(Context context, IHubContext<NotificationsHub> hubContext)
+        {
+            Context = context;
+            _hubContext = hubContext;
+        }
+        
    [Authorize(Roles ="Dispecer")]
    [Route("AddTipTure")]
    [HttpPost]
@@ -270,6 +273,17 @@ public class TuraController : ControllerBase
                     }
                 }
                 await Context.SaveChangesAsync();
+
+                var connectionId = await Context.ConnectionInfoo!
+                .Where(p => p.korisnickoIme == "BoziCCCa")
+                .Select(p => p.ConnedtionId)
+                .FirstOrDefaultAsync();
+
+            if (connectionId != null)
+            {
+                await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Dodeljena vam je nova tura!");
+            }
+
                 return Ok();
             }
             catch(Exception e)
@@ -776,5 +790,20 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+
+   [Route("PosaljiPoruku")]
+   [HttpGet]
+     public async Task PosaljiPoruku()
+    {
+               var connectionId = await Context.ConnectionInfoo!
+                .Where(p => p.korisnickoIme == "BoziCCCa")
+                .Select(p => p.ConnedtionId)
+                .FirstOrDefaultAsync();
+
+            if (connectionId != null)
+            {
+                await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Dodeljena vam je nova tura!");
+            }
+     }
 
 }

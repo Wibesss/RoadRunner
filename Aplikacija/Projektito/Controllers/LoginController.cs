@@ -114,7 +114,6 @@ public class LoginController : ControllerBase
         var cookie="";
         if (Request.Cookies.TryGetValue("Token", out string? cookieValue))
         {
-            // Cookie value is available in the 'cookieValue' variable
             cookie=cookieValue;
         }
         if(cookie!="")
