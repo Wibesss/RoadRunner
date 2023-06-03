@@ -205,7 +205,7 @@ public class TuraController : ControllerBase
         }
 
    }
-    //[Authorize(Roles ="Dispecer")]
+    [Authorize(Roles ="Dispecer")]
     [Route("AddPonudjenaTura/{idTure}/{idDispecera}/{idieviVozaca}")]
     [HttpPost]
     public async Task<IActionResult> AddPonudjenaTura(int idTure,int idDispecera,string idieviVozaca)

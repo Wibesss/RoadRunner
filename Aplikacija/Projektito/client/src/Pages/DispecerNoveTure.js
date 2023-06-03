@@ -8,7 +8,7 @@ import DispecerNoveTureListItem from './DispecerNoveTureListItem';
 import MapeDispecer from './MapeDispecer';
 import DispecerNoveTureVozaci from './DispecerNoveTureVozaci';
 const DispecerNoveTure = () => {
-    const {user, setUser } = useContext(UserContext);
+    const {user } = useContext(UserContext);
     const config = {
         headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
       };
