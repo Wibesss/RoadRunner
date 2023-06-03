@@ -71,7 +71,6 @@ const DispecerNoveTure = () => {
     return (
       
       <div className="flex flex-col mt-2">
-        {console.log(turaId)}
         <h3 className="text-center">Nove ture</h3>
         <div className="overflow-auto w-full">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">

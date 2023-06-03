@@ -14,7 +14,7 @@ public class KompanijaController : ControllerBase
   {
     Context=context;
   }
-
+  [AllowAnonymous]
   [Route("AddKompanija")]
   [HttpPost]
   public async Task<IActionResult> AddKompanija([FromBody]Kompanija komp)
@@ -54,7 +54,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
 }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("UpdateKompanija/{id}")]
     [HttpPut]
     public async Task<IActionResult> UpdateKompanija ([FromBody]Kompanija komp,int id)
@@ -111,7 +111,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Dispecer")]
     [Route("DeleteKompanija/{id}")]
     [HttpDelete]
     public async Task<IActionResult> DeleteKompanija (int id)
@@ -134,7 +134,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("UpdateSifra/{id}/{staraSifra}/{novaSifra}")]
     [HttpPut]
     public async Task<IActionResult>UpdateSifra(int id,string staraSifra, string novaSifra)
@@ -173,7 +173,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Dispecer")]
     [Route("GetKompanije")]
     [HttpGet]
     public async Task<IActionResult> GetKompanije()
@@ -187,7 +187,7 @@ public class KompanijaController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("OceniVozaca/{idKompanije}/{idVozaca}")]
     [HttpPost]
     public async Task<IActionResult> OceniVozaca([FromBody] Ocena o,int idKompanije,int idVozaca)
@@ -215,7 +215,7 @@ public class KompanijaController : ControllerBase
         //     return BadRequest("Tura nije zavrsena ili ne postoji");
         // }
     }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
     [HttpPost]
     public async Task<IActionResult> FavorizujVozaca(int idKompanije,int idVozaca)
@@ -262,6 +262,7 @@ public class KompanijaController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+     [Authorize(Roles ="Dispecer,Kompanija")]
      [Route("GetFavorizacije/{idKompanije}")]
      [HttpGet]
     public async Task<IActionResult> GetFavorizacije(int idKompanije)
@@ -279,18 +280,18 @@ public class KompanijaController : ControllerBase
         }
     }
 
-    [AllowAnonymous]
-    [Route("GetKompanija/{id}")]
-    [HttpGet]
-    public async Task<IActionResult>GetKompanija(int id)
-    {
-        try{
-            var Kompanija = await Context.Kompanija!.FindAsync(id);
-            return Ok(Kompanija);
-        }
-        catch(Exception ex)
-        {
-           return BadRequest(ex.Message);
-        }
-    }
+    // [AllowAnonymous]
+    // [Route("GetKompanija/{id}")]
+    // [HttpGet]
+    // public async Task<IActionResult>GetKompanija(int id)
+    // {
+    //     try{
+    //         var Kompanija = await Context.Kompanija!.FindAsync(id);
+    //         return Ok(Kompanija);
+    //     }
+    //     catch(Exception ex)
+    //     {
+    //        return BadRequest(ex.Message);
+    //     }
+    // }
 }

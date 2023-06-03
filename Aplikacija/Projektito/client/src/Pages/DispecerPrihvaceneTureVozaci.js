@@ -68,6 +68,8 @@ const DispecerPrihvaceneTureVozaci = ({turaId,poslati,setPoslati,setVozaci,kompa
                     setObrisano(!obrisano);
                     setVozaci("");
                 });
+                axios.delete(`/Tura/DeletePonudjeneTure/${turaId}`, config).then((response) => {
+                });
             }
             else
             {

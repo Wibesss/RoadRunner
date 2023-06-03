@@ -28,6 +28,7 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci,setMa
         {
         try{
           axios.get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config).then((response) => {
+            console.log(response.data)
             setCurrentItems(response.data);
             setReady(true);
           });
@@ -88,7 +89,6 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci,setMa
     return (
       
       <div className="flex flex-col mt-2">
-        {turaId}
         <div className="overflow-auto w-full">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">

@@ -92,7 +92,7 @@ const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD
     if(auto!==null)
     {
       try{
-        axios.post(`Tura/AddPrihvacenaTura/${ponudjenaTuraId}/${auto}`, config).then((response) => {
+        axios.post(`Tura/AddPrihvacenaTura/${ponudjenaTuraId}/${auto}`,{}, config).then((response) => {
         });
         axios.delete(`Tura/DeletePonudjenaTura/${turaId}/${vozacId}`, config).then((response) => {
           setObrisano(true);

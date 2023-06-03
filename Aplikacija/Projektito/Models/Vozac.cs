@@ -38,7 +38,7 @@ namespace Models
         public List<PonudjenaTura>? PonudjeneTure { get; set; }
         [JsonIgnore]
         public List<PrihvacenaTura>? PrihvaceneTure {get; set;}
-
+        [JsonIgnore]
         public List<DodeljenaTuraa>? DodeljeneTure{get; set;}
     }
 }
