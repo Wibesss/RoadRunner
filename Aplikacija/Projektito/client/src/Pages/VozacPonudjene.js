@@ -108,6 +108,7 @@ const VozacPonudjene = () => {
     return (
       
       <div className="flex flex-col mt-2 items-center min-h-screen">
+        {console.log(lastUpdate)}
         <div className="overflow-auto w-2/3">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
@@ -195,6 +196,8 @@ const VozacPonudjene = () => {
                         setKrajnjaGD={setKrajnjaGD}
                         handleDelete={handleDelete}
                         vID = {user.id}
+                        lastUpdate={lastUpdate}
+                        setLastUpdate={setLastUpdate}
                         />
                       ))}
                       {currentItems.length === 0 && (

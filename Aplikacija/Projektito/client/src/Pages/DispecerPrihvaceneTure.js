@@ -27,6 +27,8 @@ const DispecerPrihvaceneTure = () => {
     const [vozaci,setVozaci]=useState("");
     const [poslati,setPoslati] = useState(false);
     const [kompanijaID,setKompanijaID] = useState("");
+    const [lastUpdate,setLastUpdate] = useState(0);
+    const [lastUpdateVozaci,setLastUpdateVozaci] = useState(0);
     useEffect(() => {
       if(user)
         {
@@ -41,7 +43,7 @@ const DispecerPrihvaceneTure = () => {
           console.log(err.message)
         } 
     }        
-    }, [ready,user,obrisano,stanje,poslati]);
+    }, [ready,user,obrisano,stanje,poslati,turaId]);
     const sorting = (col)=> {
       if(order==="ASC")
       {
@@ -162,6 +164,10 @@ const DispecerPrihvaceneTure = () => {
                         vozaci={vozaci}
                         setVozaci={setVozaci}
                         setKompanijaID={setKompanijaID}
+                        lastUpdate={lastUpdate}
+                        setLastUpdate={setLastUpdate}
+                        lastUpdateVozaci={lastUpdateVozaci}
+                        setLastUpdateVozaci={setLastUpdateVozaci}  
                         />
                       ))}
                       {currentItems.length === 0 && (
