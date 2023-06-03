@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Login from "./Pages/Login.js";
 import Layout from "./Layout.js";
@@ -22,10 +22,17 @@ import KompanijaTure from "./Pages/KompanijaTure.js";
 import DispecerTure from "./Pages/DispecerTure.js";
 import DispecerVozaci from "./Pages/DispecerVozaci.js";
 import DispecerKompanije from "./Pages/DispecerKompanije.js";
+import { UserContext } from "./UserContext";
+import about1 from "./assets/img/about/1.jpg";
+import about2 from "./assets/img/about/2.jpg";
+import about3 from "./assets/img/about/3.jpg";
+import about4 from "./assets/img/about/4.jpg";
+
 axios.defaults.baseURL = "http://localhost:5026";
 axios.defaults.withCredentials = true;
 
 function App() {
+  const { user } = useContext(UserContext);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -69,7 +76,7 @@ function App() {
                 d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
               />
             </svg>
-            <span className="font-bold ">RoadRunner</span>
+            <span className="font-bold  ">RoadRunner</span>
           </Link>
           <button
             className="navbar-toggler"
@@ -83,7 +90,7 @@ function App() {
             Menu
             <i className="fa fa-bars ms-1"></i>
           </button>
-          <div className="collapse navbar-collapse" id="navbarResponsive">
+          <div className="navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
               <li className="nav-item">
                 <a className="nav-link" href="#services">
@@ -187,188 +194,16 @@ function App() {
           </div>
         </div>
       </section>
-      {/* <!-- Portfolio Grid--> */}
-      <section className="page-section bg-light" id="portfolio">
-        <div className="container">
-          <div className="text-center">
-            <h2 className="section-heading text-uppercase">Portfolio</h2>
-            <h3 className="section-subheading text-muted">
-              Lorem ipsum dolor sit amet consectetur.
-            </h3>
-          </div>
-          <div className="row">
-            <div className="col-lg-4 col-sm-6 mb-4">
-              {/* <!-- Portfolio item 1--> */}
-              <div className="portfolio-item">
-                <a
-                  className="portfolio-link"
-                  data-bs-toggle="modal"
-                  href="#portfolioModal1"
-                >
-                  <div className="portfolio-hover">
-                    <div className="portfolio-hover-content">
-                      <i className="fa fa-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/1.jpg"
-                    alt="..."
-                  />
-                </a>
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">Threads</div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    Illustration
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mb-4">
-              {/* <!-- Portfolio item 2--> */}
-              <div className="portfolio-item">
-                <a
-                  className="portfolio-link"
-                  data-bs-toggle="modal"
-                  href="#portfolioModal2"
-                >
-                  <div className="portfolio-hover">
-                    <div className="portfolio-hover-content">
-                      <i className="fa fa-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/2.jpg"
-                    alt="..."
-                  />
-                </a>
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">Explore</div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    Graphic Design
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mb-4">
-              {/* <!-- Portfolio item 3--> */}
-              <div className="portfolio-item">
-                <a
-                  className="portfolio-link"
-                  data-bs-toggle="modal"
-                  href="#portfolioModal3"
-                >
-                  <div className="portfolio-hover">
-                    <div className="portfolio-hover-content">
-                      <i className="fa fa-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/3.jpg"
-                    alt="..."
-                  />
-                </a>
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">Finish</div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    Identity
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mb-4 mb-lg-0">
-              {/* <!-- Portfolio item 4--> */}
-              <div className="portfolio-item">
-                <a
-                  className="portfolio-link"
-                  data-bs-toggle="modal"
-                  href="#portfolioModal4"
-                >
-                  <div className="portfolio-hover">
-                    <div className="portfolio-hover-content">
-                      <i className="fa fa-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/4.jpg"
-                    alt="..."
-                  />
-                </a>
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">Lines</div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    Branding
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mb-4 mb-sm-0">
-              {/* <!-- Portfolio item 5--> */}
-              <div className="portfolio-item">
-                <a
-                  className="portfolio-link"
-                  data-bs-toggle="modal"
-                  href="#portfolioModal5"
-                >
-                  <div className="portfolio-hover">
-                    <div className="portfolio-hover-content">
-                      <i className="fa fa-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/5.jpg"
-                    alt="..."
-                  />
-                </a>
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">Southwest</div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    Website Design
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-              {/* <!-- Portfolio item 6--> */}
-              <div className="portfolio-item">
-                <a
-                  className="portfolio-link"
-                  data-bs-toggle="modal"
-                  href="#portfolioModal6"
-                >
-                  <div className="portfolio-hover">
-                    <div className="portfolio-hover-content">
-                      <i className="fa fa-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/6.jpg"
-                    alt="..."
-                  />
-                </a>
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">Window</div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    Photography
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
       {/* <!-- About--> */}
       <section className="page-section" id="about">
         <div className="container">
           <div className="text-center">
-            <h2 className="section-heading text-uppercase">About</h2>
+            <h2 className="section-heading text-uppercase">
+              Saznaj više o nama
+            </h2>
             <h3 className="section-subheading text-muted">
-              Lorem ipsum dolor sit amet consectetur.
+              Mali pogled u razvoj aplikacije
             </h3>
           </div>
           <ul className="timeline">
@@ -376,21 +211,18 @@ function App() {
               <div className="timeline-image">
                 <img
                   className="rounded-circle img-fluid"
-                  src="assets/img/about/1.jpg"
+                  src={about1}
                   alt="..."
                 />
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>2009-2011</h4>
-                  <h4 className="subheading">Our Humble Beginnings</h4>
+                  <h4>Maj 2023</h4>
+                  <h4 className="subheading">Ideja aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Sunt ut voluptatum eius sapiente, totam reiciendis
-                    temporibus qui quibusdam, recusandae sit vero unde, sed,
-                    incidunt et ea quo dolore laudantium consectetur!
+                    Ideja ove aplikacije kreirana je nakon{" "}
                   </p>
                 </div>
               </div>
@@ -399,14 +231,14 @@ function App() {
               <div className="timeline-image">
                 <img
                   className="rounded-circle img-fluid"
-                  src="assets/img/about/2.jpg"
+                  src={about2}
                   alt="..."
                 />
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>March 2011</h4>
-                  <h4 className="subheading">An Agency is Born</h4>
+                  <h4>April 2023</h4>
+                  <h4 className="subheading">Projektovanje aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
@@ -422,14 +254,14 @@ function App() {
               <div className="timeline-image">
                 <img
                   className="rounded-circle img-fluid"
-                  src="assets/img/about/3.jpg"
+                  src={about3}
                   alt="..."
                 />
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>December 2015</h4>
-                  <h4 className="subheading">Transition to Full Service</h4>
+                  <h4>Maj 2024</h4>
+                  <h4 className="subheading">Izrada aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
@@ -445,14 +277,14 @@ function App() {
               <div className="timeline-image">
                 <img
                   className="rounded-circle img-fluid"
-                  src="assets/img/about/4.jpg"
+                  src={about4}
                   alt="..."
                 />
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
                   <h4>July 2020</h4>
-                  <h4 className="subheading">Phase Two Expansion</h4>
+                  <h4 className="subheading">Finalizacija aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
@@ -467,11 +299,11 @@ function App() {
             <li className="timeline-inverted">
               <div className="timeline-image">
                 <h4>
-                  Be Part
+                  Budite
                   <br />
-                  Of Our
+                  Deo
                   <br />
-                  Story!
+                  Naše Priče!
                 </h4>
               </div>
             </li>
