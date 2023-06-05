@@ -280,18 +280,18 @@ public class KompanijaController : ControllerBase
         }
     }
 
-    // [AllowAnonymous]
-    // [Route("GetKompanija/{id}")]
-    // [HttpGet]
-    // public async Task<IActionResult>GetKompanija(int id)
-    // {
-    //     try{
-    //         var Kompanija = await Context.Kompanija!.FindAsync(id);
-    //         return Ok(Kompanija);
-    //     }
-    //     catch(Exception ex)
-    //     {
-    //        return BadRequest(ex.Message);
-    //     }
-    // }
+    [AllowAnonymous]
+    [Route("GetKompanija/{id}")]
+    [HttpGet]
+    public async Task<IActionResult>GetKompanija(int id)
+    {
+        try{
+            var Kompanija = await Context.Kompanija!.FindAsync(id);
+            return Ok(Kompanija);
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
 }
