@@ -228,19 +228,19 @@ public class DispecerController : ControllerBase
         return BadRequest(ex.Message);
     }
     }
-    // [AllowAnonymous]
-    // [Route("GetDispecer/{id}")]
-    // [HttpGet]
-    // public async Task<IActionResult>GetDispecer(int id)
-    // {
-    //     try{
-    //         var Dispecer = await Context.Dispecer!.FindAsync(id);
-    //         return Ok(Dispecer);
-    //     }
-    //     catch(Exception ex)
-    //     {
-    //        return BadRequest(ex.Message);
-    //     }
-    // }
+    [AllowAnonymous]
+    [Route("GetDispecer/{id}")]
+    [HttpGet]
+    public async Task<IActionResult>GetDispecer(int id)
+    {
+        try{
+            var Dispecer = await Context.Dispecer!.FindAsync(id);
+            return Ok(Dispecer);
+        }
+        catch(Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
 
 }

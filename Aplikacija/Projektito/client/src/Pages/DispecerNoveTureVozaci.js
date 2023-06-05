@@ -6,17 +6,17 @@ import axios from "axios";
 import { useEffect } from "react";
 import DispecerNoveTureVozaciListItem from "./DispecerNoveTureVozaciListItem";
 
-const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci,setMapa}) => {
-    const {user, setUser } = useContext(UserContext);
-    const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
-      };
-    const [currentItems,setCurrentItems] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [order,setOrder] = useState("ASC");
-    const [stanje,setStanje] = useState(0);
-    const [odabraneStavke, setOdabraneStavke] = useState([]);
-    const toggleOdabranaStavka = (stavka) => {
+const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
+  const { user } = useContext(UserContext);
+  const config = {
+    headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
+  };
+  const [currentItems, setCurrentItems] = useState([]);
+  const [ready, setReady] = useState(false);
+  const [order, setOrder] = useState("ASC");
+  const [stanje, setStanje] = useState(0);
+  const [odabraneStavke, setOdabraneStavke] = useState([]);
+  const toggleOdabranaStavka = (stavka) => {
     const novaLista = odabraneStavke.includes(stavka)
       ? odabraneStavke.filter((item) => item !== stavka)
       : [...odabraneStavke, stavka];
@@ -32,54 +32,48 @@ const DispecerNoveTureVozaci = ({turaId , poslati , setPoslati , setVozaci,setMa
             setCurrentItems(response.data);
             setReady(true);
           });
-        }
-        catch(err)
-        {
-          console.log(err.message)
-        } 
-    }        
-    }, [ready,user,poslati]);
-    const sorting = (col)=> {
-      if(order==="ASC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] > b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("DSC");
-      }
-      if(order==="DSC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] < b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("ASC");
+      } catch (err) {
+        console.log(err.message);
       }
     }
-    const handlePrihvati = () => {
-        
-        try{
-            if(odabraneStavke!="")
-            {
-                axios.post(`Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`, config).then((response) => {
-                    setPoslati(!poslati);
-                    setVozaci("");
-                });
-            }
-            else
-            {
-                alert("Niste izabrali vozaca");
-            }
-        }
-        catch(err)
-        {
-            alert(err.message)
-        }
-      
-       
+  }, [ready, user, poslati]);
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] > b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] < b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("ASC");
+    }
+  };
+  const handlePrihvati = () => {
+    try {
+      if (odabraneStavke != "") {
+        axios
+          .post(
+            `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,
+            {},
+            config
+          )
+          .then((response) => {
+            setPoslati(!poslati);
+            setVozaci("");
+          });
+      } else {
+        alert("Niste izabrali vozaca");
       }
-    
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   if (!ready) {
     return "Loading...";
   } else {
