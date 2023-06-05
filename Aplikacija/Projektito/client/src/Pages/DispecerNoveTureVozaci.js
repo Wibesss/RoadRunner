@@ -25,6 +25,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
 
   useEffect(() => {
     if (user) {
+      console.log("a");
       try {
         axios
           .get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config)
@@ -36,7 +37,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
         console.log(err.message);
       }
     }
-  }, [ready, user, poslati]);
+  }, [ready, user, poslati, turaId]);
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>

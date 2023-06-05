@@ -112,11 +112,11 @@ const KompanijaTure = () => {
       });
   };
 
-  const handleOceni = (idKomp, idVozac, opis, ocena, e) => {
+  const handleOceni = (idKomp, idVozac, opis, ocena, idTure, e) => {
     e.preventDefault();
     axios
       .post(
-        `Kompanija/OceniVozaca/${idKomp}/${idVozac}`,
+        `Kompanija/OceniVozaca/${idKomp}/${idVozac}/${idTure}`,
         {
           opis: opis,
           broj: ocena,
@@ -140,7 +140,7 @@ const KompanijaTure = () => {
         setOcenjen(!ocenjen);
       })
       .catch((error) => {
-        alert(error.message);
+        alert(error.response.data.message);
       });
   };
 
@@ -411,6 +411,7 @@ const KompanijaTure = () => {
                   handleOceni={handleOceni}
                   user={user}
                   ocenjen={ocenjen}
+                  lastTura={lastTura}
                 ></PrikazVozacaZ>
               )}
             </div>
