@@ -10,6 +10,7 @@ const PrikazVozacaZ = ({
   handleOceni,
   user,
   ocenjen,
+  lastTura,
 }) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -148,7 +149,7 @@ const PrikazVozacaZ = ({
           </button>
           <form
             onSubmit={(e) =>
-              handleOceni(user.id, vozac.vozac.id, opis, value, e)
+              handleOceni(user.id, vozac.vozac.id, opis, value, lastTura, e)
             }
             className="flex flex-col items-center mt-4"
           >

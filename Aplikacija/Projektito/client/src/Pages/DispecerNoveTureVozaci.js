@@ -25,6 +25,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci ,setMap
 
   useEffect(() => {
     if (user) {
+      console.log("a");
       try {
         axios
           .get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config)
@@ -32,55 +33,48 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci ,setMap
             setCurrentItems(response.data);
             setReady(true);
           });
-        }
-        catch(err)
-        {
-          console.log(err.message)
-        } 
-    }        
-    }, [ready,user,poslati,turaId]);
-    const sorting = (col)=> {
-      if(order==="ASC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] > b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("DSC");
-      }
-      if(order==="DSC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] < b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("ASC");
+      } catch (err) {
+        console.log(err.message);
       }
     }
-    const handlePrihvati = () => {
-        
-        try{
-            if(odabraneStavke!="")
-            {
-                axios.post(`Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`, config).then((response) => {
-                    setPoslati(!poslati);
-                    setMapa(false);
-                    setVozaci("");
-                });
-            }
-            else
-            {
-                alert("Niste izabrali vozaca");
-            }
-        }
-        catch(err)
-        {
-            alert(err.message)
-        }
-      
-       
+  }, [ready, user, poslati, turaId]);
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] > b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] < b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("ASC");
+    }
+  };
+  const handlePrihvati = () => {
+    try {
+      if (odabraneStavke != "") {
+        axios
+          .post(
+            `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,
+            {},
+            config
+          )
+          .then((response) => {
+            setPoslati(!poslati);
+            setVozaci("");
+          });
+      } else {
+        alert("Niste izabrali vozaca");
       }
-    
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   if (!ready) {
     return "Loading...";
   } else {

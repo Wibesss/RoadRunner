@@ -188,18 +188,23 @@ public class KompanijaController : ControllerBase
         }
     }
     [Authorize(Roles ="Kompanija")]
-    [Route("OceniVozaca/{idKompanije}/{idVozaca}")]
+    [Route("OceniVozaca/{idKompanije}/{idVozaca}/{idTure}")]
     [HttpPost]
-    public async Task<IActionResult> OceniVozaca([FromBody] Ocena o,int idKompanije,int idVozaca)
+    public async Task<IActionResult> OceniVozaca([FromBody] Ocena o,int idKompanije,int idVozaca,int idTure)
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
+        var tura=await Context.Tura!.FindAsync(idTure);
 
+         var ocena=await Context.Ocena!.Where(p=>p.Tura!.ID==idTure && p.Vozac==vozac).FirstOrDefaultAsync();
          var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).Include(p=>p.Tura).FirstOrDefaultAsync();
+         if(ocena ==null)
+         {
          if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
          {
             o.Kompanija=kompanija;
             o.Vozac=vozac;
+            o.Tura=tura;
             try
             {
                 Context.Ocena!.Add(o);
@@ -213,7 +218,12 @@ public class KompanijaController : ControllerBase
         }
         else
         {
-            return BadRequest("Tura nije zavrsena ili ne postoji");
+            return BadRequest(new { message ="Tura nije zavrsena ili ne postoji"});
+        }
+        }
+        else
+        {
+            return BadRequest(new { message = "Vec ste ocenili vozaca za ovu turu!" });
         }
     }
     [Authorize(Roles ="Kompanija")]
