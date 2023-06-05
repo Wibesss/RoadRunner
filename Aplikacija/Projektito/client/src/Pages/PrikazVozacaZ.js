@@ -4,13 +4,21 @@ import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { Rating } from "@mui/material";
 
-const PrikazDodeljenogVozaca = ({ vozac }) => {
+const PrikazVozacaZ = ({
+  vozac,
+  handleFavorizuj,
+  handleOceni,
+  user,
+  ocenjen,
+}) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
 
   const [ocene, setOcene] = useState([]);
   const [oceneReady, setOceneReady] = useState(false);
+  const [value, setValue] = useState(0);
+  const [opis, setOpis] = useState("");
   useEffect(() => {
     (async function pom() {
       const response = await axios.get(
@@ -21,13 +29,12 @@ const PrikazDodeljenogVozaca = ({ vozac }) => {
       setOceneReady(true);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vozac.vozac.id]);
-
+  }, [vozac.vozac.id, ocenjen]);
   if (oceneReady && ocene.srednja !== undefined) {
     return (
       <div className="w-full h-fit mx-2 max-w-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
         <div className="flex  justify-end px-4 pt-4"></div>
-        <div className="flex flex-col items-center pb-10">
+        <div className="flex flex-col items-center">
           <img
             className="w-24 h-24 mb-3 rounded-full shadow-lg z-10"
             src={vozac.vozac.slika}
@@ -133,10 +140,40 @@ const PrikazDodeljenogVozaca = ({ vozac }) => {
             </div>
           </div>
           <p className="mt-8">Cena: {vozac.generisanaCena} din</p>
+          <button
+            className="btn-primary"
+            onClick={() => handleFavorizuj(user.id, vozac.vozac.id)}
+          >
+            Favorizuj
+          </button>
+          <form
+            onSubmit={(e) =>
+              handleOceni(user.id, vozac.vozac.id, opis, value, e)
+            }
+            className="flex flex-col items-center mt-4"
+          >
+            <Rating
+              name="simple-controlled"
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Opis"
+              required
+              onChange={(e) => {
+                setOpis(e.target.value);
+              }}
+            ></input>
+
+            <button className="btn-primary my-2">Oceni</button>
+          </form>
         </div>
       </div>
     );
   }
 };
 
-export default PrikazDodeljenogVozaca;
+export default PrikazVozacaZ;

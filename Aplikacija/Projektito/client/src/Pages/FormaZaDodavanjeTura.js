@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { forwardRef } from "react";
-import { DateTimePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import Mapa from "./Mapa";
@@ -93,7 +93,7 @@ const FormaZaDodavanjeTura = forwardRef(
               required
             ></input>
             <LocalizationProvider dateAdapter={AdapterDayjs} required>
-              <DateTimePicker
+              <DatePicker
                 label="Datum pocetka"
                 onChange={(newValue) => setDatumPocetka(newValue.toDate())}
                 required

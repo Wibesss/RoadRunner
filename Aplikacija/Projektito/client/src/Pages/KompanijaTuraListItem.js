@@ -5,6 +5,7 @@ const KompanijaTuraListItem = ({
   handleDelete,
   handlePrikazi,
   handlePrikaziVozaca,
+  handlePrikaziVozacaZ,
 }) => {
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -48,11 +49,21 @@ const KompanijaTuraListItem = ({
             Vozaci
           </button>
         )}
-        {item.status !== "Slobodna" && (
+        {item.status === "Dodeljena" && (
           <button
             className="font-medium text-green-400"
             onClick={() => {
               handlePrikaziVozaca(item.id);
+            }}
+          >
+            Vozac
+          </button>
+        )}
+        {item.status === "Zavrsena" && (
+          <button
+            className="font-medium text-green-400"
+            onClick={() => {
+              handlePrikaziVozacaZ(item.id);
             }}
           >
             Vozac

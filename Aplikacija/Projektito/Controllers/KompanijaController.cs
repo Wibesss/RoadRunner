@@ -194,9 +194,10 @@ public class KompanijaController : ControllerBase
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        // var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).FirstOrDefaultAsync();
-        // if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
-        // {
+
+         var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).Include(p=>p.Tura).FirstOrDefaultAsync();
+         if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
+         {
             o.Kompanija=kompanija;
             o.Vozac=vozac;
             try
@@ -209,11 +210,11 @@ public class KompanijaController : ControllerBase
             {
                 return BadRequest(ex.Message);
             }
-        // }
-        // else
-        // {
-        //     return BadRequest("Tura nije zavrsena ili ne postoji");
-        // }
+        }
+        else
+        {
+            return BadRequest("Tura nije zavrsena ili ne postoji");
+        }
     }
     [Authorize(Roles ="Kompanija")]
     [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
@@ -241,7 +242,7 @@ public class KompanijaController : ControllerBase
         }
         else
         {
-            return BadRequest("Nije moguce da ista kompanija favorizuje 2 puta istog vozaca");
+            return BadRequest(new { message = "Vozac je vec favorizovan!" });
         }
     }
     [Authorize(Roles ="Kompanija")]
