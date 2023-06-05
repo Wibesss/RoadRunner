@@ -6,7 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import DispecerNoveTureVozaciListItem from "./DispecerNoveTureVozaciListItem";
 
-const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
+const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci ,setMapa}) => {
   const { user } = useContext(UserContext);
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -62,7 +62,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
         try{
             if(odabraneStavke!="")
             {
-                axios.post(`Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,{}, config).then((response) => {
+                axios.post(`Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`, config).then((response) => {
                     setPoslati(!poslati);
                     setMapa(false);
                     setVozaci("");
@@ -102,7 +102,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 320 512"
-                      onClick={() => sorting("tipRobe")}
+                      onClick={() => sorting("ime")}
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
@@ -117,7 +117,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 320 512"
-                      onClick={() => sorting("tezinaRobe")}
+                      onClick={() => sorting("prezime")}
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
@@ -132,7 +132,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 320 512"
-                      onClick={() => sorting("duzinaRobe")}
+                      onClick={() => sorting("jmbg")}
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
@@ -147,7 +147,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 320 512"
-                      onClick={() => sorting("sirinaRobe")}
+                      onClick={() => sorting("email")}
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
@@ -162,7 +162,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 320 512"
-                      onClick={() => sorting("visinaRobe")}
+                      onClick={() => sorting("korisnickoIme")}
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
@@ -177,7 +177,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 320 512"
-                      onClick={() => sorting("zapremina")}
+                      onClick={() => sorting("brojTelefona")}
                     >
                       <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
                     </svg>
@@ -186,16 +186,6 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                   <div className="flex flex-row">
                     Srednja ocena
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-3 h-3 ml-1 mb-0"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewBox="0 0 320 512"
-                      onClick={() => sorting("duzina")}
-                    >
-                      <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z" />
-                    </svg>
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">

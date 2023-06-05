@@ -666,19 +666,27 @@ public class TuraController : ControllerBase
     public async Task<ActionResult>  ZapocniTuru(int idDodeljeneTure)
    {
         var dodeljena=await Context.DodeljeneTure!.Where(p=> p.ID==idDodeljeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
+        DateTime dt = DateTime.Now;
         if(dodeljena!.Tura!.Status=="Dodeljena")
         {
-            dodeljena!.Tura!.Status="U toku";
-            try
+            if(dt>=dodeljena!.Tura!.DatumPocetka)
             {
-                Context.DodeljeneTure!.Update(dodeljena);
-                await Context.SaveChangesAsync();
-                return Ok("Tura zapoceta!");
-            } 
-            catch(Exception e)
-            {
-                return BadRequest(e.Message);
+                dodeljena!.Tura!.Status="U toku";
+                try
+                {
+                    Context.DodeljeneTure!.Update(dodeljena);
+                    await Context.SaveChangesAsync();
+                    return Ok("Tura zapoceta!");
+                } 
+                catch(Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
             }
+            else
+            {
+                return BadRequest("Tura se ne moze startovati pre datuma pocetka");
+            } 
         }
         else
         {

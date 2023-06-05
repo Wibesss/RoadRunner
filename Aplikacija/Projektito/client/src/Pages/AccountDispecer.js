@@ -286,7 +286,7 @@ const AccountDispecer = () => {
             <div className="text-center">
               <div className="w-64 h-64 rounded-full mx-auto relative mb-20">
                 <img
-                  className="rounded-md border-black border-4"
+                  className="rounded-md border-black border-4 object-cover aspect-square min-w-full"
                   src={dispecer.slika}
                 />
               </div>
