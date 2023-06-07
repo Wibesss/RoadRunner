@@ -64,12 +64,9 @@ const KompanijaTure = () => {
         .then((response) => setTipovi(response.data));
 
       if (lastTura !== 0 && vozaci !== undefined) {
-        console.log(lastTura);
-        console.log(JSON.stringify(vozaci));
         setVozaciCurrent(vozaci.slice(indexOfFirstItemV, indexOfLastItemV));
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     ready,
     formaZaDodavanjeTure,
@@ -176,7 +173,6 @@ const KompanijaTure = () => {
       setLastTura(id);
       if (lastTura !== id) {
         axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
-          console.log(response.data);
           setDodeljenVozac(response.data);
           setPrikaziVozaca(true);
           setPrikaziVozace(false);
@@ -196,7 +192,6 @@ const KompanijaTure = () => {
       setLastTura(id);
       if (lastTura !== id) {
         axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
-          console.log(response.data);
           setVozacZ(response.data);
           setPrikaziVozaca(false);
           setPrikaziVozace(false);

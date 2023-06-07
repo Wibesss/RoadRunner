@@ -91,7 +91,6 @@ const FormaZaUpdatePrikolice = ({
             value={visina === null ? 0 : visina}
             required
             onChange={(e) => {
-              console.log("aaaa");
               setVisina(e.target.value);
             }}
           ></input>

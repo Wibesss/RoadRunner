@@ -311,7 +311,7 @@ public class TuraController : ControllerBase
             pt.Vozac=ponudjena!.Vozac;
             pt.Vozilo=vozilo;
             pt.Tura=ponudjena.Tura;
-            pt.GenerisanaCena=ponudjena.Tura!.Duzina*vozilo.CenaPoKilometru;
+            pt.GenerisanaCena=ponudjena.Tura!.Duzina*vozilo!.CenaPoKilometru;
             try
             {
                 Context.PrihvacenaTura!.Add(pt);

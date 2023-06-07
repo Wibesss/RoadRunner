@@ -54,7 +54,6 @@ const DispecerVozaci = () => {
       {
       try{
         axios.delete(`/Vozac/DeleteVozac/${vozacId}`, config).then((response) => {
-          console.log(response.data)
           setObrisano(true);
         });
       }

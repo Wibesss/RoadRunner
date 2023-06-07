@@ -25,7 +25,6 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci ,setMap
 
   useEffect(() => {
     if (user) {
-      console.log("a");
       try {
         axios
           .get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config)
@@ -65,6 +64,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci ,setMap
           )
           .then((response) => {
             setPoslati(!poslati);
+            setMapa(false);
             setVozaci("");
           });
       } else {

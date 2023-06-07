@@ -34,7 +34,6 @@ const KompanijaFavorizovani = () => {
           setCurrentPage(currentPage - 1);
         setReady(true);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, obrisano]);
 
   const handleOdfavorizuj = (idVozaca) => {

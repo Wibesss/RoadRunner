@@ -53,7 +53,6 @@ const DispecerKompanije = () => {
       {
       try{
         axios.delete(`/Kompanija/DeleteKompanija/${kompanijaId}`, config).then((response) => {
-          console.log(response.data)
           setObrisano(true);
         });
       }

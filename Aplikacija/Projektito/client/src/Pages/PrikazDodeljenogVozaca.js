@@ -20,7 +20,6 @@ const PrikazDodeljenogVozaca = ({ vozac }) => {
       setOcene(response.data);
       setOceneReady(true);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vozac.vozac.id]);
 
   if (oceneReady && ocene.srednja !== undefined) {

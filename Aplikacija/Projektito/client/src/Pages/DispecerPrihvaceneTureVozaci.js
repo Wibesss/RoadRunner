@@ -63,7 +63,6 @@ const DispecerPrihvaceneTureVozaci = ({turaId,poslati,setPoslati,setVozaci,kompa
             if(odabraneStavke!="")
             {
                 axios.put(`/Tura/ProslediTuru/${turaId}/${odabraneStavke}`,{}, config).then((response) => {
-                    console.log(response.data)
                     setPoslati(!poslati);
                     setObrisano(!obrisano);
                     setVozaci("");
@@ -92,7 +91,6 @@ const DispecerPrihvaceneTureVozaci = ({turaId,poslati,setPoslati,setVozaci,kompa
     return (
       
       <div className="flex flex-col mt-2">
-        {console.log(odabraneStavke)}
         <div className="overflow-auto ">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">

@@ -41,7 +41,6 @@ const AccountDispecer = () => {
   };
 
   useEffect(() => {
-    console.log(user);
     axios.get(`/Dispecer/GetDispecer/${user.id}`, config).then((response) => {
       setDispecer(response.data);
       setDispecerReady(true);
@@ -101,7 +100,6 @@ const AccountDispecer = () => {
     }
 
     if (Object.keys(validationErrors).length > 0) {
-      // Validation failed, display error messages
       Object.keys(validationErrors).forEach((property) => {
         alert(`Greška u polju ${property}: ${validationErrors[property]}`);
       });
@@ -124,19 +122,15 @@ const AccountDispecer = () => {
           )
           .then((response) => {
             if (response.status === 200) {
-              // Success, handle the response
               alert(response.data);
               setUpdateUser(!updateUser);
             } else {
-              // Handle other non-200 status codes
               console.log("Server returned status code " + response.status);
             }
           })
           .catch((error) => {
             if (error.response) {
-              // Request made and server responded with an error status
               if (error.response.status === 400) {
-                // Bad Request, handle the validation errors
                 const { errors } = error.response.data;
                 if (errors) {
                   Object.keys(errors).forEach((property) => {
@@ -164,14 +158,11 @@ const AccountDispecer = () => {
                   });
                 }
               } else {
-                // Other error status codes, handle them accordingly
                 console.log("Server returned status code " + error.response.status);
               }
             } else if (error.request) {
-              // The request was made but no response was received
               console.log("No response received");
             } else {
-              // Something else happened in making the request
               console.log("Error:", error.message);
             }
           });

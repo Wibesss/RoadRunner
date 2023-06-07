@@ -57,7 +57,6 @@ const KomponentaMape = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocetnaGD
         },
         routeWhileDragging: true,
         createMarker: (i, waypoint, n) => {
-          // Kreiranje ikone za waypoint
           return L.marker(waypoint.latLng, {
             icon: customMarkerIcon,
           });
