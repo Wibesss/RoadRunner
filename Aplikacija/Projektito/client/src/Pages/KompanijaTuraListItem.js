@@ -25,8 +25,6 @@ const KompanijaTuraListItem = ({
       <td className=" p-4 whitespace-nowrap">
         {item.zapremina === null ? "-" : item.zapremina}
       </td>
-      <td className=" p-4 whitespace-nowrap">{`${item.pocetnaGeografskaSirina},${item.pocetnaGeografskaDuzina} `}</td>
-      <td className=" p-4 whitespace-nowrap">{`${item.odredisnaGeografskaSirina},${item.odredisnaGeografskaDuzina} `}</td>
       <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.duzina}</td>

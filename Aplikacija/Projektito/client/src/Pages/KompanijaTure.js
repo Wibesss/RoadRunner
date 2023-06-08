@@ -316,12 +316,6 @@ const KompanijaTure = () => {
                       Zapremina robe
                     </th>
                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Od
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Do
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
                       Status
                     </th>
                     <th scope="col" className="px-6 py-3 whitespace-nowrap">
@@ -438,6 +432,7 @@ const KompanijaTure = () => {
               setDuzinaTure={setDuzinaTure}
               handlePotvrdiDodavanje={handlePotvrdiDodavanje}
               datumPocetka={datumPocetka}
+              tip={tip}
             />
           )}
         </div>

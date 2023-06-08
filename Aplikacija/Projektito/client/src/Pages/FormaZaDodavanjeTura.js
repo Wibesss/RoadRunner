@@ -23,11 +23,13 @@ const FormaZaDodavanjeTura = forwardRef(
       setDuzinaTure,
       handlePotvrdiDodavanje,
       datumPocetka,
+      tip
     },
     ref
   ) => {
     return (
       <div ref={ref} className="flex flex-col w-full items-center">
+        {console.log(tip)}
         <form
           className="flex flex-col items-center w-full"
           onSubmit={handlePotvrdiDodavanje}
@@ -51,6 +53,7 @@ const FormaZaDodavanjeTura = forwardRef(
               type="number"
               placeholder="Tezina(kg)"
               className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               required
               onChange={(e) => {
                 setTezina(e.target.value);
@@ -60,6 +63,7 @@ const FormaZaDodavanjeTura = forwardRef(
               type="number"
               placeholder="Duzina(cm)"
               className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               onChange={(e) => {
                 setDuzina(e.target.value);
               }}
@@ -69,6 +73,7 @@ const FormaZaDodavanjeTura = forwardRef(
               type="number"
               placeholder="Sirina(cm)"
               className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               onChange={(e) => {
                 setSirina(e.target.value);
               }}
@@ -78,6 +83,7 @@ const FormaZaDodavanjeTura = forwardRef(
               type="number"
               placeholder="Visina(cm)"
               className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               onChange={(e) => {
                 setVisina(e.target.value);
               }}
@@ -87,6 +93,7 @@ const FormaZaDodavanjeTura = forwardRef(
               type="number"
               placeholder="Zapremina(l)"
               className="mx-2 my-2"
+              disabled={tip!=='Tecnost'}
               onChange={(e) => {
                 setZapremina(e.target.value);
               }}
