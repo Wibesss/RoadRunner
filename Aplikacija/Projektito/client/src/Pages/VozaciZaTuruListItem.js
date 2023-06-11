@@ -21,7 +21,6 @@ const VozaciZaTuruListItem = ({ item, onClick, selectedVozac }) => {
       setOcene(response.data);
       setOceneReady(true);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.vozac.id, selectedVozac]);
 
   const linkClasses = () => {

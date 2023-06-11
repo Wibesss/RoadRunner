@@ -66,43 +66,11 @@ const VozacPonudjene = () => {
       alert(err.message);
     }
   };
-  // const handleClick = (e) => {
-  //   setMapa(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].mapa
-  //   );
-  //   setTuraId(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0]
-  //       .turaId
-  //   );
-  //   setPonudjenaTuraId(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].id
-  //   );
-  //   setPocetnaGS(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].pocetnaGS
-  //   );
-  //   setPocetnaGD(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].pocetnaGD
-  //   );
-  //   setKrajnjaGS(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].krajnjaGS
-  //   );
-  //   setKrajnjaGD(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].krajnjaGD
-  //   );
-  //   if (lastUpdate === e.target.id) {
-  //     setLastUpdate(e.target.id);
-  //     setMapa(!mapa);
-  //   } else {
-  //     setLastUpdate(e.target.id);
-  //     setMapa(true);
-  //   }
-  // };
   if (!ready) {
     return "Loading...";
   } else {
     return (
       <div className="flex flex-col mt-2 items-center min-h-screen">
-        {console.log(lastUpdate)}
         <div className="overflow-auto w-2/3">
           <table className="w-full text-sm text-left text-gray-500  shadow-md ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">

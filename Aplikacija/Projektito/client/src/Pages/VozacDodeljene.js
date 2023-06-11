@@ -64,6 +64,8 @@ const VozacDodeljene = () => {
         axios.put(`/Tura/ZapocniTuru/${id}`,[], config).then((response) => {
           const prom = stanje + 1;
           setStanje(prom);
+        }).catch(error => {
+          alert(error.response.data)
         });
       }
       catch(err)

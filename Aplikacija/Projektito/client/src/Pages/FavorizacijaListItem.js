@@ -29,7 +29,6 @@ const FavorizacijaListItem = ({
       setOceneReady(true);
     })();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.id, obrisano]);
 
   const toggleDropdown = () => {
