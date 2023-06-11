@@ -78,6 +78,11 @@ const RegisterVozac = () => {
         validationErrors.Broj =
           "Broj mora da se sastoji samo od cifara i mora da ih bude od 7 do 11.";
       }
+      if(photo === null)
+      {
+        validationErrors.Photo =
+          "Unesite sliku.";
+      }
 
       if (Object.keys(validationErrors).length > 0) {
         Object.keys(validationErrors).forEach((property) => {
@@ -227,7 +232,7 @@ const RegisterVozac = () => {
             {photo === null ? "" : `Izabrana slika:${photo.name}`}
           </p>
         </form>
-        <button className={"btn-prim btn-xl mt-6"}>Registruj se</button>
+        <button className={"btn-prim btn-xl mt-6"} onClick={registerVozac}>Registruj se</button>
         <div className="text-center py-2">
           <h5>
             Vec imate nalog? <Link to={"/login"}>Prijavite se</Link>

@@ -64,10 +64,13 @@ const RegisterKompanija = () => {
           "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera.";
       }
       if (adress.length < 1 || adress.length > 40) {
-        validationErrors.Broj = "Adresa treba da ima između 1 i 40 karaktera.";
+        validationErrors.Adresa = "Adresa treba da ima između 1 i 40 karaktera.";
       }
       if (owner.length < 1 || owner.length > 40) {
         validationErrors.Broj = "Vlasnik treba da ima između 1 i 40 karaktera.";
+      }
+      if (logo === null) {
+        validationErrors.Logo = "Izaberite logo.";
       }
 
       if (Object.keys(validationErrors).length > 0) {
@@ -200,6 +203,7 @@ const RegisterKompanija = () => {
             placeholder={"Logo"}
             onChange={(e) => setLogo(e.target.files[0])}
             hidden
+            required
             autoComplete="off"
           />
           <label
@@ -212,7 +216,7 @@ const RegisterKompanija = () => {
             {logo === null ? "" : `Izabrana slika:${logo.name}`}
           </p>
         </form>
-        <button className={"btn-prim btn-xl mt-6"}>Registruj se</button>
+        <button className={"btn-prim btn-xl mt-6"} onClick={registerKompanija}>Registruj se</button>
         <div className="text-center py-2">
           <h5>
             Nemate nalog? <Link to={"/registration"}>Kreirajte nalog</Link>
