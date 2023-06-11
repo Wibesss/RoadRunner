@@ -55,7 +55,6 @@ const MapePrihvaceneTure = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocet
         },
         routeWhileDragging: true,
         createMarker: (i, waypoint, n) => {
-          // Kreiranje ikone za waypoint
           return L.marker(waypoint.latLng, {
             icon: customMarkerIcon,
           });

@@ -6,19 +6,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Image } from "react-native";
 
-const DispecerPrihvaceneTureListItem = ({
-  item,
-  mapa,
-  setMapa,
-  setTuraId,
-  setPocetnaGS,
-  setPocetnaGD,
-  setKrajnjaGS,
-  setKrajnjaGD,
-  vozaci,
-  setVozaci,
-  setKompanijaID,
-}) => {
+const DispecerPrihvaceneTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,setPocetnaGD,setKrajnjaGS,setKrajnjaGD,vozaci,setVozaci,setKompanijaID,lastUpdate,
+  setLastUpdate,lastUpdateVozaci,setLastUpdateVozaci }) => {
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">
@@ -51,8 +40,16 @@ const DispecerPrihvaceneTureListItem = ({
       <td>
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          onClick={() => {
-            setMapa(!mapa);
+          onClick={() =>{
+            if (lastUpdate === item.turaId) {
+              setMapa(false);
+              setLastUpdate(0);
+            } else {
+              setMapa(true);
+              setVozaci(false);
+              setLastUpdateVozaci(0);
+              setLastUpdate(item.turaId);
+            }
             setPocetnaGS(item.pocetnaGeografskaSirina);
             setPocetnaGD(item.pocetnaGeografskaDuzina);
             setKrajnjaGS(item.odredisnaGeografskaSirina);
@@ -90,10 +87,18 @@ const DispecerPrihvaceneTureListItem = ({
       <td>
         <button
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          onClick={() => {
-            setKompanijaID(item.kompanijaId);
-            setVozaci(!vozaci);
-            setTuraId(item.turaId);
+          onClick={() =>{
+            setKompanijaID(item.kompanijaId)
+            if (lastUpdateVozaci === item.turaId) {
+              setVozaci(false);
+              setLastUpdateVozaci(0);
+            } else {
+              setVozaci(true);
+              setMapa(false);
+              setLastUpdate(0)
+              setLastUpdateVozaci(item.turaId);
+            }
+            setTuraId(item.turaId)
           }}
         >
           <img

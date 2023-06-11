@@ -105,7 +105,6 @@ const KompanijaProfil = () => {
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
           setStringGreska(
             `Greška u polju ${property}: ${validationErrors[property]}`
@@ -116,7 +115,6 @@ const KompanijaProfil = () => {
       }
       if (slika === null) {
         try {
-          console.log("kurcina");
           const response = await axios.put(
             `/Kompanija/UpdateKompanija/${kompanija.id}`,
             {
@@ -138,7 +136,6 @@ const KompanijaProfil = () => {
           }
         } catch (error) {
           if (error.response && error.response.status === 400) {
-            // Bad request response
             const errorMessage = error.response.data;
             if (errorMessage === "Vec postoji nalog sa tim emailom") {
               setStringGreska("Vec postoji nalog sa tim emailom.");
@@ -149,12 +146,9 @@ const KompanijaProfil = () => {
               setStringGreska("Vec postoji nalog sa tim korisnickim imenom.");
               setShowAlert(true);
             } else {
-              // Handle other validation errors or unexpected error messages
               console.log(errorMessage);
-              //window.location.reload();
             }
           } else {
-            // Other error
             console.log("Error:", error.message);
           }
         }
@@ -186,7 +180,6 @@ const KompanijaProfil = () => {
               }
             } catch (error) {
               if (error.response && error.response.status === 400) {
-                // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
                   setStringGreska("Vec postoji nalog sa tim emailom.");
@@ -199,11 +192,9 @@ const KompanijaProfil = () => {
                   );
                   setShowAlert(true);
                 } else {
-                  // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
                 }
               } else {
-                // Other error
                 console.log("Error:", error.message);
               }
             }

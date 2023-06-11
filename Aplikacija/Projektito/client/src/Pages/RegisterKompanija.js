@@ -71,7 +71,6 @@ const RegisterKompanija = () => {
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
           setStringGreska(
             `Greška u polju ${property}: ${validationErrors[property]}`
@@ -99,12 +98,10 @@ const RegisterKompanija = () => {
               if (response.status === 200) {
                 navigate("/login");
               } else {
-                // Other error
                 console.log("Server returned status code " + response.status);
               }
             } catch (error) {
               if (error.response && error.response.status === 400) {
-                // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
                   setStringGreska("Vec postoji nalog sa tim emailom.");
@@ -117,11 +114,9 @@ const RegisterKompanija = () => {
                   );
                   setShowAlert(true);
                 } else {
-                  // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
                 }
               } else {
-                // Other error
                 console.log("Error:", error.message);
               }
             }

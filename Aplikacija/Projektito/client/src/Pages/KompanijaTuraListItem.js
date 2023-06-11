@@ -5,6 +5,7 @@ const KompanijaTuraListItem = ({
   handleDelete,
   handlePrikazi,
   handlePrikaziVozaca,
+  handlePrikaziVozacaZ,
 }) => {
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -24,8 +25,6 @@ const KompanijaTuraListItem = ({
       <td className=" p-4 whitespace-nowrap">
         {item.zapremina === null ? "-" : item.zapremina}
       </td>
-      <td className=" p-4 whitespace-nowrap">{`${item.pocetnaGeografskaSirina},${item.pocetnaGeografskaDuzina} `}</td>
-      <td className=" p-4 whitespace-nowrap">{`${item.odredisnaGeografskaSirina},${item.odredisnaGeografskaDuzina} `}</td>
       <td className=" p-4 whitespace-nowrap">{item.status}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.duzina}</td>
@@ -48,11 +47,21 @@ const KompanijaTuraListItem = ({
             Vozaci
           </button>
         )}
-        {item.status !== "Slobodna" && (
+        {item.status === "Dodeljena" && (
           <button
             className="font-medium text-green-400"
             onClick={() => {
               handlePrikaziVozaca(item.id);
+            }}
+          >
+            Vozac
+          </button>
+        )}
+        {item.status === "Zavrsena" && (
+          <button
+            className="font-medium text-green-400"
+            onClick={() => {
+              handlePrikaziVozacaZ(item.id);
             }}
           >
             Vozac

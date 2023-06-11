@@ -116,7 +116,6 @@ const RegisterVozac = () => {
               }
             } catch (error) {
               if (error.response && error.response.status === 400) {
-                // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
                   setStringGreska("Vec postoji nalog sa tim emailom.");
@@ -129,11 +128,9 @@ const RegisterVozac = () => {
                   );
                   setShowAlert(true);
                 } else {
-                  // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
                 }
               } else {
-                // Other error
                 console.log("Error:", error.message);
               }
             }

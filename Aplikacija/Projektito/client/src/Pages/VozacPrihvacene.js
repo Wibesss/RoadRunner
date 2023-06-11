@@ -23,6 +23,7 @@ const VozacPrihvacene = () => {
   const [krajnjaGS, setKrajnjaGS] = useState("");
   const [krajnjaGD, setKrajnjaGD] = useState("");
   const [obrisano, setObrisano] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
   useEffect(() => {
     if (user) {
       try {
@@ -238,6 +239,8 @@ const VozacPrihvacene = () => {
                   setPocetnaGD={setPocetnaGD}
                   setKrajnjaGS={setKrajnjaGS}
                   setKrajnjaGD={setKrajnjaGD}
+                  lastUpdate={lastUpdate}
+                  setLastUpdate={setLastUpdate}
                 />
               ))}
               {currentItems.length === 0 && (

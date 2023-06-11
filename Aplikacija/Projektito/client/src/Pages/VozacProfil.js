@@ -115,7 +115,6 @@ const VozacProfil = () => {
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
           setStringGreska(
             `Greška u polju ${property}: ${validationErrors[property]}`
@@ -148,7 +147,6 @@ const VozacProfil = () => {
           }
         } catch (error) {
           if (error.response && error.response.status === 400) {
-            // Bad request response
             const errorMessage = error.response.data;
             if (errorMessage === "Vec postoji nalog sa tim emailom") {
               setStringGreska("Vec postoji nalog sa tim emailom.");
@@ -159,11 +157,9 @@ const VozacProfil = () => {
               setStringGreska("Vec postoji nalog sa tim korisnickim imenom.");
               setShowAlert(true);
             } else {
-              // Handle other validation errors or unexpected error messages
               console.log(errorMessage);
             }
           } else {
-            // Other error
             console.log("Error:", error.message);
           }
         }
@@ -196,7 +192,6 @@ const VozacProfil = () => {
               }
             } catch (error) {
               if (error.response && error.response.status === 400) {
-                // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
                   setStringGreska("Vec postoji nalog sa tim emailom");
@@ -209,11 +204,9 @@ const VozacProfil = () => {
                   );
                   setShowAlert(true);
                 } else {
-                  // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
                 }
               } else {
-                // Other error
                 console.log("Error:", error.message);
               }
             }

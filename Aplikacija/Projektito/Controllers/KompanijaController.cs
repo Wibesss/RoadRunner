@@ -14,7 +14,7 @@ public class KompanijaController : ControllerBase
   {
     Context=context;
   }
-
+  [AllowAnonymous]
   [Route("AddKompanija")]
   [HttpPost]
   public async Task<IActionResult> AddKompanija([FromBody]Kompanija komp)
@@ -54,7 +54,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
 }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("UpdateKompanija/{id}")]
     [HttpPut]
     public async Task<IActionResult> UpdateKompanija ([FromBody]Kompanija komp,int id)
@@ -111,7 +111,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Dispecer")]
     [Route("DeleteKompanija/{id}")]
     [HttpDelete]
     public async Task<IActionResult> DeleteKompanija (int id)
@@ -134,7 +134,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("UpdateSifra/{id}/{staraSifra}/{novaSifra}")]
     [HttpPut]
     public async Task<IActionResult>UpdateSifra(int id,string staraSifra, string novaSifra)
@@ -173,7 +173,7 @@ public class KompanijaController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles ="Dispecer")]
     [Route("GetKompanije")]
     [HttpGet]
     public async Task<IActionResult> GetKompanije()
@@ -187,18 +187,24 @@ public class KompanijaController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
-
-    [Route("OceniVozaca/{idKompanije}/{idVozaca}")]
+    [Authorize(Roles ="Kompanija")]
+    [Route("OceniVozaca/{idKompanije}/{idVozaca}/{idTure}")]
     [HttpPost]
-    public async Task<IActionResult> OceniVozaca([FromBody] Ocena o,int idKompanije,int idVozaca)
+    public async Task<IActionResult> OceniVozaca([FromBody] Ocena o,int idKompanije,int idVozaca,int idTure)
     {
         var kompanija=await Context.Kompanija!.FindAsync(idKompanije);
         var vozac=await Context.Vozac!.FindAsync(idVozaca);
-        // var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).FirstOrDefaultAsync();
-        // if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
-        // {
+        var tura=await Context.Tura!.FindAsync(idTure);
+
+         var ocena=await Context.Ocena!.Where(p=>p.Tura!.ID==idTure && p.Vozac==vozac).FirstOrDefaultAsync();
+         var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).Include(p=>p.Tura).FirstOrDefaultAsync();
+         if(ocena ==null)
+         {
+         if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
+         {
             o.Kompanija=kompanija;
             o.Vozac=vozac;
+            o.Tura=tura;
             try
             {
                 Context.Ocena!.Add(o);
@@ -209,13 +215,18 @@ public class KompanijaController : ControllerBase
             {
                 return BadRequest(ex.Message);
             }
-        // }
-        // else
-        // {
-        //     return BadRequest("Tura nije zavrsena ili ne postoji");
-        // }
+        }
+        else
+        {
+            return BadRequest(new { message ="Tura nije zavrsena ili ne postoji"});
+        }
+        }
+        else
+        {
+            return BadRequest(new { message = "Vec ste ocenili vozaca za ovu turu!" });
+        }
     }
-
+    [Authorize(Roles ="Kompanija")]
     [Route("FavorizujVozaca/{idKompanije}/{idVozaca}")]
     [HttpPost]
     public async Task<IActionResult> FavorizujVozaca(int idKompanije,int idVozaca)
@@ -241,7 +252,7 @@ public class KompanijaController : ControllerBase
         }
         else
         {
-            return BadRequest("Nije moguce da ista kompanija favorizuje 2 puta istog vozaca");
+            return BadRequest(new { message = "Vozac je vec favorizovan!" });
         }
     }
     [Authorize(Roles ="Kompanija")]
@@ -262,6 +273,7 @@ public class KompanijaController : ControllerBase
            return BadRequest(ex.Message);
         }
     }
+     [Authorize(Roles ="Dispecer,Kompanija")]
      [Route("GetFavorizacije/{idKompanije}")]
      [HttpGet]
     public async Task<IActionResult> GetFavorizacije(int idKompanije)

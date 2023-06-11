@@ -11,6 +11,7 @@ public class PrikolicaController : ControllerBase
   {
         Context=context;
   }
+  [AllowAnonymous]
   [Route("AddTipPrikolice")]
    [HttpPost]
    public async Task<IActionResult> AddTipPrikolice([FromBody]TipPrikolice tp)
@@ -34,6 +35,7 @@ public class PrikolicaController : ControllerBase
         }
 
    }
+   [Authorize(Roles ="Vozac")]
     [Route("AddPrikolica/{idVozaca}/{tipPrikolice}")]
    [HttpPost]
    public async Task<IActionResult> AddPrikolica([FromBody]Prikolica p,int idVozaca,string tipPrikolice)
@@ -84,6 +86,7 @@ public class PrikolicaController : ControllerBase
         }
 
    }
+   [Authorize(Roles ="Dispecer,Vozac")]
    [Route("GetPrikolica/{idVozaca}")]
    [HttpGet]
    public async Task<IActionResult> GetPrikolica(int idVozaca)
@@ -105,6 +108,7 @@ public class PrikolicaController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+   [Authorize(Roles ="Dispecer,Vozac")]
     [Route("GetTipPrikolica")]
    [HttpGet]
    public async Task<IActionResult> GetTipPrikolica()
@@ -120,6 +124,7 @@ public class PrikolicaController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+   [Authorize(Roles ="Vozac")]
    [Route("DeletePrikolica/{idPrikolica}")]
    [HttpDelete]
    public async Task<IActionResult> DeletePrikolica (int idPrikolica)
@@ -142,6 +147,7 @@ public class PrikolicaController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+   [Authorize(Roles ="Vozac")]
     [Route("UpdatePrikolica/{idPrikolica}/{tipPrikolice}")]
     [HttpPut]
     public async Task<IActionResult> UpdatePrikolica ([FromBody]Prikolica prik , int idPrikolica, string tipPrikolice)

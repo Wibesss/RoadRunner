@@ -47,43 +47,50 @@ const DispecerPrihvaceneTureVozaci = ({
             setCurrentItems(response.data);
             setReady(true);
           });
-      } catch (err) {
-        console.log(err.message);
+        }
+        catch(err)
+        {
+          console.log(err.message)
+        } 
+    }        
+    }, [ready,user,poslati,turaId]);
+    const sorting = (col)=> {
+      if(order==="ASC")
+      {
+        const sorted = [...currentItems].sort((a,b)=>
+            a[col] > b[col] ? 1 : -1
+        );
+        setCurrentItems(sorted);
+        setOrder("DSC");
+      }
+      if(order==="DSC")
+      {
+        const sorted = [...currentItems].sort((a,b)=>
+            a[col] < b[col] ? 1 : -1
+        );
+        setCurrentItems(sorted);
+        setOrder("ASC");
       }
     }
-  }, [ready, user, poslati]);
-  const sorting = (col) => {
-    if (order === "ASC") {
-      const sorted = [...currentItems].sort((a, b) =>
-        a[col] > b[col] ? 1 : -1
-      );
-      setCurrentItems(sorted);
-      setOrder("DSC");
-    }
-    if (order === "DSC") {
-      const sorted = [...currentItems].sort((a, b) =>
-        a[col] < b[col] ? 1 : -1
-      );
-      setCurrentItems(sorted);
-      setOrder("ASC");
-    }
-  };
-  const handlePrihvati = () => {
-    try {
-      if (odabraneStavke != "") {
-        axios
-          .put(`/Tura/ProslediTuru/${turaId}/${odabraneStavke}`, {}, config)
-          .then((response) => {
-            console.log(response.data);
-            setPoslati(!poslati);
-            setObrisano(!obrisano);
-            setVozaci("");
-          });
-      } else {
-        setStringGreska("Niste izabrali vozaca.");
-        showAlert(true);
-      }
-    } catch (err) {
+    const handlePrihvati = () => {
+        
+        try{
+            if(odabraneStavke!="")
+            {
+                axios.put(`/Tura/ProslediTuru/${turaId}/${odabraneStavke}`,{}, config).then((response) => {
+                    setPoslati(!poslati);
+                    setObrisano(!obrisano);
+                    setVozaci("");
+                });
+                axios.delete(`/Tura/DeletePonudjeneTure/${turaId}`, config).then((response) => {
+                });
+            }
+            else
+            {
+              setStringGreska("Niste izabrali vozaca.");
+              showAlert(true);
+            }
+        } catch (err) {
       setStringGreska(err.message);
       showAlert(true);
     }

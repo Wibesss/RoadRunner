@@ -39,7 +39,6 @@ const Index = () => {
         .then(() => {
           console.log("SignalR connection established.");
 
-          // Register a client-side method to receive messages
           connection.on("ReceiveMessage", (message) => {
             toast(message, {
               position: "top-right",
@@ -54,7 +53,6 @@ const Index = () => {
               background-color: white;
               `,
             });
-            // Handle the received message as needed
           });
         })
         .catch((error) => {
@@ -67,7 +65,6 @@ const Index = () => {
         console.log("SignalR connection stopped.");
       }
     };
-    // Cleanup: Stop the SignalR connection when the component unmounts
   }, [ready]);
 
   return (

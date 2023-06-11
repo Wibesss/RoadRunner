@@ -101,7 +101,6 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
             setMarker1(position);
             mapRef.current.setView(position);
           } else if (markerIndex === 2) {
-            console.log("DRUGI MARKER");
             setOgs(parseFloat(lat));
             setOgd(parseFloat(lon));
             setMarker2(position);

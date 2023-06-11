@@ -205,7 +205,7 @@ public class TuraController : ControllerBase
         }
 
    }
-    //[Authorize(Roles ="Dispecer")]
+    [Authorize(Roles ="Dispecer")]
     [Route("AddPonudjenaTura/{idTure}/{idDispecera}/{idieviVozaca}")]
     [HttpPost]
     public async Task<IActionResult> AddPonudjenaTura(int idTure,int idDispecera,string idieviVozaca)
@@ -260,7 +260,7 @@ public class TuraController : ControllerBase
             dt.Tura=prihvacena.Tura;
             dt.Dispecer=prihvacena.Dispecer;
             dt.GenerisanaCena=prihvacena.GenerisanaCena;
-            dt.Tura!.Status="Zauzeta";
+            dt.Tura!.Status="Dodeljena";
             try
             {
                 Context.DodeljeneTure!.Add(dt);
@@ -296,7 +296,7 @@ public class TuraController : ControllerBase
             return BadRequest("Nije pronadjena prihvacena tura");
         }
     }
-    //[Authorize(Roles ="Vozac")]
+    [Authorize(Roles ="Vozac")]
     [Route("AddPrihvacenaTura/{idPonudjeneTure}/{idVozila}")]
     [HttpPost]
     public async Task<IActionResult> AddPrihvacenaTura(int idPonudjeneTure,int idVozila)
@@ -311,7 +311,7 @@ public class TuraController : ControllerBase
             pt.Vozac=ponudjena!.Vozac;
             pt.Vozilo=vozilo;
             pt.Tura=ponudjena.Tura;
-            pt.GenerisanaCena=ponudjena.Tura!.Duzina*vozilo.CenaPoKilometru;
+            pt.GenerisanaCena=ponudjena.Tura!.Duzina*vozilo!.CenaPoKilometru;
             try
             {
                 Context.PrihvacenaTura!.Add(pt);
@@ -385,7 +385,34 @@ public class TuraController : ControllerBase
             return BadRequest("Ponudjena tura nije pronadjena");
         }
    }
-
+    [Authorize(Roles ="Dispecer")] 
+   [Route("DeletePonudjeneTure/{idTure}")]
+   [HttpDelete]
+   public async Task<IActionResult> DeletePonudjeneTure(int idTure)
+   {
+        var ture=await Context.PonudjenaTura!.Where(p=>p.Tura!.ID==idTure).ToListAsync();
+        if(ture!=null)
+        {
+            try
+            {
+                foreach(var tura in ture)
+                {
+                    Context.Remove(tura);
+                    await Context.SaveChangesAsync();
+                }
+                return Ok("Uspesno obrisane ponudjene tura sa id-jem"+idTure+" ");
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        else
+        {
+            return BadRequest("Ponudjene ture nisu pronadjene");
+        }
+   }
+   [Authorize(Roles ="Dispecer")] 
    [Route("DeletePrihvacenaTura/{idTure}")]
    [HttpDelete]
    public async Task<IActionResult> DeletePrihvacenaTura(int idTure)
@@ -409,7 +436,7 @@ public class TuraController : ControllerBase
             return BadRequest("Prihvacena tura nije pronadjena");
         }
    }
-
+    [Authorize(Roles ="Dispecer")] 
    [Route("DeleteDodeljenaTura/{idTure}")]
    [HttpDelete]
    public async Task<IActionResult> DeleteDodeljenaTura(int idTure)
@@ -433,7 +460,7 @@ public class TuraController : ControllerBase
             return BadRequest("Dodeljena tura nije pronadjena");
         }
    }
-
+    [Authorize(Roles ="Dispecer")] 
    [Route("GetTura")]
    [HttpGet]
    public async Task<ActionResult> GetTura()
@@ -447,7 +474,7 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+   [Authorize(Roles ="Vozac")] 
    [Route("GetPonudjenjaTuraVozac/{idVozaca}")]
    [HttpGet]
    public async Task<ActionResult> GetPonudjenjaTuraVozac(int idVozaca)
@@ -483,7 +510,7 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+    [Authorize(Roles ="Vozac")] 
    [Route("GetPrihvacenaTuraVozac/{idVozaca}")]
    [HttpGet]
    public async Task<ActionResult> GetPrihvacenaTuraVozac(int idVozaca)
@@ -522,6 +549,7 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+    [Authorize(Roles ="Vozac")] 
    [Route("GetDodeljenaTuraVozac/{idVozaca}")]
    [HttpGet]
    public async Task<ActionResult> GetDodeljenaTuraVozac(int idVozaca)
@@ -616,7 +644,7 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+    [Authorize(Roles ="Dispecer")] 
    [Route("GetProsledjenaTura/{idKompanije}")]
    [HttpGet]
    public async Task<ActionResult> GetProsledjenaTura(int idKompanije)
@@ -632,30 +660,40 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+    [Authorize(Roles ="Vozac")] 
    [Route("ZapocniTuru/{idDodeljeneTure}")]
    [HttpPut]
     public async Task<ActionResult>  ZapocniTuru(int idDodeljeneTure)
    {
         var dodeljena=await Context.DodeljeneTure!.Where(p=> p.ID==idDodeljeneTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).FirstOrDefaultAsync();
+        DateTime dt = DateTime.Now;
         if(dodeljena!.Tura!.Status=="Dodeljena")
         {
-            dodeljena!.Tura!.Status="U toku";
-            try
+            if(dt>=dodeljena!.Tura!.DatumPocetka)
             {
-                Context.DodeljeneTure!.Update(dodeljena);
-                await Context.SaveChangesAsync();
-                return Ok("Tura zavrsena!");
-            } 
-            catch(Exception e)
-            {
-                return BadRequest(e.Message);
+                dodeljena!.Tura!.Status="U toku";
+                try
+                {
+                    Context.DodeljeneTure!.Update(dodeljena);
+                    await Context.SaveChangesAsync();
+                    return Ok("Tura zapoceta!");
+                } 
+                catch(Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
             }
+            else
+            {
+                return BadRequest("Tura se ne moze startovati pre datuma pocetka");
+            } 
         }
         else
         {
             return BadRequest("Tura nije u toku!");
         }    
    }
+    [Authorize(Roles ="Vozac")] 
    [Route("ZavrsiTuru/{idDodeljeneTure}")]
    [HttpPut]
     public async Task<ActionResult>  ZavrsiTuru(int idDodeljeneTure)
@@ -680,7 +718,7 @@ public class TuraController : ControllerBase
             return BadRequest("Tura nije u toku!");
         }    
    }
-
+   [Authorize(Roles ="Kompanija")] 
    [Route("GetTuraKompanija/{idKompanije}")]
    [HttpGet]
    public async Task<ActionResult> GetTuraKompanija(int idKompanije)
@@ -694,7 +732,7 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
-
+    [Authorize(Roles ="Kompanija")] 
    [Route("GetVozaceZaTuru/{idTure}")]
    [HttpGet]
    public async Task<ActionResult> GetVozaceZaTuru(int idTure)
@@ -725,6 +763,25 @@ public class TuraController : ControllerBase
 
         var sortedVozaci = vozaciWithSrednja.OrderByDescending(v => v.Srednja).Select(v => new { v.Vozac, v.GenerisanaCena }).ToList();
         return Ok(sortedVozaci);
+
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+   }
+    [Authorize(Roles ="Kompanija")] 
+   [Route("GetVozacaZaTuru/{idTure}")]
+   [HttpGet]
+   public async Task<ActionResult> GetVozacaZaTuru(int idTure)
+   {
+        try{
+           var vozac = await Context!.DodeljeneTure!
+            .Where(p => p.Tura!.ID == idTure)
+            .Include(p => p.Vozac)
+            .Select(p => new { p.Vozac, p.GenerisanaCena })
+            .FirstOrDefaultAsync();
+        return Ok(vozac);
 
         }
         catch(Exception e)
@@ -790,20 +847,20 @@ public class TuraController : ControllerBase
             return BadRequest(e.Message);
         }
    }
+   
+//    [Route("PosaljiPoruku")]
+//    [HttpGet]
+//      public async Task PosaljiPoruku()
+//     {
+//                var connectionId = await Context.ConnectionInfoo!
+//                 .Where(p => p.korisnickoIme == "BoziCCCa")
+//                 .Select(p => p.ConnedtionId)
+//                 .FirstOrDefaultAsync();
 
-   [Route("PosaljiPoruku")]
-   [HttpGet]
-     public async Task PosaljiPoruku()
-    {
-               var connectionId = await Context.ConnectionInfoo!
-                .Where(p => p.korisnickoIme == "BoziCCCa")
-                .Select(p => p.ConnedtionId)
-                .FirstOrDefaultAsync();
-
-            if (connectionId != null)
-            {
-                await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Dodeljena vam je nova tura!");
-            }
-     }
+//             if (connectionId != null)
+//             {
+//                 await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Dodeljena vam je nova tura!");
+//             }
+//      }
 
 }

@@ -46,7 +46,6 @@ const VozacPrikolice = () => {
       setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
       setReady(true);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, dodato, currentPage, obrisano, azurirano]);
 
   const handleDelete = (id) => {
@@ -114,10 +113,6 @@ const VozacPrikolice = () => {
       currentItems.filter((x) => x.id.toString() === e.target.id)[0]
         .tipPrikolice.tip
     );
-    console.log(
-      currentItems.filter((x) => x.id.toString() === e.target.id)[0]
-        .tipPrikolice.tip
-    );
     formaZaDodavanjePrikolice && setFormaZaDodavanjePrikolice(false);
     if (lastUpdate === e.target.id) {
       setLastUpdate(e.target.id);
@@ -130,7 +125,6 @@ const VozacPrikolice = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     if (typeof photo === "string") {
-      console.log("STRING JE");
       axios
         .put(
           `Prikolica/UpdatePrikolica/${lastUpdate}/${tip}`,
@@ -150,7 +144,6 @@ const VozacPrikolice = () => {
           setAzurirano(!azurirano);
         });
     } else {
-      console.log("STRING NIJE");
       const imageRef = ref(storage, `vozila/${photo.name + v4()}`);
       uploadBytes(imageRef, photo).then(() => {
         getDownloadURL(imageRef).then((res) => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { forwardRef } from "react";
-import { DateTimePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import Mapa from "./Mapa";
@@ -23,6 +23,7 @@ const FormaZaDodavanjeTura = forwardRef(
       setDuzinaTure,
       handlePotvrdiDodavanje,
       datumPocetka,
+      tip
     },
     ref
   ) => {
@@ -52,6 +53,8 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Tezina(kg)"
+              className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               required
               onChange={(e) => {
                 setTezina(e.target.value);
@@ -60,6 +63,8 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Duzina(cm)"
+              className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               onChange={(e) => {
                 setDuzina(e.target.value);
               }}
@@ -68,6 +73,8 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Sirina(cm)"
+              className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               onChange={(e) => {
                 setSirina(e.target.value);
               }}
@@ -76,6 +83,8 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Visina(cm)"
+              className="mx-2 my-2"
+              disabled={tip==='Tecnost'}
               onChange={(e) => {
                 setVisina(e.target.value);
               }}
@@ -84,6 +93,8 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Zapremina(l)"
+              className="mx-2 my-2"
+              disabled={tip!=='Tecnost'}
               onChange={(e) => {
                 setZapremina(e.target.value);
               }}

@@ -8,6 +8,10 @@ import FormaZaDodavanjeTura from "./FormaZaDodavanjeTura";
 import { flushSync } from "react-dom";
 import VozaciZaTuruListItem from "./VozaciZaTuruListItem";
 import PrikazDodeljenogVozaca from "./PrikazDodeljenogVozaca";
+import PrikazVozacaZ from "./PrikazVozacaZ";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import LoadingPage from "./LoadingPage";
 const KompanijaTure = () => {
   const config = {
@@ -43,6 +47,9 @@ const KompanijaTure = () => {
   const [prikaziVozace, setPrikaziVozace] = useState(false);
   const [prikaziVozaca, setPrikaziVozaca] = useState(false);
   const [dodeljenVozac, setDodeljenVozac] = useState();
+  const [prikaziVozacaZ, setPrikaziVozacaZ] = useState(false);
+  const [vozacZ, setVozacZ] = useState();
+  const [ocenjen, setOcenjen] = useState(false);
 
   const listref = useRef(null);
   const tableRef = useRef(null);
@@ -57,11 +64,10 @@ const KompanijaTure = () => {
         .get(`Tura/GetTipTure`, config)
         .then((response) => setTipovi(response.data));
 
-      if (lastTura !== 0) {
+      if (lastTura !== 0 && vozaci !== undefined) {
         setVozaciCurrent(vozaci.slice(indexOfFirstItemV, indexOfLastItemV));
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     ready,
     formaZaDodavanjeTure,
@@ -72,9 +78,68 @@ const KompanijaTure = () => {
     selectedVozac,
   ]);
   const handleDodajClick = () => {
+    setPrikaziVozaca(false);
+    setPrikaziVozace(false);
     setFormaZaDodavanjeTure(!formaZaDodavanjeTure);
     flushSync();
     if (listref.current) listref.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleFavorizuj = (idKomp, idVozac) => {
+    axios
+      .post(`/Kompanija/FavorizujVozaca/${idKomp}/${idVozac}`, {}, config)
+      .then((res) => {
+        if (res.status === 200) {
+          toast("Vozac uspesno favorizovan!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            css: `
+            background-color: white;
+            `,
+          });
+        }
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  const handleOceni = (idKomp, idVozac, opis, ocena, idTure, e) => {
+    e.preventDefault();
+    axios
+      .post(
+        `Kompanija/OceniVozaca/${idKomp}/${idVozac}/${idTure}`,
+        {
+          opis: opis,
+          broj: ocena,
+        },
+        config
+      )
+      .then((res) => {
+        toast("Vozac uspesno ocenjen!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          css: `
+          background-color: white;
+          `,
+        });
+        setOcenjen(!ocenjen);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
   };
 
   const handleClickPrev = () => {
@@ -109,13 +174,33 @@ const KompanijaTure = () => {
       setLastTura(id);
       if (lastTura !== id) {
         axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
-          console.log(response.data);
           setDodeljenVozac(response.data);
           setPrikaziVozaca(true);
           setPrikaziVozace(false);
+          setPrikaziVozacaZ(false);
+          setFormaZaDodavanjeTure(false);
         });
       } else {
         setPrikaziVozaca(!prikaziVozaca);
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const handlePrikaziVozacaZ = (id) => {
+    try {
+      setLastTura(id);
+      if (lastTura !== id) {
+        axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
+          setVozacZ(response.data);
+          setPrikaziVozaca(false);
+          setPrikaziVozace(false);
+          setFormaZaDodavanjeTure(false);
+          setPrikaziVozacaZ(true);
+        });
+      } else {
+        setPrikaziVozacaZ(!prikaziVozacaZ);
       }
     } catch (ex) {
       console.log(ex);
@@ -132,6 +217,8 @@ const KompanijaTure = () => {
           response.data.slice(indexOfFirstItemV, indexOfLastItemV)
         );
         setPrikaziVozaca(false);
+        setPrikaziVozacaZ(false);
+        setFormaZaDodavanjeTure(false);
         setPrikaziVozace(true);
         setSelectedVozac(0);
       });
@@ -201,6 +288,7 @@ const KompanijaTure = () => {
   } else {
     return (
       <div className="flex flex-col items-center justify-center">
+        <ToastContainer></ToastContainer>
         <div className="flex flex-grow flex-col mt-10 w-4/5 justify-center items-center">
           <div className="flex flex-col w-full justify-center items-center">
             <div className="w-full min-h-fill flex flex-col justify-center overflow-auto sm:rounded-lg">
@@ -263,7 +351,8 @@ const KompanijaTure = () => {
                         handlePrikazi={handlePrikazi}
                         key={ind}
                         handlePrikaziVozaca={handlePrikaziVozaca}
-                      />
+                        handlePrikaziVozacaZ={handlePrikaziVozacaZ}
+                    />
                     ))}
                     {currentItems.length === 0 && (
                       <tr>
@@ -317,7 +406,17 @@ const KompanijaTure = () => {
                     vozac={dodeljenVozac}
                   ></PrikazDodeljenogVozaca>
                 )}
-              </div>
+                {prikaziVozacaZ === true && (
+                <PrikazVozacaZ
+                  vozac={vozacZ}
+                  handleFavorizuj={handleFavorizuj}
+                  handleOceni={handleOceni}
+                  user={user}
+                  ocenjen={ocenjen}
+                  lastTura={lastTura}
+                ></PrikazVozacaZ>
+              )}
+            </div>
               {selectedVozac !== 0 && prikaziVozace === true && (
                 <div className="flex justify-center">
                   <button className="btn-primary w-1/6" onClick={handleIzaberi}>
@@ -346,7 +445,8 @@ const KompanijaTure = () => {
                 setDuzinaTure={setDuzinaTure}
                 handlePotvrdiDodavanje={handlePotvrdiDodavanje}
                 datumPocetka={datumPocetka}
-              />
+                tip={tip}
+            />
             )}
           </div>
         </div>

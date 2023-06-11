@@ -6,8 +6,6 @@ import axios from "axios";
 import { useEffect } from "react";
 import VozacPonudjeneListItem from "./VozacPonudjeneListItem";
 import KomponentaMape from "./KomponentaMape";
-import LoadingPage from "./LoadingPage";
-import { Modal } from "react-bootstrap";
 
 const VozacPonudjene = () => {
   const { user, setUser } = useContext(UserContext);
@@ -26,10 +24,6 @@ const VozacPonudjene = () => {
   const [krajnjaGD, setKrajnjaGD] = useState("");
   const [obrisano, setObrisano] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-
-  const [stringGreska, setStringGreska] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
-
   useEffect(() => {
     if (user) {
       try {
@@ -69,46 +63,12 @@ const VozacPonudjene = () => {
           setMapa(!mapa);
         });
     } catch (err) {
-      setStringGreska(err.message);
-      showAlert(true);
+      alert(err.message);
     }
   };
-  // const handleClick = (e) => {
-  //   setMapa(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].mapa
-  //   );
-  //   setTuraId(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0]
-  //       .turaId
-  //   );
-  //   setPonudjenaTuraId(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].id
-  //   );
-  //   setPocetnaGS(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].pocetnaGS
-  //   );
-  //   setPocetnaGD(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].pocetnaGD
-  //   );
-  //   setKrajnjaGS(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].krajnjaGS
-  //   );
-  //   setKrajnjaGD(
-  //     currentItems.filter((x) => x.id.toString() === e.target.id)[0].krajnjaGD
-  //   );
-  //   if (lastUpdate === e.target.id) {
-  //     setLastUpdate(e.target.id);
-  //     setMapa(!mapa);
-  //   } else {
-  //     setLastUpdate(e.target.id);
-  //     setMapa(true);
-  //   }
-  // };
-
-  const handleClose = () => setShowAlert(false);
 
   if (!ready) {
-    return <LoadingPage />;
+    return "Loading...";
   } else {
     return (
       <>
@@ -128,12 +88,10 @@ const VozacPonudjene = () => {
             </button>
           </Modal.Footer>
         </Modal>
-
-        <div className="flex flex-col items-center mt-10">
-          <h3 className="text-center text-xl font-bold mb-4">Ponudjene ture</h3>
-          <div className="overflow-auto w-full sm:w-4/5 sm:rounded-lg">
+        <div className="flex flex-col mt-2 items-center min-h-screen">
+          <div className="overflow-auto w-2/3">
             <table className="w-full text-sm text-left text-gray-500  shadow-md ">
-              <thead className="text-xs text-white uppercase bg-primary">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                 <tr>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap ">
                     <div className="flex flex-row">
@@ -297,6 +255,8 @@ const VozacPonudjene = () => {
                     setKrajnjaGD={setKrajnjaGD}
                     handleDelete={handleDelete}
                     vID={user.id}
+                    lastUpdate={lastUpdate}
+                    setLastUpdate={setLastUpdate}
                   />
                 ))}
                 {currentItems.length === 0 && (

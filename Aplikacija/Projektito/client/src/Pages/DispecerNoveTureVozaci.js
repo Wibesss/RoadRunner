@@ -8,7 +8,7 @@ import DispecerNoveTureVozaciListItem from "./DispecerNoveTureVozaciListItem";
 import { Modal } from "react-bootstrap";
 import LoadingPage from "./LoadingPage";
 
-const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
+const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMapa }) => {
   const { user, setUser } = useContext(UserContext);
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -42,7 +42,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
         console.log(err.message);
       }
     }
-  }, [ready, user, poslati]);
+  }, [ready, user, poslati, turaId]);
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>
@@ -69,6 +69,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci }) => {
           )
           .then((response) => {
             setPoslati(!poslati);
+            setMapa(false);
             setVozaci("");
           });
       } else {

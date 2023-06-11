@@ -1,52 +1,50 @@
 import React from "react";
-import { useEffect } from "react";
-import Cookies from "js-cookie";
 import axios from "axios";
-import Rating from "@mui/material/Rating";
-import { useState } from "react";
+import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
+import { Rating } from "@mui/material";
 
-const VozaciZaTuruListItem = ({ item, onClick, selectedVozac }) => {
+const PrikazVozacaZ = ({
+  vozac,
+  handleFavorizuj,
+  handleOceni,
+  user,
+  ocenjen,
+  lastTura,
+}) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
 
   const [ocene, setOcene] = useState([]);
   const [oceneReady, setOceneReady] = useState(false);
+  const [value, setValue] = useState(0);
+  const [opis, setOpis] = useState("");
   useEffect(() => {
     (async function pom() {
       const response = await axios.get(
-        `/Vozac/GetSrednjuOcenu/${item.vozac.id}`,
+        `/Vozac/GetSrednjuOcenu/${vozac.vozac.id}`,
         config
       );
       setOcene(response.data);
       setOceneReady(true);
     })();
-  }, [item.vozac.id, selectedVozac]);
-
-  const linkClasses = () => {
-    let classes =
-      "w-full h-fit mx-2 max-w-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50";
-    if (item.vozac.id === selectedVozac)
-      classes =
-        "w-full h-fit mx-2 max-w-sm bg-white border-4  border-gray-200 rounded-lg hover:bg-gray-50  ";
-    return classes;
-  };
-
+  }, [vozac.vozac.id, ocenjen]);
   if (oceneReady && ocene.srednja !== undefined) {
     return (
-      <div className={linkClasses()} onClick={() => onClick(item.vozac.id)}>
+      <div className="w-full h-fit mx-2 max-w-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
         <div className="flex  justify-end px-4 pt-4"></div>
-        <div className="flex flex-col items-center pb-10">
+        <div className="flex flex-col items-center">
           <img
-            className="w-24 h-24 mb-3 rounded-full shadow-lg z-10"
-            src={item.vozac.slika}
+            className="w-24 h-24 mb-3 rounded-full shadow-lg z-10 object-cover aspect-square"
+            src={vozac.vozac.slika}
             alt=""
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-            {item.vozac.ime + " " + item.vozac.prezime}
+            {vozac.vozac.ime + " " + vozac.vozac.prezime}
           </h5>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {item.korisnickoIme}
+            {vozac.korisnickoIme}
           </span>
           <div className="flex flex-col mt-4 space-x-3 md:mt-6 w-5/6">
             <div className="flex justify-center mb-3">
@@ -141,11 +139,41 @@ const VozaciZaTuruListItem = ({ item, onClick, selectedVozac }) => {
               </span>
             </div>
           </div>
-          <p>Cena:{item.generisanaCena}</p>
+          <p className="mt-8">Cena: {vozac.generisanaCena} din</p>
+          <button
+            className="btn-primary"
+            onClick={() => handleFavorizuj(user.id, vozac.vozac.id)}
+          >
+            Favorizuj
+          </button>
+          <form
+            onSubmit={(e) =>
+              handleOceni(user.id, vozac.vozac.id, opis, value, lastTura, e)
+            }
+            className="flex flex-col items-center mt-4"
+          >
+            <Rating
+              name="simple-controlled"
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Opis"
+              required
+              onChange={(e) => {
+                setOpis(e.target.value);
+              }}
+            ></input>
+
+            <button className="btn-primary my-2">Oceni</button>
+          </form>
         </div>
       </div>
     );
   }
 };
 
-export default VozaciZaTuruListItem;
+export default PrikazVozacaZ;

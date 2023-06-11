@@ -40,7 +40,6 @@ const VozacVozila = () => {
       setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
       setReady(true);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, dodato, currentPage, obrisano, azurirano]);
 
   const handleClickNext = () => {
@@ -77,7 +76,6 @@ const VozacVozila = () => {
   };
   const handleUpdate = (e) => {
     e.preventDefault();
-    console.log("Slicka " + photo);
     if (typeof photo === "string") {
       axios
         .put(

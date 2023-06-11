@@ -10,5 +10,9 @@ namespace Models{
         public required string Opis { get; set; }
         public Kompanija? Kompanija { get; set; }
         public Vozac? Vozac { get; set; }
+
+        public Tura? Tura {get; set;}
+        
+
     }
 }

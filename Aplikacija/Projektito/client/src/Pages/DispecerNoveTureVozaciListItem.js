@@ -21,17 +21,18 @@ const DispecerNoveTureVozaciListItem = ({
   };
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Vozac/GetSrednjuOcenu/${item.id}`, config)
-          .then((response) => {
-            setVozacOcene(response.data);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Vozac/GetSrednjuOcenu/${item.id}`, config)
+        .then((response) => {
+          setVozacOcene(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
   }, [item]);
+
+  
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">

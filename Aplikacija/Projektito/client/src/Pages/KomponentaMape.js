@@ -79,7 +79,6 @@ const KomponentaMape = ({
         },
         routeWhileDragging: true,
         createMarker: (i, waypoint, n) => {
-          // Kreiranje ikone za waypoint
           return L.marker(waypoint.latLng, {
             icon: customMarkerIcon,
           });
@@ -114,7 +113,7 @@ const KomponentaMape = ({
     if (auto !== null) {
       try {
         axios
-          .post(`Tura/AddPrihvacenaTura/${ponudjenaTuraId}/${auto}`, config)
+          .post(`Tura/AddPrihvacenaTura/${ponudjenaTuraId}/${auto}`, {}, config)
           .then((response) => {});
         axios
           .delete(`Tura/DeletePonudjenaTura/${turaId}/${vozacId}`, config)
@@ -123,12 +122,8 @@ const KomponentaMape = ({
             setMapa(!mapa);
           });
       } catch (err) {
-        setStringGreska(err.message);
-        setShowAlert(true);
+        alert(err.message);
       }
-    } else {
-      setStringGreska("Niste izabrali auto.");
-      setShowAlert(true);
     }
   };
 

@@ -12,45 +12,7 @@ public class DispecerController : ControllerBase
   {
         Context=context;
   }
-
-  [Route("AddDispecer")]
-  [HttpPost]
-  public async Task<IActionResult> AddDispecer ([FromBody]Dispecer disp)
-  {
-    try
-    {
-        if(disp.Ime.Length<3 || disp.Ime.Length>30 || Regex.IsMatch(disp.Ime,"^[a-zA-z]+$")==false)
-            return BadRequest("Los format imena");
-        if(disp.Prezime.Length<3 || disp.Prezime.Length>30 || Regex.IsMatch(disp.Prezime,"^[a-zA-z]+$")==false)
-            return BadRequest("Los format prezimena");
-        if(disp.JMBG.Length!= 13 || Regex.IsMatch(disp.JMBG,"^[0-9]+$")==false)
-            return BadRequest("Los format JMBG-a");
-        if(disp.Email.Length<6 || disp.Email.Length>30 || Regex.IsMatch(disp.Email,@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")==false)
-            return BadRequest("Los format Emaila");
-        if(disp.KorisnickoIme.Length>20 || disp.KorisnickoIme.Length<1 || Regex.IsMatch(disp.KorisnickoIme,"^[a-zA-Z][a-zA-Z0-9]*$")==false)
-            return BadRequest("Los format korisnickog imena");
-        if(disp.Sifra.Length>20 || disp.Sifra.Length<1 || Regex.IsMatch(disp.Sifra,"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")==false)
-            return BadRequest("Los format sifre (sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera)");
-        string sifra= BCrypt.Net.BCrypt.HashPassword(disp.Sifra,10);
-        disp.Sifra=sifra;      
-        var KompanijaEmail = Context.Kompanija!.Where( p => p.Email == disp.Email).FirstOrDefault();
-        var KompanijaUsername = Context.Kompanija!.Where( p => p.KorisnickoIme == disp.KorisnickoIme).FirstOrDefault();
-        var VozacEmail = Context.Vozac!.Where(p => p.Email == disp.Email).FirstOrDefault();
-        var VozacUsername = Context.Vozac!.Where(p=>p.KorisnickoIme == disp.KorisnickoIme).FirstOrDefault();
-        var DispecerEmail = Context.Dispecer!.Where(p=>p.Email == disp.Email).FirstOrDefault();
-        var DispecerUsername = Context.Dispecer!.Where(p=>p.KorisnickoIme == disp.KorisnickoIme).FirstOrDefault();
-        if(KompanijaEmail!=null || VozacEmail!=null || DispecerEmail!=null)
-            return BadRequest("Vec postoji nalog sa tim emailom");
-        if(KompanijaUsername!= null || VozacUsername!= null || DispecerUsername!= null)
-            return BadRequest("Vec postoji nalog sa tim korisnickim imenom");
-        Context.Dispecer!.Add(disp);
-        await Context.SaveChangesAsync();
-        return Ok("Uspesno dodat Dispecer");
-    }
-    catch(Exception ex){
-        return BadRequest(ex.Message);
-    }
-  }
+  [Authorize(Roles ="Dispecer")]
   [Route("UpdateDispecer/{id}")]
   [HttpPut]
   public async Task<IActionResult> UpdateDispecer([FromBody]Dispecer disp, int id)
@@ -119,6 +81,7 @@ public class DispecerController : ControllerBase
          return BadRequest(ex.Message);
       }
   }
+  [Authorize(Roles ="Dispecer")]
   [Route("DeleteDispecer/{id}")]
   [HttpDelete]
   public async Task<ActionResult> DeleteDispecer(int id)
@@ -182,6 +145,7 @@ public class DispecerController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize(Roles ="Dispecer")]
     [Route("IzlistajVozaceZaTuru/{idTure}")]
     [HttpGet]
     public async Task<IActionResult>IzlistajVozaceZaTuru(int idTure)
@@ -189,68 +153,75 @@ public class DispecerController : ControllerBase
         try
     {
         var Turaa = await Context.Tura!.Include(p => p.TipRobe).Where(p => p.ID == idTure).FirstOrDefaultAsync();
-        List<Vozac> Lista = new List<Vozac>();
-        if (Turaa != null && Turaa.TipRobe != null)
-        {
-            var tip = Turaa.TipRobe!.Tip;
-            var Vozaci = Context.Vozac!.Include(p => p.Prikolice)!.ThenInclude(p => p.TipPrikolice);
-            foreach (var v in Vozaci)
+        if(Turaa!.Status=="Slobodna")
             {
-                var p = 0;
-                foreach (var prikolica in v.Prikolice!)
+            List<Vozac> Lista = new List<Vozac>();
+            if (Turaa != null && Turaa.TipRobe != null)
+            {
+                var tip = Turaa.TipRobe!.Tip;
+                var Vozaci = Context.Vozac!.Include(p => p.Prikolice)!.ThenInclude(p => p.TipPrikolice).Include(p=>p.PonudjeneTure)!.ThenInclude(p=>p.Tura).Include(p=>p.DodeljeneTure)!.ThenInclude(p=>p.Tura);
+                foreach (var v in Vozaci)
                 {
-                    if (Turaa.TipRobe.Tip != null && prikolica.TipPrikolice!.Tip != null)
+                    var p = 0;
+                    foreach (var prikolica in v.Prikolice!)
                     {
-                        if (Turaa.TipRobe.Tip == "Tecnost" && prikolica.TipPrikolice.Tip == "Cisterna" && Turaa.Zapremina < prikolica.Zapremina)
-                            p = 1;
-                        else if (Turaa.TipRobe.Tip == "Cvrst Materijal" && prikolica.TipPrikolice.Tip == "Prikolica sa ciradom" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
-                            p = 1;
-                        else if (Turaa.TipRobe.Tip == "Cvrst Materijal" && prikolica.TipPrikolice.Tip == "Prikolica bez cirade" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
-                            p = 1;
-                        else if (Turaa.TipRobe.Tip == "Hrana" && prikolica.TipPrikolice.Tip == "Hladnjaca" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
-                            p = 1;
-                        else if (Turaa.TipRobe.Tip == "Automobil" && prikolica.TipPrikolice.Tip == "Auto voz" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
-                            p = 1;
-                    }
-                    else
-                    {
-                        return Ok("Vozaci");
-                    }
-                }
-                var z = 0;
-                if (p == 1)
-                {
-                    if (v.DodeljeneTure != null)
-                    {
-                        foreach (var tura in v.DodeljeneTure)
+                        if (Turaa.TipRobe.Tip != null && prikolica.TipPrikolice!.Tip != null)
                         {
-                            if (tura.Tura != null && Turaa.DatumPocetka != null && Turaa.PredvidjeniKraj != null)
-                            {
-                                if ((tura.Tura.DatumPocetka < Turaa.DatumPocetka && tura.Tura.PredvidjeniKraj > Turaa.DatumPocetka) || (tura.Tura.DatumPocetka < Turaa.PredvidjeniKraj && tura.Tura.PredvidjeniKraj > Turaa.PredvidjeniKraj))
-                                    z = 1;
-                            }
+                            if (Turaa.TipRobe.Tip == "Tecnost" && prikolica.TipPrikolice.Tip == "Cisterna" && Turaa.Zapremina < prikolica.Zapremina)
+                                p = 1;
+                            else if (Turaa.TipRobe.Tip == "Cvrst Materijal" && prikolica.TipPrikolice.Tip == "Prikolica sa ciradom" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                                p = 1;
+                            else if (Turaa.TipRobe.Tip == "Cvrst Materijal" && prikolica.TipPrikolice.Tip == "Prikolica bez cirade" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                                p = 1;
+                            else if (Turaa.TipRobe.Tip == "Hrana" && prikolica.TipPrikolice.Tip == "Hladnjaca" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                                p = 1;
+                            else if (Turaa.TipRobe.Tip == "Automobil" && prikolica.TipPrikolice.Tip == "Auto voz" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                                p = 1;
                         }
                     }
-                    if (v.PonudjeneTure != null)
+                    var z = 0;
+                    if (p == 1)
                     {
-                        foreach (var tura in v.PonudjeneTure)
+                        if (v.DodeljeneTure != null)
                         {
-                            if (tura.Tura != null && Turaa.DatumPocetka != null && Turaa.PredvidjeniKraj != null)
+                            foreach (var tura in v.DodeljeneTure)
                             {
-                                if ((tura.Tura.DatumPocetka < Turaa.DatumPocetka && tura.Tura.PredvidjeniKraj > Turaa.DatumPocetka) || (tura.Tura.DatumPocetka < Turaa.PredvidjeniKraj && tura.Tura.PredvidjeniKraj > Turaa.PredvidjeniKraj))
-                                    z = 1;
+                                if (tura.Tura != null && Turaa.DatumPocetka != null && Turaa.PredvidjeniKraj != null)
+                                {
+                                    if ((tura.Tura!.DatumPocetka <= Turaa.DatumPocetka && tura.Tura.PredvidjeniKraj >= Turaa.DatumPocetka) || (tura.Tura.DatumPocetka <= Turaa.PredvidjeniKraj && tura.Tura.PredvidjeniKraj >= Turaa.PredvidjeniKraj))
+                                    {
+                                        z = 1;
+                                    }
+                                }
                             }
                         }
-                    }
-                    if (z == 0)
-                    {
-                        if (v != null)
-                            Lista.Add(v);
+                        
+                        if (v.PonudjeneTure != null)
+                        {
+                            foreach (var tura in v.PonudjeneTure)
+                            {
+                                if (tura.Tura != null && Turaa.DatumPocetka != null && Turaa.PredvidjeniKraj != null)
+                                {
+                                    if ((tura.Tura.DatumPocetka <= Turaa.DatumPocetka && tura.Tura.PredvidjeniKraj >= Turaa.DatumPocetka) || (tura.Tura.DatumPocetka <= Turaa.PredvidjeniKraj && tura.Tura.PredvidjeniKraj >= Turaa.PredvidjeniKraj))
+                                        z = 1;
+                                
+                                }
+                            }
+                        }
+                        
+                        if (z == 0)
+                        {
+                            if (v != null)
+                                Lista.Add(v);
+                        }
                     }
                 }
             }
+            return Ok(Lista);
         }
-        return Ok(Lista);
+        else{
+            return Ok("Tura vec dodata");
+        }
     }
     catch (Exception ex)
     {
