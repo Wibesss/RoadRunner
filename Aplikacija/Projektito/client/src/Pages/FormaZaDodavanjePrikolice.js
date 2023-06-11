@@ -12,6 +12,7 @@ const FormaZaDodavanjePrikolice = ({
   setVisina,
   setTablice,
   setPhoto,
+  photo,
 }) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -20,23 +21,28 @@ const FormaZaDodavanjePrikolice = ({
   useEffect(() => {
     axios.get(`/Prikolica/GetTipPrikolica`, config).then((response) => {
       setTipovi(response.data);
-      setTip(response.data[0].tip)
+      setTip(response.data[0].tip);
     });
   }, []);
   return (
-    <div className=" w-3/5 overflow-hidden rounded-lg shadow-md m-5 ">
+    <div className="w-full flex flex-col justify-center items-center sm:w-3/5 overflow-hidden rounded-lg shadow-md ">
       <form
-        className="mt-10  bg-white text-left text-sm text-gray-500  border border-gray-200 shadow-md p-5"
+        className="p-2 sm:p-4 mt-6 w-4/5 sm:w-full bg-white text-left text-sm text-gray-500  border border-gray-200 shadow-md"
         onSubmit={handleSubmit}
       >
-        <div className="grid grid-cols-2 gap-6">
-          <select onChange={(e) => setTip(e.target.value)} id="TipPrikolice">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <select
+            onChange={(e) => setTip(e.target.value)}
+            required
+            id="TipPrikolice"
+          >
             {tipovi.map((tip) => (
               <option key={tip.tip} value={tip.tip}>
                 {tip.tip}
               </option>
             ))}
           </select>
+
           <input
             className=""
             type="number"
@@ -45,7 +51,7 @@ const FormaZaDodavanjePrikolice = ({
             onChange={(e) => {
               setZapremina(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="number"
@@ -54,7 +60,7 @@ const FormaZaDodavanjePrikolice = ({
             onChange={(e) => {
               setNosivost(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="number"
@@ -63,7 +69,7 @@ const FormaZaDodavanjePrikolice = ({
             onChange={(e) => {
               setDuzina(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="number"
@@ -72,7 +78,7 @@ const FormaZaDodavanjePrikolice = ({
             onChange={(e) => {
               setSirina(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="number"
@@ -81,7 +87,7 @@ const FormaZaDodavanjePrikolice = ({
             onChange={(e) => {
               setVisina(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="text"
@@ -90,19 +96,40 @@ const FormaZaDodavanjePrikolice = ({
             onChange={(e) => {
               setTablice(e.target.value);
             }}
-          ></input>
-          <input
-            className=""
-            type="file"
-            placeholder="Photo"
-            required
-            onChange={(e) => {
-              setPhoto(e.target.files[0]);
-            }}
-          ></input>
+          />
+          <div className="flex flex-col sm:flex-row justify-start items-center">
+            <input
+              type="file"
+              id="customFilePhoto"
+              name="file"
+              required
+              placeholder={"Photo"}
+              onChange={(e) => setPhoto(e.target.files[0])}
+              hidden
+              autoComplete="off"
+            />
+            <div className="flex flex-col justify-center items-center sm:flex-row sm:justify-start  flex-wrap ">
+              <label
+                className="btn-prim w-40 flex flex-row justify-center items-center"
+                htmlFor="customFilePhoto"
+              >
+                Izaberi Sliku
+              </label>
+              <p className="text-muted ml-2">
+                {photo === null
+                  ? ""
+                  : photo.name === undefined
+                  ? " slika nije izabrana"
+                  : `Izabrana slika:${photo.name}`}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex justify-center">
-          <button type="submit " className="btn-primary py-2 px-4 mt-5">
+          <button
+            type="submit "
+            className="btn-prim sm:w-1/3 py-2 px-4 mt-4 mb-4"
+          >
             Dodaj Prikolicu
           </button>
         </div>

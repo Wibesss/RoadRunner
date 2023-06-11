@@ -4,11 +4,13 @@
 
 input[type="text"],
 input[type="password"],
-input[type="email"] {
-  @apply w-full border my-1 py-2 px-3 rounded-full;
+input[type="number"],
+input[type="email"],
+select {
+  @apply w-full border border-primary my-1 py-2 px-3 rounded-full;
 }
 
-.btn-primary {
+.btn-prim {
   @apply font-bold text-lg p-2 rounded-lg px-4 py-2 border-primary border-2 bg-primary text-white hover:bg-white hover:text-primary duration-300;
 }
 
@@ -33,5 +35,3 @@ div.leaflet-top.leaflet-right {
   width: 0px !important;
   height: 0px !important;
 }
-
-

@@ -27,13 +27,15 @@ const FormaZaDodavanjeTura = forwardRef(
     ref
   ) => {
     return (
-      <div ref={ref} className="flex flex-col w-full items-center">
+      <div
+        ref={ref}
+        className="w-full flex flex-col justify-center items-center sm:w-4/5 overflow-hidden rounded-lg shadow-md"
+      >
         <form
-          className="flex flex-col items-center w-full"
+          className="p-2 sm:p-4 mt-6 w-full flex flex-col justify-center items-center bg-white text-left text-sm text-gray-500  border border-gray-200 shadow-md"
           onSubmit={handlePotvrdiDodavanje}
         >
-          <div className="grid grid-cols-2 w-1/2">
-            <label className="mx-2 my-2 text-right">Tip robe:</label>
+          <div className="grid grid-cols-1 w-full sm:grid-cols-2 gap-2">
             <select
               onChange={(e) => {
                 setTip(e.target.value);
@@ -50,7 +52,6 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Tezina(kg)"
-              className="mx-2 my-2"
               required
               onChange={(e) => {
                 setTezina(e.target.value);
@@ -59,7 +60,6 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Duzina(cm)"
-              className="mx-2 my-2"
               onChange={(e) => {
                 setDuzina(e.target.value);
               }}
@@ -68,7 +68,6 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Sirina(cm)"
-              className="mx-2 my-2"
               onChange={(e) => {
                 setSirina(e.target.value);
               }}
@@ -77,7 +76,6 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Visina(cm)"
-              className="mx-2 my-2"
               onChange={(e) => {
                 setVisina(e.target.value);
               }}
@@ -86,28 +84,32 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Zapremina(l)"
-              className="mx-2 my-2"
               onChange={(e) => {
                 setZapremina(e.target.value);
               }}
               required
             ></input>
-            <LocalizationProvider dateAdapter={AdapterDayjs} required>
-              <DateTimePicker
-                label="Datum pocetka"
-                onChange={(newValue) => setDatumPocetka(newValue.toDate())}
-                required
-              />
-            </LocalizationProvider>
           </div>
-          <Mapa
-            setPgs={setPgs}
-            setPgd={setPgd}
-            setOgs={setOgs}
-            setOgd={setOgd}
-            setDuzinaTure={setDuzinaTure}
-          />
-          <button type="submit" className="btn-primary my-2">
+          <LocalizationProvider dateAdapter={AdapterDayjs} required>
+            <DateTimePicker
+              label="Datum pocetka"
+              onChange={(newValue) => setDatumPocetka(newValue.toDate())}
+              required
+              className="mt-2 mb-2"
+              sx={{ border: "1px solid #7c3aed", borderRadius: "5px" }}
+            />
+          </LocalizationProvider>
+          <div className="flex w-full flex-col justify-center items-center ">
+            <Mapa
+              setPgs={setPgs}
+              setPgd={setPgd}
+              setOgs={setOgs}
+              setOgd={setOgd}
+              setDuzinaTure={setDuzinaTure}
+            />
+          </div>
+
+          <button type="submit" className="btn-prim my-2">
             Dodaj
           </button>
         </form>

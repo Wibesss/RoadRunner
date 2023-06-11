@@ -7,10 +7,43 @@ const Footer = () => {
         <nav className="flex flex-wrap justify-center -mx-5 -my-2">
           <div className="px-5 py-2">
             <a
-              href="#"
+              href="#services"
               className="text-base leading-6 text-gray-500 hover:text-gray-900"
             >
-              About
+              Servisi
+            </a>
+          </div>
+          <div className="px-5 py-2">
+            <a
+              href="#about"
+              className="text-base leading-6 text-gray-500 hover:text-gray-900"
+            >
+              O Nama
+            </a>
+          </div>
+
+          <div className="px-5 py-2">
+            <a
+              href="#team"
+              className="text-base leading-6 text-gray-500 hover:text-gray-900"
+            >
+              Tim
+            </a>
+          </div>
+          <div className="px-5 py-2">
+            <a
+              href="#contact"
+              className="text-base leading-6 text-gray-500 hover:text-gray-900"
+            >
+              Kontakt
+            </a>
+          </div>
+          <div className="px-5 py-2">
+            <a
+              href="#sponsors"
+              className="text-base leading-6 text-gray-500 hover:text-gray-900"
+            >
+              Sponzori
             </a>
           </div>
           <div className="px-5 py-2">
@@ -18,39 +51,7 @@ const Footer = () => {
               href="#"
               className="text-base leading-6 text-gray-500 hover:text-gray-900"
             >
-              Blog
-            </a>
-          </div>
-          <div className="px-5 py-2">
-            <a
-              href="#"
-              className="text-base leading-6 text-gray-500 hover:text-gray-900"
-            >
-              Team
-            </a>
-          </div>
-          <div className="px-5 py-2">
-            <a
-              href="#"
-              className="text-base leading-6 text-gray-500 hover:text-gray-900"
-            >
-              Pricing
-            </a>
-          </div>
-          <div className="px-5 py-2">
-            <a
-              href="#"
-              className="text-base leading-6 text-gray-500 hover:text-gray-900"
-            >
-              Contact
-            </a>
-          </div>
-          <div className="px-5 py-2">
-            <a
-              href="#"
-              className="text-base leading-6 text-gray-500 hover:text-gray-900"
-            >
-              Terms
+              Uslovi
             </a>
           </div>
         </nav>
@@ -128,7 +129,7 @@ const Footer = () => {
           </a>
         </div>
         <p className="mt-8 text-base leading-6 text-center text-gray-400">
-          © 2021 SomeCompany, Inc. All rights reserved.
+          © 2023 Intalica
         </p>
       </div>
     </footer>

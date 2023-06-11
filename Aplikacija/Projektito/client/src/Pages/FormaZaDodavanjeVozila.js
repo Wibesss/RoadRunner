@@ -7,14 +7,15 @@ const FormaZaDodavanjeVozila = ({
   setCena,
   setTablice,
   setPhoto,
+  photo,
 }) => {
   return (
-    <div className=" w-3/5 overflow-hidden rounded-lg shadow-md m-5 ">
+    <div className="w-full flex flex-col justify-center items-center sm:w-3/5 overflow-hidden rounded-lg shadow-md ">
       <form
-        className="mt-10  bg-white text-left text-sm text-gray-500  border border-gray-200 shadow-md p-5"
+        className="p-2 sm:p-4 mt-6 w-4/5 sm:w-full bg-white text-left text-sm text-gray-500  border border-gray-200 shadow-md"
         onSubmit={handleSubmit}
       >
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <input
             className=""
             type="text"
@@ -23,7 +24,7 @@ const FormaZaDodavanjeVozila = ({
             onChange={(e) => {
               setMarka(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="text"
@@ -32,7 +33,7 @@ const FormaZaDodavanjeVozila = ({
             onChange={(e) => {
               setModel(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="number"
@@ -41,7 +42,7 @@ const FormaZaDodavanjeVozila = ({
             onChange={(e) => {
               setCena(e.target.value);
             }}
-          ></input>
+          />
           <input
             className=""
             type="text"
@@ -50,18 +51,33 @@ const FormaZaDodavanjeVozila = ({
             onChange={(e) => {
               setTablice(e.target.value);
             }}
-          ></input>
+          />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-2">
           <input
             type="file"
-            placeholder="Slika"
+            id="customFilePhoto"
+            name="file"
             required
+            placeholder={"Photo"}
             onChange={(e) => setPhoto(e.target.files[0])}
-          ></input>
+            hidden
+            autoComplete="off"
+          />
+          <div className="flex flex-col justify-center items-center">
+            <label
+              className="btn-prim w-40 flex flex-row justify-center items-center"
+              htmlFor="customFilePhoto"
+            >
+              Izaberi Sliku
+            </label>
+            <p className="text-muted mb-0">
+              {photo === null ? "" : photo.name === undefined? " slika nije izabrana" : `Izabrana slika:${photo.name}`}
+            </p>
+          </div>
         </div>
         <div className="flex justify-center">
-          <button type="submit " className="btn-primary py-2 px-4 mt-5">
+          <button type="submit " className="btn-prim sm:w-1/3 py-2 px-4 mt-4 mb-4">
             Dodaj Vozilo
           </button>
         </div>

@@ -7,14 +7,16 @@ const Register = () => {
   return (
     <div>
       <div
-        className={
-          "my-5 grow flex flex-col items-center justify-around py-2 px-4 "
-        }
+        className={"my-5 grow flex flex-col items-center justify-around px-4"}
       >
-        <h5>Registruj se kao:</h5>
-        <div className={"flex items-center justify-araound gap-2 "}>
-          <Link to={"/registration/regKompanija"}>Kompanija</Link>
-          <Link to={"/registration/regVozac"}>Vozač</Link>
+        <h5 className="sm:pt-6 text-lg">Registruj se kao:</h5>
+        <div className={"flex items-center justify-araound pt-2 gap-2 "}>
+          <Link className="btn-prim" to={"/registration/vozac"}>
+            Vozač
+          </Link>
+          <Link className="btn-prim" to={"/registration/kompanija"}>
+            Kompanija
+          </Link>
         </div>
       </div>
       <Outlet />

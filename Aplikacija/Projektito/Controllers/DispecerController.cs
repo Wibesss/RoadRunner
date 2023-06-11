@@ -209,7 +209,7 @@ public class DispecerController : ControllerBase
                             p = 1;
                         else if (Turaa.TipRobe.Tip == "Hrana" && prikolica.TipPrikolice.Tip == "Hladnjaca" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
                             p = 1;
-                        else if (Turaa.TipRobe.Tip == "Automobili" && prikolica.TipPrikolice.Tip == "Auto voz" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
+                        else if (Turaa.TipRobe.Tip == "Automobil" && prikolica.TipPrikolice.Tip == "Auto voz" && Turaa.TezinaRobe <= prikolica.Nosivost && Turaa.DuzinaRobe <= prikolica.Duzina && Turaa.SirinaRobe <= prikolica.Sirina && Turaa.VisinaRobe <= prikolica.Visina)
                             p = 1;
                     }
                     else

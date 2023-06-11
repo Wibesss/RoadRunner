@@ -18,14 +18,14 @@ const AccountVozac = () => {
   const linkClasses = (type = null) => {
     let classes = "p-2 px-6 text-xl hover:text-primary duration-300";
     if (type === subpage) {
-      classes = "p-2 px-6 text-xl bg-primary text-white rounded-full";
+      classes = "p-2 px-6 text-xl bg-primary text-white rounded-xl";
     }
     return classes;
   };
 
   return (
-    <div className="flex flex-col items-center font-bold">
-      <nav className="w-full flex justify-center mt-8 gap-2 mb-8">
+    <div className="flex flex-col justify-center items-center font-bold">
+      <nav className="w-full flex items-center justify-center gap-1 sm:gap-5 mt-8 mb-8 p-2 shadow-sm">
         <Link className={linkClasses("profil")} to={"/account"}>
           Profil
         </Link>

@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet-routing-machine";
+import { Modal } from "react-bootstrap";
 
 const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
   const [address1, setAddress1] = useState("");
@@ -13,6 +14,9 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
   const [marker2, setMarker2] = useState(null);
   const [routeControl, setRouteControl] = useState(null);
   const mapRef = useRef();
+
+  const [stringGreska, setStringGreska] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const customMarkerIcon = L.icon({
     iconUrl: markerIcon,
@@ -107,7 +111,8 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
           console.log("Invalid latitude or longitude");
         }
       } else {
-        alert("Addresa nije pronadjena");
+        setStringGreska("Addresa nije pronadjena.");
+        setShowAlert(true);
       }
     } catch (error) {
       console.log("Error geocoding address:", error);
@@ -135,9 +140,28 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
       handleGeocodeAddress2();
     }
   };
+
+  const handleClose = () => setShowAlert(false);
   return (
-    <div className="w-1/2 ">
-      <div className="grid grid-cols-2 gap-4">
+    <>
+      <Modal
+        show={showAlert}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Greška!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{stringGreska}</Modal.Body>
+        <Modal.Footer>
+          <button className="btn-prim" onClick={handleClose}>
+            Zatvori
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-2">
         <input
           placeholder="Pocetna lokacija"
           type="text"
@@ -156,8 +180,8 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
         />
       </div>
       <div
-        style={{ height: "800px", width: "100%" }}
-        className="border border-black"
+        style={{ height: "400px", width: "400px" }}
+        className="border border-black mt-2"
       >
         <MapContainer
           center={[51.5, -0.9]}
@@ -182,7 +206,7 @@ const Mapa = ({ setPgs, setPgd, setOgs, setOgd, setDuzinaTure }) => {
           )}
         </MapContainer>
       </div>
-    </div>
+    </>
   );
 };
 

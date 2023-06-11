@@ -7,6 +7,10 @@ import { storage } from "./Firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 
+import { Modal } from "react-bootstrap";
+import LoadingPage from "./LoadingPage";
+import { Image } from "react-native";
+
 const KompanijaProfil = () => {
   const [redirect, setRedirect] = useState(null);
   const [kompanija, setKompanija] = useState([]);
@@ -24,6 +28,10 @@ const KompanijaProfil = () => {
   const [staraSifra, setStaraSifra] = useState("");
   const [novaSifra, setNovaSifra] = useState("");
   const [potvrdaSifra, setPotvrdaSifra] = useState("");
+
+  const [stringGreska, setStringGreska] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
@@ -39,10 +47,6 @@ const KompanijaProfil = () => {
   }, [updateUser]);
 
   const { ready, user, setUser } = useContext(UserContext);
-
-  if (!ready) {
-    return "Loading...";
-  }
 
   if (ready && !user) {
     return <Navigate to={redirect} />;
@@ -103,8 +107,10 @@ const KompanijaProfil = () => {
       if (Object.keys(validationErrors).length > 0) {
         // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
-          alert(`Greška u polju ${property}: ${validationErrors[property]}`);
-          window.location.reload();
+          setStringGreska(
+            `Greška u polju ${property}: ${validationErrors[property]}`
+          );
+          setShowAlert(true);
         });
         return;
       }
@@ -128,7 +134,6 @@ const KompanijaProfil = () => {
           if (response.status === 200) {
             setUpdateUser(!updateUser);
           } else {
-            console.log(response.status);
             console.log("Server returned status code " + response.status);
           }
         } catch (error) {
@@ -136,13 +141,13 @@ const KompanijaProfil = () => {
             // Bad request response
             const errorMessage = error.response.data;
             if (errorMessage === "Vec postoji nalog sa tim emailom") {
-              alert("Vec postoji nalog sa tim emailom");
-              window.location.reload();
+              setStringGreska("Vec postoji nalog sa tim emailom.");
+              setShowAlert(true);
             } else if (
               errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
             ) {
-              alert("Vec postoji nalog sa tim korisnickim imenom");
-              window.location.reload();
+              setStringGreska("Vec postoji nalog sa tim korisnickim imenom.");
+              setShowAlert(true);
             } else {
               // Handle other validation errors or unexpected error messages
               console.log(errorMessage);
@@ -184,17 +189,18 @@ const KompanijaProfil = () => {
                 // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
-                  alert("Vec postoji nalog sa tim emailom");
-                  window.location.reload();
+                  setStringGreska("Vec postoji nalog sa tim emailom.");
+                  setShowAlert(true);
                 } else if (
                   errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
                 ) {
-                  alert("Vec postoji nalog sa tim korisnickim imenom");
-                  window.location.reload();
+                  setStringGreska(
+                    "Vec postoji nalog sa tim korisnickim imenom."
+                  );
+                  setShowAlert(true);
                 } else {
                   // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
-                  window.location.reload();
                 }
               } else {
                 // Other error
@@ -218,224 +224,271 @@ const KompanijaProfil = () => {
     setAdresa(kompanija.adresa);
     setEmail(kompanija.email);
     setKorisnickoIme(kompanija.korisnickoIme);
+    setSlika(null);
     setEdit(!edit);
   };
 
   const handlePromenaSifre = () => {
-    if (novaSifra !== potvrdaSifra)
-      return alert("Nova i potrvdra šifra se ne poklapaju");
-    try {
-      const encodedStaraSifra = encodeURIComponent(staraSifra);
-      const encodedNovaSifra = encodeURIComponent(novaSifra);
-      axios
-        .put(
-          `/Kompanija/UpdateSifra/${kompanija.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
-          {},
-          config
-        )
-        .then((response) => {
-          if (!response.ok) {
-            console.log("Server returned status code " + response.status);
-          }
-          handleLogout();
-        });
-    } catch (err) {
-      console.log("Error: " + err.message);
+    if (novaSifra !== potvrdaSifra) {
+      setStringGreska("Nova i potrvrdna šifra se ne poklapaju.");
+      setShowAlert(true);
+    } else {
+      try {
+        const encodedStaraSifra = encodeURIComponent(staraSifra);
+        const encodedNovaSifra = encodeURIComponent(novaSifra);
+        axios
+          .put(
+            `/Kompanija/UpdateSifra/${kompanija.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
+            {},
+            config
+          )
+          .then((response) => {
+            if (!response.ok) {
+              console.log("Server returned status code " + response.status);
+            }
+            handleLogout();
+          });
+      } catch (err) {
+        console.log("Error: " + err.message);
+      }
     }
   };
 
-  return (
-    <form className="w-2/3 file-upload" autoComplete="off">
-      <div className="flex row">
-        <div className="flex justify-start mb-5 gap-5 w-2/3">
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => setPromenasifre(!promenaSifre)}
-          >
-            Promeni Šifru
-          </button>
-          <button type="button" className="btn-primary" onClick={handleEdit}>
-            Izmeni Profil
-          </button>
-          {edit && (
-            <button
-              type="button"
-              className="btn-danger"
-              onClick={handlePotrvdu}
-            >
-              Potvrdi izmene
+  const handleClose = () => {
+    setShowAlert(false);
+    if (stringGreska !== "Nova i potrvrdna šifra se ne poklapaju.")
+      window.location.reload();
+  };
+
+  if (!ready) {
+    <LoadingPage />;
+  } else
+    return (
+      <>
+        <Modal
+          show={showAlert}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Greška!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{stringGreska}</Modal.Body>
+          <Modal.Footer>
+            <button className="btn-prim" onClick={handleClose}>
+              Zatvori
             </button>
-          )}
-        </div>
-        <div className="flex justify-end w-1/3">
-          <button
-            type="button"
-            className="btn-danger mb-5"
-            onClick={handleLogout}
-          >
-            Odjavi Se
-          </button>
-        </div>
-      </div>
+          </Modal.Footer>
+        </Modal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-        <div className="">
-          <h4 className="text-xl font-bold mb-10">Profilna Slika</h4>
-          <div className="text-center">
-            <div className="w-64 h-64 rounded-full mx-auto relative mb-20">
-              <img
-                className="rounded-md border-black border-4"
-                src={kompanija.logo}
-              />
-            </div>
-            <input
-              type="file"
-              id="customFile"
-              name="file"
-              onChange={(e) => {
-                setSlika(e.target.files[0]);
-              }}
-              hidden
-              autoComplete="off"
-            />
-            {edit && (
-              <label className="btn-primary " htmlFor="customFile">
-                Izaberi Novu Sliku
-              </label>
-            )}
-            <p className="text-muted mt-3 mb-0">
-              {slika === null ? "" : `Izabrana slika:${slika.name}`}{" "}
-            </p>
-          </div>
-        </div>
-
-        <div className="p-4">
-          <h4 className="text-xl font-bold mb-4">Detalji Profila</h4>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-1">Naziv</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder=""
-                aria-label="Naziv"
-                disabled={!edit}
-                value={naziv}
-                onChange={(e) => setNaziv(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-            <div>
-              <label className="block mb-1">Vlasnik</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder=""
-                aria-label="Vlasnik"
-                disabled={!edit}
-                value={vlasnik}
-                onChange={(e) => setVlasnik(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-            <div>
-              <label className="block mb-1">Adresa</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder=""
-                aria-label="Broj telefona"
-                disabled={!edit}
-                value={adresa}
-                onChange={(e) => setAdresa(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-            <div>
-              <label className="block mb-1">Email</label>
-              <input
-                type="email"
-                className="form-input"
-                id="inputEmail4"
-                disabled={!edit}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-            <div>
-              <label className="block mb-1">Korisničko Ime</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder=""
-                aria-label="Korisnicko Ime"
-                disabled={!edit}
-                value={korisnickoIme}
-                onChange={(e) => setKorisnickoIme(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {promenaSifre && (
-        <div className="flex justify-center">
-          <div className="p-4 gap-4 w-2/5">
-            <h4 className="text-xl font-bold mb-4 ">Promena Šifre</h4>
-            <div>
-              <label htmlFor="exampleInputPassword1" className="block mb-1">
-                Stara Šifra
-              </label>
-              <input
-                type="password"
-                className="form-input"
-                id="exampleInputPassword1"
-                autoComplete="off"
-                value={staraSifra}
-                onChange={(e) => setStaraSifra(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="exampleInputPassword2" className="block mb-1">
-                Nova Šifra
-              </label>
-              <input
-                type="password"
-                className="form-input"
-                id="exampleInputPassword2"
-                autoComplete="off"
-                value={novaSifra}
-                onChange={(e) => setNovaSifra(e.target.value)}
-              />
-              <label htmlFor="exampleInputPassword3" className="block mb-1">
-                Potvrdi Šifru
-              </label>
-              <input
-                type="password"
-                className="form-input"
-                id="exampleInputPassword3"
-                autoComplete="off"
-                value={potvrdaSifra}
-                onChange={(e) => setPotvrdaSifra(e.target.value)}
-              />
-              <div className="flex justify-center">
+        <form className="w-2/3 file-upload" autoComplete="off">
+          <div>
+            <div className="flex flex-col justify-center items-center sm:flex-row">
+              <div className="flex flex-wrap justify-center mb-5 gap-2 sm:gap-5 w-2/3">
                 <button
                   type="button"
-                  className="w-1/3 btn-primary btn-lg mt-2"
-                  onClick={handlePromenaSifre}
+                  className="btn-danger btn-xl sm:mb-5 h-15 min-w-[30px]"
+                  onClick={handleLogout}
                 >
-                  Potvrdi
+                  Odjavi Se
+                </button>
+                <button
+                  type="button"
+                  className="btn-prim btn-xl sm:mb-5 h-15 min-w-[30px]"
+                  onClick={() => setPromenasifre(!promenaSifre)}
+                >
+                  Promeni Šifru
+                </button>
+                <button
+                  type="button"
+                  className="btn-prim btn-xl sm:mb-5 h-15 min-w-[30px]"
+                  onClick={handleEdit}
+                >
+                  Izmeni Profil
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </form>
-  );
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div className="">
+              <h4 className="text-xl font-bold mb-10">Profilna Slika</h4>
+              <div className="text-center">
+                <div className="w-52 h-52 mx-auto relative mb-20 flex justify-center items-center">
+                  <Image
+                    style={{ width: 200, height: 200, borderRadius: 200 / 2 }}
+                    source={{ uri: kompanija.logo }}
+                  />
+                </div>
+                <input
+                  type="file"
+                  id="customFile"
+                  name="file"
+                  onChange={(e) => {
+                    setSlika(e.target.files[0]);
+                  }}
+                  hidden
+                  autoComplete="off"
+                />
+                {edit && (
+                  <>
+                    <label className="btn-prim " htmlFor="customFile">
+                      Izaberi Novu Sliku
+                    </label>
+                    <p className="text-muted mt-3 mb-0">
+                      {slika === null ? "" : `Izabrana slika:${slika.name}`}
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4">
+              <h4 className="text-xl font-bold mb-4">Detalji Profila</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block mb-1">Naziv</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder=""
+                    aria-label="Naziv"
+                    disabled={!edit}
+                    value={naziv}
+                    onChange={(e) => setNaziv(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Vlasnik</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder=""
+                    aria-label="Vlasnik"
+                    disabled={!edit}
+                    value={vlasnik}
+                    onChange={(e) => setVlasnik(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Adresa</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder=""
+                    aria-label="Broj telefona"
+                    disabled={!edit}
+                    value={adresa}
+                    onChange={(e) => setAdresa(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Email</label>
+                  <input
+                    type="email"
+                    className="form-input"
+                    id="inputEmail4"
+                    disabled={!edit}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Korisničko Ime</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder=""
+                    aria-label="Korisnicko Ime"
+                    disabled={!edit}
+                    value={korisnickoIme}
+                    onChange={(e) => setKorisnickoIme(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              {edit && (
+                <div className="flex flex-col sm:flex-row sm:justify-center gap-y-2 gap-x-5 items-center sm:mt-5 mt-2">
+                  <button
+                    type="button"
+                    className="btn-prim btn-xl sm:w-1/3  sm:mb-2 h-15 min-w-[30px]"
+                    onClick={handleEdit}
+                  >
+                    Poništi Izmene
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-danger btn-xl sm:w-1/3 sm:mb-2 h-15 min-w-[30px]"
+                    onClick={handlePotrvdu}
+                  >
+                    Potvrdi izmene
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {promenaSifre && (
+            <div className="flex justify-center">
+              <div className="p-4 gap-4 sm:w-2/5">
+                <h4 className="text-xl font-bold mb-4 ">Promena Šifre</h4>
+                <div>
+                  <label htmlFor="exampleInputPassword1" className="block mb-1">
+                    Stara Šifra
+                  </label>
+                  <input
+                    type="password"
+                    className="form-input"
+                    id="exampleInputPassword1"
+                    autoComplete="off"
+                    value={staraSifra}
+                    onChange={(e) => setStaraSifra(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="exampleInputPassword2" className="block mb-1">
+                    Nova Šifra
+                  </label>
+                  <input
+                    type="password"
+                    className="form-input"
+                    id="exampleInputPassword2"
+                    autoComplete="off"
+                    value={novaSifra}
+                    onChange={(e) => setNovaSifra(e.target.value)}
+                  />
+                  <label htmlFor="exampleInputPassword3" className="block mb-1">
+                    Potvrdi Šifru
+                  </label>
+                  <input
+                    type="password"
+                    className="form-input"
+                    id="exampleInputPassword3"
+                    autoComplete="off"
+                    value={potvrdaSifra}
+                    onChange={(e) => setPotvrdaSifra(e.target.value)}
+                  />
+                  <div className="flex justify-center">
+                    <button
+                      type="button"
+                      className="btn-prim btn-xl sm:mb-5 h-15 min-w-[30px]"
+                      onClick={handlePromenaSifre}
+                    >
+                      Potvrdi
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </form>
+      </>
+    );
 };
 
 export default KompanijaProfil;

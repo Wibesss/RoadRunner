@@ -10,6 +10,7 @@ import { storage } from "./Firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import FormaZaUpdatePrikolice from "./FormaZaUpdatePrikolice";
 import PrikoliceListItem from "./PrikoliceListItem";
+import LoadingPage from "./LoadingPage";
 
 const VozacPrikolice = () => {
   const config = {
@@ -190,80 +191,111 @@ const VozacPrikolice = () => {
     formaZaUpdatePrikolice && setFormaZaUpdatePrikolice(false);
     setFormaZaDodavanjePrikolice(!formaZaDodavanjePrikolice);
   };
-
-  return (
-    <div className=" overflow-hidden w-full m-5 flex-col">
-      <div className="flex flex-col  items-center mt-10">
-        <div className="flex justify-center w-1/2">
+  if (!ready) {
+    return <LoadingPage />;
+  } else
+    return (
+      <div className=" overflow-hidden w-full m-5 flex-col">
+        <div className="flex flex-col  items-center mt-10">
+          <div className="flex justify-center w-1/2">
+            <button
+              type="submit"
+              className="btn-prim"
+              onClick={(e) => {
+                handleDodajClick();
+              }}
+            >
+              Dodaj Novu Prikolicu
+            </button>
+          </div>
+          {formaZaDodavanjePrikolice && (
+            <FormaZaDodavanjePrikolice
+              handleSubmit={handleSubmit}
+              setTip={setTip}
+              setZapremina={setZapremina}
+              setNosivost={setNosivost}
+              setDuzina={setDuzina}
+              setSirina={setSirina}
+              setVisina={setVisina}
+              setTablice={setTablice}
+              setPhoto={setPhoto}
+              photo={photo}
+            />
+          )}
+          {formaZaUpdatePrikolice && (
+            <FormaZaUpdatePrikolice
+              handleUpdate={handleUpdate}
+              setTip={setTip}
+              setZapremina={setZapremina}
+              setNosivost={setNosivost}
+              setDuzina={setDuzina}
+              setSirina={setSirina}
+              setVisina={setVisina}
+              setTablice={setTablice}
+              setPhoto={setPhoto}
+              tip={tip}
+              zapremina={zapremina}
+              nosivost={nosivost}
+              duzina={duzina}
+              sirina={sirina}
+              visina={visina}
+              tablice={tablice}
+              photo={photo}
+            />
+          )}
+        </div>
+        <div className="inline-flex rounded-md shadow-sm mt-auto">
           <button
-            type="submit"
-            className="btn-primary py-2 px-4"
-            onClick={(e) => {
-              handleDodajClick();
-            }}
+            type="button"
+            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+            onClick={handleClickPrev}
+            disabled={currentPage === 1}
           >
-            Dodaj Novu Prikolicu
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+              fill={"black"}
+            >
+              <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+          </button>
+          <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white border-t border-b border-gray-200 ">
+            {currentPage}
+          </p>
+          <button
+            type="button"
+            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+            onClick={handleClickNext}
+            disabled={currentPage === totalPages}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+              fill={"black"}
+            >
+              <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+            </svg>
           </button>
         </div>
-        {formaZaDodavanjePrikolice && (
-          <FormaZaDodavanjePrikolice
-            handleSubmit={handleSubmit}
-            setTip={setTip}
-            setZapremina={setZapremina}
-            setNosivost={setNosivost}
-            setDuzina={setDuzina}
-            setSirina={setSirina}
-            setVisina={setVisina}
-            setTablice={setTablice}
-            setPhoto={setPhoto}
-          />
-        )}
-        {formaZaUpdatePrikolice && (
-          <FormaZaUpdatePrikolice
-            handleUpdate={handleUpdate}
-            setTip={setTip}
-            setZapremina={setZapremina}
-            setNosivost={setNosivost}
-            setDuzina={setDuzina}
-            setSirina={setSirina}
-            setVisina={setVisina}
-            setTablice={setTablice}
-            setPhoto={setPhoto}
-            tip={tip}
-            zapremina={zapremina}
-            nosivost={nosivost}
-            duzina={duzina}
-            sirina={sirina}
-            visina={visina}
-            tablice={tablice}
-            photo={photo}
-          />
-        )}
+        <div className="overflow-x-auto">
+          <table className="w-3/5 bg-white text-left text-sm text-gray-500 rounded-lg border border-gray-200 shadow-md ml-auto mr-auto">
+            <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+              {ready &&
+                currentItems.map((prikolica) => (
+                  <PrikoliceListItem
+                    prikolica={prikolica}
+                    handleDelete={handleDelete}
+                    handleUpdate={handleUpdateForm}
+                    key={prikolica.id}
+                  />
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="flex justify-center gap-5 mt-10">
-        <button onClick={handleClickPrev} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>{currentPage}</span>
-        <button onClick={handleClickNext} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
-      <table className="w-3/5  bg-white text-left text-sm text-gray-500 rounded-lg border border-gray-200 shadow-md  ml-auto mr-auto border-collapse">
-        <tbody className="divide-y divide-gray-100 border-t border-gray-100 ">
-          {ready &&
-            currentItems.map((prikolica) => (
-              <PrikoliceListItem
-                prikolica={prikolica}
-                handleDelete={handleDelete}
-                handleUpdate={handleUpdateForm}
-                key={prikolica.id}
-              ></PrikoliceListItem>
-            ))}
-        </tbody>
-      </table>
-    </div>
-  );
+    );
 };
 
 export default VozacPrikolice;

@@ -8,6 +8,7 @@ import FormaZaDodavanjeTura from "./FormaZaDodavanjeTura";
 import { flushSync } from "react-dom";
 import VozaciZaTuruListItem from "./VozaciZaTuruListItem";
 import PrikazDodeljenogVozaca from "./PrikazDodeljenogVozaca";
+import LoadingPage from "./LoadingPage";
 const KompanijaTure = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -196,151 +197,158 @@ const KompanijaTure = () => {
   };
 
   if (!ready) {
-    return "Loading...";
+    return <LoadingPage />;
   } else {
     return (
-      <div className="flex flex-col">
-        <div className="flex flex-col">
-          <div className="w-full min-h-fill overflow-auto sm:rounded-lg">
-            <div className=" overflow-auto sm:rounded-lg">
-              <table
-                className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md "
-                ref={tableRef}
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-grow flex-col mt-10 w-4/5 justify-center items-center">
+          <div className="flex flex-col w-full justify-center items-center">
+            <div className="w-full min-h-fill flex flex-col justify-center overflow-auto sm:rounded-lg">
+              <button
+                className="btn-prim self-center sm:w-1/5 mx-2 my-4"
+                onClick={handleDodajClick}
               >
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Vrsta robe
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Tezina robe
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Visina robe
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Duzina robe
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Sirina robe
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Zapremina robe
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Od
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Do
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Status
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Datum pocetka
-                    </th>
-                    <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                      Duzina
-                    </th>
-                  </tr>
-                </thead>
+                Dodaj Turu
+              </button>
 
-                <tbody>
-                  {currentItems.map((item, ind) => (
-                    <KompanijaTuraListItem
-                      item={item}
-                      handleDelete={handleDelete}
-                      handlePrikazi={handlePrikazi}
-                      key={ind}
-                      handlePrikaziVozaca={handlePrikaziVozaca}
+              <div className=" overflow-auto sm:rounded-lg">
+                <table
+                  className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md "
+                  ref={tableRef}
+                >
+                  <thead className="text-xs text-white uppercase bg-primary">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Vrsta robe
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Tezina robe
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Visina robe
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Duzina robe
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Sirina robe
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Zapremina robe
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Od
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Do
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Status
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Datum pocetka
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Duzina
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {currentItems.map((item, ind) => (
+                      <KompanijaTuraListItem
+                        item={item}
+                        handleDelete={handleDelete}
+                        handlePrikazi={handlePrikazi}
+                        key={ind}
+                        handlePrikaziVozaca={handlePrikaziVozaca}
+                      />
+                    ))}
+                    {currentItems.length === 0 && (
+                      <tr>
+                        <th colSpan="10" className="text-center">
+                          Nemate aktivnih ruta
+                        </th>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="w-full flex flex-col gap-2 ml-4 flex-wrap ">
+              {vozaciCurrent?.length !== 0 ? (
+                <div className="flex justify-center gap-5 mt-10 flex-wrap">
+                  <button
+                    onClick={handleClickPrev}
+                    disabled={currentPageV === 1}
+                  >
+                    Previous
+                  </button>
+                  <span>{currentPageV}</span>
+                  <button
+                    onClick={handleClickNext}
+                    disabled={currentPageV === totalPagesV}
+                  >
+                    Next
+                  </button>
+                </div>
+              ) : (
+                lastTura !== 0 &&
+                prikaziVozace && (
+                  <h1 className="text-center text-2xl">
+                    ZA SADA NEMA VOZACA KOJI SU PRIHVATILI TURU!
+                  </h1>
+                )
+              )}
+              <div className="w-full flex gap flex-wrap justify-around">
+                {prikaziVozace === true &&
+                  vozaciCurrent?.map((vozac) => (
+                    <VozaciZaTuruListItem
+                      item={vozac}
+                      key={vozac.id}
+                      currentPageV={currentPageV}
+                      onClick={handleSelected}
+                      selectedVozac={selectedVozac}
                     />
                   ))}
-                  {currentItems.length === 0 && (
-                    <tr>
-                      <th colSpan="10" className="text-center">
-                        Nemate aktivnih ruta
-                      </th>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-            <button
-              className="btn-primary mx-2 my-2"
-              onClick={handleDodajClick}
-            >
-              Nova Tura
-            </button>
-          </div>
-          <div className="w-full flex flex-col gap-2 ml-4 flex-wrap ">
-            {vozaciCurrent?.length !== 0 ? (
-              <div className="flex justify-center gap-5 mt-10 flex-wrap">
-                <button onClick={handleClickPrev} disabled={currentPageV === 1}>
-                  Previous
-                </button>
-                <span>{currentPageV}</span>
-                <button
-                  onClick={handleClickNext}
-                  disabled={currentPageV === totalPagesV}
-                >
-                  Next
-                </button>
+                {prikaziVozaca === true && (
+                  <PrikazDodeljenogVozaca
+                    vozac={dodeljenVozac}
+                  ></PrikazDodeljenogVozaca>
+                )}
               </div>
-            ) : (
-              lastTura !== 0 &&
-              prikaziVozace && (
-                <h1 className="text-center text-2xl">
-                  ZA SADA NEMA VOZACA KOJI SU PRIHVATILI TURU!
-                </h1>
-              )
-            )}
-            <div className="w-full flex gap flex-wrap justify-around">
-              {prikaziVozace === true &&
-                vozaciCurrent?.map((vozac) => (
-                  <VozaciZaTuruListItem
-                    item={vozac}
-                    key={vozac.id}
-                    currentPageV={currentPageV}
-                    onClick={handleSelected}
-                    selectedVozac={selectedVozac}
-                  />
-                ))}
-              {prikaziVozaca === true && (
-                <PrikazDodeljenogVozaca
-                  vozac={dodeljenVozac}
-                ></PrikazDodeljenogVozaca>
+              {selectedVozac !== 0 && prikaziVozace === true && (
+                <div className="flex justify-center">
+                  <button className="btn-primary w-1/6" onClick={handleIzaberi}>
+                    Izaberi
+                  </button>
+                </div>
               )}
             </div>
-            {selectedVozac !== 0 && prikaziVozace === true && (
-              <div className="flex justify-center">
-                <button className="btn-primary w-1/6" onClick={handleIzaberi}>
-                  Izaberi
-                </button>
-              </div>
+          </div>
+          <div className="w-full flex justify-center ">
+            {formaZaDodavanjeTure && (
+              <FormaZaDodavanjeTura
+                ref={listref}
+                tipovi={tipovi}
+                setTip={setTip}
+                setDuzina={setDuzina}
+                setSirina={setSirina}
+                setVisina={setVisina}
+                setTezina={setTezina}
+                setZapremina={setZapremina}
+                setPgs={setPgs}
+                setPgd={setPgd}
+                setOgs={setOgs}
+                setOgd={setOgd}
+                setDatumPocetka={setDatumPocetka}
+                setDuzinaTure={setDuzinaTure}
+                handlePotvrdiDodavanje={handlePotvrdiDodavanje}
+                datumPocetka={datumPocetka}
+              />
             )}
           </div>
-        </div>
-        <div className="w-full flex justify-center ">
-          {formaZaDodavanjeTure && (
-            <FormaZaDodavanjeTura
-              ref={listref}
-              tipovi={tipovi}
-              setTip={setTip}
-              setDuzina={setDuzina}
-              setSirina={setSirina}
-              setVisina={setVisina}
-              setTezina={setTezina}
-              setZapremina={setZapremina}
-              setPgs={setPgs}
-              setPgd={setPgd}
-              setOgs={setOgs}
-              setOgd={setOgd}
-              setDatumPocetka={setDatumPocetka}
-              setDuzinaTure={setDuzinaTure}
-              handlePotvrdiDodavanje={handlePotvrdiDodavanje}
-              datumPocetka={datumPocetka}
-            />
-          )}
         </div>
       </div>
     );

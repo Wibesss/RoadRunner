@@ -6,6 +6,8 @@ import { storage } from "./Firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "react-bootstrap";
+
 const RegisterKompanija = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,8 +15,12 @@ const RegisterKompanija = () => {
   const [pass, setPass] = useState("");
   const [adress, setAdress] = useState("");
   const [owner, setOwner] = useState("");
-  const [logo, setLogo] = useState("");
+  const [logo, setLogo] = useState(null);
   const navigate = useNavigate();
+
+  const [stringGreska, setStringGreska] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
   async function registerKompanija(e) {
     e.preventDefault();
     try {
@@ -67,7 +73,10 @@ const RegisterKompanija = () => {
       if (Object.keys(validationErrors).length > 0) {
         // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
-          alert(`Greška u polju ${property}: ${validationErrors[property]}`);
+          setStringGreska(
+            `Greška u polju ${property}: ${validationErrors[property]}`
+          );
+          setShowAlert(true);
         });
         return;
       }
@@ -98,11 +107,15 @@ const RegisterKompanija = () => {
                 // Bad request response
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
-                  alert("Vec postoji nalog sa tim emailom");
+                  setStringGreska("Vec postoji nalog sa tim emailom.");
+                  setShowAlert(true);
                 } else if (
                   errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
                 ) {
-                  alert("Vec postoji nalog sa tim korisnickim imenom");
+                  setStringGreska(
+                    "Vec postoji nalog sa tim korisnickim imenom."
+                  );
+                  setShowAlert(true);
                 } else {
                   // Handle other validation errors or unexpected error messages
                   console.log(errorMessage);
@@ -119,11 +132,36 @@ const RegisterKompanija = () => {
       console.log("Error:", err.message);
     }
   }
+
+  const handleClose = () => setShowAlert(false);
+
   return (
-    <div className=" grow flex items-center justify-around">
-      <div className="my-1">
-        <h1 className="text-2xl text-center bold mb-4">Registracija:</h1>
-        <form className="max-w-lg mx-auto" onSubmit={registerKompanija}>
+    <>
+      <Modal
+        show={showAlert}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Neuspešna Registracija</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{stringGreska}</Modal.Body>
+        <Modal.Footer>
+          <button className="btn-prim" onClick={handleClose}>
+            Zatvori
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      <div className="my-1 grow flex flex-col items-center justify-around">
+        <h1 className="text-2xl text-center bold mb-4">
+          Registracija Kompanije:
+        </h1>
+        <form
+          className="max-w-lg mx-auto w-4/5 sm:w-full flex flex-col gap-1"
+          onSubmit={registerKompanija}
+        >
           <input
             type="text"
             placeholder={"Naziv"}
@@ -162,22 +200,31 @@ const RegisterKompanija = () => {
           />
           <input
             type="file"
+            id="customFileLogo"
+            name="file"
             placeholder={"Logo"}
             onChange={(e) => setLogo(e.target.files[0])}
+            hidden
+            autoComplete="off"
           />
-          <button
-            className={"bg-blue-300 text-white rounded-xl p-2 w-full my-5"}
+          <label
+            className="btn-prim flex flex-row justify-center items-center"
+            htmlFor="customFileLogo"
           >
-            Registruj se
-          </button>
-          <div className="text-center py-2">
-            <h5>
-              Nemate nalog? <Link to={"/registration"}>Kreirajte nalog</Link>
-            </h5>
-          </div>
+            Izaberi Logo
+          </label>
+          <p className="text-muted mb-0">
+            {logo === null ? "" : `Izabrana slika:${logo.name}`}
+          </p>
         </form>
+        <button className={"btn-prim btn-xl mt-6"}>Registruj se</button>
+        <div className="text-center py-2">
+          <h5>
+            Nemate nalog? <Link to={"/registration"}>Kreirajte nalog</Link>
+          </h5>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

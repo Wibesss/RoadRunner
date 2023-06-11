@@ -82,8 +82,8 @@ const MapePrihvaceneTure = ({ vozacId, turaId ,ponudjenaTuraId ,pocetnaGS, pocet
     };
   }, [pocetnaGS, pocetnaGD, krajnjaGS, krajnjaGD]);
   return( 
-    <div className='w-2/3 justify-center'>
-      <div className="mt-5 border border-black"ref={mapRef} style={{ width: '100%', height: '400px' }}></div>
+    <div className='w-2/3 flex justify-center'>
+      <div className="mt-5 border border-black"ref={mapRef} style={{ width: '400px', height: '400px' }}></div>
     </div>
     );
 };
