@@ -33,7 +33,6 @@ const VozacPonudjeneListItem = ({
       <td className=" p-4 whitespace-nowrap">
         {item.zapreminaRobe === null ? "-" : item.zapreminaRobe}
       </td>
-      <td className=" p-4 whitespace-nowrap">{item.turaId}</td>
       <td className=" p-4 whitespace-nowrap">{item.duzina}</td>
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>

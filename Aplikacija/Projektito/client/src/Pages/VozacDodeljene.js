@@ -8,70 +8,68 @@ import VozacDodeljeneListItem from "./VozacDodeljeneListItem";
 import MapePrihvaceneTure from "./MapePrihvaceneTure";
 import LoadingPage from "./LoadingPage";
 
+
 const VozacDodeljene = () => {
-  const {user, setUser } = useContext(UserContext);
-    const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
-      };
-    const [currentItems,setCurrentItems] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [order,setOrder] = useState("ASC");
-    const [mapa,setMapa] = useState(false);
-    const [turaId,setTuraId] = useState("");
-    const [ponudjenaTuraId,setPonudjenaTuraId] = useState("");
-    const [pocetnaGS,setPocetnaGS] = useState("");
-    const [pocetnaGD,setPocetnaGD] = useState("");
-    const [krajnjaGS,setKrajnjaGS] = useState("");
-    const [krajnjaGD,setKrajnjaGD] = useState("");
-    const [stanje,setStanje] = useState(0);
-    const [obrisano,setObrisano] = useState(false);
-    const [lastUpdate,setLastUpdate] = useState(0)
-    useEffect(() => {
-      if(user)
-        {
-        try{
-          axios.get(`/Tura/GetDodeljenaTuraVozac/${user.id}`, config).then((response) => {
+  const { user, setUser } = useContext(UserContext);
+  const config = {
+    headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
+  };
+  const [currentItems, setCurrentItems] = useState([]);
+  const [ready, setReady] = useState(false);
+  const [order, setOrder] = useState("ASC");
+  const [mapa, setMapa] = useState(false);
+  const [turaId, setTuraId] = useState("");
+  const [ponudjenaTuraId, setPonudjenaTuraId] = useState("");
+  const [pocetnaGS, setPocetnaGS] = useState("");
+  const [pocetnaGD, setPocetnaGD] = useState("");
+  const [krajnjaGS, setKrajnjaGS] = useState("");
+  const [krajnjaGD, setKrajnjaGD] = useState("");
+  const [stanje, setStanje] = useState(0);
+  const [obrisano, setObrisano] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
+  useEffect(() => {
+    if (user) {
+      try {
+        axios
+          .get(`/Tura/GetDodeljenaTuraVozac/${user.id}`, config)
+          .then((response) => {
             setCurrentItems(response.data);
             setReady(true);
           });
-        }
-        catch(err)
-        {
-          console.log(err.message)
-        } 
-    }        
-    }, [ready,user,obrisano,stanje]);
-    const sorting = (col)=> {
-      if(order==="ASC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] > b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("DSC");
-      }
-      if(order==="DSC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] < b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("ASC");
+      } catch (err) {
+        console.log(err.message);
       }
     }
-    const handleStart = (id) => {
-      try{
-        axios.put(`/Tura/ZapocniTuru/${id}`,[], config).then((response) => {
+  }, [ready, user, obrisano, stanje]);
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] > b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] < b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("ASC");
+    }
+  };
+  const handleStart = (id) => {
+    try {
+      axios
+        .put(`/Tura/ZapocniTuru/${id}`, [], config)
+        .then((response) => {
           const prom = stanje + 1;
           setStanje(prom);
-        }).catch(error => {
-          alert(error.response.data)
+        })
+        .catch((error) => {
+          alert(error.response.data);
         });
-      }
-      catch(err)
-      {
-        console.log(err.message)
-      } 
+    } catch (err) {
+      console.log(err.message);
     }
   };
   const handleEnd = (id) => {
@@ -84,6 +82,7 @@ const VozacDodeljene = () => {
       console.log(err.message);
     }
   };
+
   if (!ready) {
     return <LoadingPage />;
   } else {
@@ -274,43 +273,43 @@ const VozacDodeljene = () => {
               </tr>
             </thead>
 
-                    <tbody className='text-center'>
-                      {currentItems.map((item, ind) => (
-                        <VozacDodeljeneListItem 
-                        item={item} 
-                        key={ind}
-                        mapa={mapa}
-                        setMapa={setMapa}
-                        setTuraId={setTuraId}
-                        setPonudjenaTuraId={setPonudjenaTuraId}
-                        setPocetnaGS={setPocetnaGS}
-                        setPocetnaGD={setPocetnaGD}
-                        setKrajnjaGS={setKrajnjaGS}
-                        setKrajnjaGD={setKrajnjaGD}
-                        handleStart={handleStart}
-                        handleEnd={handleEnd}
-                        lastUpdate={lastUpdate}
-                        setLastUpdate={setLastUpdate}  
-                        />
-                      ))}
-                      {currentItems.length === 0 && (
-                        <tr>
-                          <th colSpan="10" className="text-center">
-                            Nemate aktivnih ruta
-                          </th>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-              </div>
-              {mapa && (
-                <MapePrihvaceneTure
-                  pocetnaGS = {pocetnaGS}
-                  pocetnaGD = {pocetnaGD}
-                  krajnjaGS = {krajnjaGS}
-                  krajnjaGD = {krajnjaGD}
+            <tbody className="text-center">
+              {currentItems.map((item, ind) => (
+                <VozacDodeljeneListItem
+                  item={item}
+                  key={ind}
+                  mapa={mapa}
+                  setMapa={setMapa}
+                  setTuraId={setTuraId}
+                  setPonudjenaTuraId={setPonudjenaTuraId}
+                  setPocetnaGS={setPocetnaGS}
+                  setPocetnaGD={setPocetnaGD}
+                  setKrajnjaGS={setKrajnjaGS}
+                  setKrajnjaGD={setKrajnjaGD}
+                  handleStart={handleStart}
+                  handleEnd={handleEnd}
+                  lastUpdate={lastUpdate}
+                  setLastUpdate={setLastUpdate}
                 />
+              ))}
+              {currentItems.length === 0 && (
+                <tr>
+                  <th colSpan="10" className="text-center">
+                    Nemate aktivnih ruta
+                  </th>
+                </tr>
               )}
+            </tbody>
+          </table>
+        </div>
+        {mapa && (
+          <MapePrihvaceneTure
+            pocetnaGS={pocetnaGS}
+            pocetnaGD={pocetnaGD}
+            krajnjaGS={krajnjaGS}
+            krajnjaGD={krajnjaGD}
+          />
+        )}
       </div>
     );
   }

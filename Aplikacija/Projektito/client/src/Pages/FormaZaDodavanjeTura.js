@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { forwardRef } from "react";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import Mapa from "./Mapa";

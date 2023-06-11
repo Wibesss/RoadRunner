@@ -59,7 +59,7 @@ const VozacPrihvacene = () => {
   } else {
     return (
       <div className="flex flex-col mt-10 items-center ">
-        <h3 className="text-center text-xl font-bold mb-4">Prihvacene ture</h3>
+        <h3 className="text-center text-xl font-bold mb-4">Prihvacene Ture</h3>
         <div className="overflow-auto w-full sm:w-4/5 sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500  shadow-md ">
             <thead className="text-xs text-white uppercase bg-primary">
