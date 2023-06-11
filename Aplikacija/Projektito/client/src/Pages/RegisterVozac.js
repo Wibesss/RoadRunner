@@ -80,7 +80,6 @@ const RegisterVozac = () => {
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
           setStringGreska(
             `Greška u polju ${property}: ${validationErrors[property]}`
@@ -108,10 +107,8 @@ const RegisterVozac = () => {
               });
 
               if (response.status === 200) {
-                // Successful response
                 navigate("/login");
               } else {
-                // Other error
                 console.log("Server returned status code " + response.status);
               }
             } catch (error) {

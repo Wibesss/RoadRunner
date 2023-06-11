@@ -47,7 +47,6 @@ const VozacPonudjeneListItem = ({
               setMapa(true);
               setLastUpdate(item.turaId);
             }
-            //handleClick(e);
             setTuraId(item.turaId);
             setPonudjenaTuraId(item.id);
             setPocetnaGS(item.pocetnaGeografskaSirina);

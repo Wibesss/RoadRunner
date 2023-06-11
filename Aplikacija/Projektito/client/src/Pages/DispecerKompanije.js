@@ -73,7 +73,7 @@ const DispecerKompanije = () => {
                 <th scope="col" className="px-6 py-3 whitespace-nowrap ">
                   <button
                     className="flex flex-row uppercase"
-                    onClick={() => sorting("tipRobe")}
+                    onClick={() => sorting("naziv")}
                   >
                     Naziv
                     <svg
@@ -90,7 +90,7 @@ const DispecerKompanije = () => {
                 <th scope="col" className="px-6 py-3 whitespace-nowrap ">
                   <button
                     className="flex flex-row uppercase"
-                    onClick={() => sorting("sirinaRobe")}
+                    onClick={() => sorting("email")}
                   >
                     Email
                     <svg
@@ -107,7 +107,7 @@ const DispecerKompanije = () => {
                 <th scope="col" className="px-6 py-3 whitespace-nowrap ">
                   <button
                     className="flex flex-row uppercase"
-                    onClick={() => sorting("visinaRobe")}
+                    onClick={() => sorting("korisnickoIme")}
                   >
                     Korisnicko ime
                     <svg
@@ -124,7 +124,7 @@ const DispecerKompanije = () => {
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                   <button
                     className="flex flex-row uppercase"
-                    onClick={() => sorting("zapremina")}
+                    onClick={() => sorting("adresa")}
                   >
                     Adresa
                     <svg
@@ -141,7 +141,7 @@ const DispecerKompanije = () => {
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                   <button
                     className="flex flex-row uppercase"
-                    onClick={() => sorting("duzina")}
+                    onClick={() => sorting("vlasnik")}
                   >
                     Vlasnik
                     <svg

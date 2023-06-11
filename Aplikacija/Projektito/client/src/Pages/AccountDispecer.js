@@ -108,7 +108,6 @@ const AccountDispecer = () => {
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        // Validation failed, display error messages
         Object.keys(validationErrors).forEach((property) => {
           setStringGreska(
             `Greška u polju ${property}: ${validationErrors[property]}`
@@ -134,7 +133,6 @@ const AccountDispecer = () => {
           )
           .then((response) => {
             if (response.status === 200) {
-              // Success, handle the response
               setUpdateUser(!updateUser);
             } else {
               console.log("Server returned status code " + response.status);
@@ -184,7 +182,6 @@ const AccountDispecer = () => {
                   });
                 }
               } else {
-                // Other error status codes, handle them accordingly
                 console.log(
                   "Server returned status code " + error.response.status
                 );

@@ -69,7 +69,6 @@ const Index = () => {
 
   return (
     <div>
-      {/* <!-- Masthead--> */}
       <header className="masthead">
         <div className="container pb-80 ">
           <div className="">
@@ -84,7 +83,6 @@ const Index = () => {
           </div>
         </div>
       </header>
-      {/* <!-- Services--> */}
       <section className="page-section" id="services">
         <div className="container">
           <div className="text-center">
@@ -148,7 +146,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* <!-- About--> */}
       <section className="page-section" id="about">
         <div className="container">
           <div className="text-center">
@@ -263,7 +260,6 @@ const Index = () => {
           </ul>
         </div>
       </section>
-      {/* <!-- Team--> */}
       <section className="page-section bg-light" id="team">
         <div className="container">
           <div className="text-center">
@@ -435,7 +431,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      {/* <!-- Clients--> */}
       <div className="py-5" id="sponsors">
         <div className="container">
           <div className="row align-items-center">
@@ -482,24 +477,15 @@ const Index = () => {
           </div>
         </div>
       </div>
-      {/* <!-- Contact--> */}
       <section className="page-section" id="contact">
         <div className="container">
           <div className="text-center">
             <h2 className="section-heading text-uppercase">Kontaktirajte Nas</h2>
           </div>
-          {/* <!-- * * * * * * * * * * * * * * *--> */}
-          {/* <!-- * * SB Forms Contact Form * *--> */}
-          {/* <!-- * * * * * * * * * * * * * * *--> */}
-          {/* <!-- This form is pre-integrated with SB Forms.--> */}
-          {/* <!-- To make this form functional, sign up at--> */}
-          {/* <!-- https://startbootstrap.com/solution/contact-forms--> */}
-          {/* <!-- to get an API token!--> */}
           <form id="contactForm" data-sb-form-api-token="API_TOKEN">
             <div className="row align-items-stretch mb-5">
               <div className="col-md-6">
                 <div className="form-group">
-                  {/* <!-- Name input--> */}
                   <input
                     className="form-control"
                     id="name"
@@ -515,7 +501,6 @@ const Index = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  {/* <!-- Email address input--> */}
                   <input
                     className="form-control"
                     id="email"
@@ -537,7 +522,6 @@ const Index = () => {
                   </div>
                 </div>
                 <div className="form-group mb-md-0">
-                  {/* <!-- Phone number input--> */}
                   <input
                     className="form-control"
                     id="phone"
@@ -555,7 +539,6 @@ const Index = () => {
               </div>
               <div className="col-md-6">
                 <div className="form-group form-group-textarea mb-md-0">
-                  {/* <!-- Message input--> */}
                   <textarea
                     className="form-control"
                     id="message"
@@ -571,10 +554,6 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            {/* <!-- Submit success message--> */}
-            {/* <!----> */}
-            {/* <!-- This is what your users will see when the form--> */}
-            {/* <!-- has successfully submitted--> */}
             <div className="d-none" id="submitSuccessMessage">
               <div className="text-center text-white mb-3">
                 <div className="fw-bolder">Form submission successful!</div>
@@ -585,16 +564,11 @@ const Index = () => {
                 </a>
               </div>
             </div>
-            {/* <!-- Submit error message--> */}
-            {/* <!----> */}
-            {/* <!-- This is what your users will see when there is--> */}
-            {/* <!-- an error submitting the form--> */}
             <div className="d-none" id="submitErrorMessage">
               <div className="text-center text-danger mb-3">
                 Error sending message!
               </div>
             </div>
-            {/* <!-- Submit Button--> */}
             <div className="text-center">
               <button
                 className="btn btn-primary btn-xl text-uppercase disabled"
