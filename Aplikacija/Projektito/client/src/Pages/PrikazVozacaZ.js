@@ -37,7 +37,7 @@ const PrikazVozacaZ = ({
         <div className="flex  justify-end px-4 pt-4"></div>
         <div className="flex flex-col items-center">
           <img
-            className="w-24 h-24 mb-3 rounded-full shadow-lg z-10"
+            className="w-24 h-24 mb-3 rounded-full shadow-lg z-10 object-cover aspect-square"
             src={vozac.vozac.slika}
             alt=""
           />
