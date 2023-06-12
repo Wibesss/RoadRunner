@@ -37,6 +37,13 @@ namespace Notifications
          ci.korisnickoIme=username;
          ci.ConnedtionId=connectionId;
 
+         var brisi= await Contextt.ConnectionInfoo!.Where(p=>p.korisnickoIme==username).ToListAsync();
+
+         foreach(var b in brisi)
+         {
+            Contextt.Remove(b);
+         }
+
          await Contextt.AddAsync(ci);
          await Contextt.SaveChangesAsync();
 

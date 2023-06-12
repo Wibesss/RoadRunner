@@ -24,7 +24,7 @@ const Index = () => {
 
   useEffect(() => {
     let connection;
-    if (ready && user) {
+    if (ready && user.role === "Vozac") {
       connection = new HubConnectionBuilder()
         .withUrl(
           `http://localhost:5026/notificationHub?username=${user.korisnickoIme}`,
@@ -37,8 +37,6 @@ const Index = () => {
       connection
         .start()
         .then(() => {
-          console.log("SignalR connection established.");
-
           connection.on("ReceiveMessage", (message) => {
             toast(message, {
               position: "top-right",
@@ -55,14 +53,11 @@ const Index = () => {
             });
           });
         })
-        .catch((error) => {
-          console.error("SignalR connection error:", error);
-        });
+        .catch((error) => {});
     }
     return () => {
       if (connection) {
         connection.stop();
-        console.log("SignalR connection stopped.");
       }
     };
   }, [ready]);
@@ -280,7 +275,7 @@ const Index = () => {
                 <p className="text-muted">Lead Designer</p>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.twitter.com/"
                   aria-label="Parveen Anand Twitter Profile"
                 >
                   <svg
@@ -294,7 +289,7 @@ const Index = () => {
                 </a>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.facebook.com/"
                   aria-label="Parveen Anand Facebook Profile"
                 >
                   <svg
@@ -308,7 +303,7 @@ const Index = () => {
                 </a>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.linkedin.com/"
                   aria-label="Parveen Anand LinkedIn Profile"
                 >
                   <svg
@@ -333,7 +328,7 @@ const Index = () => {
                 <p className="text-muted">Lead Designer</p>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.twitter.com/"
                   aria-label="Parveen Anand Twitter Profile"
                 >
                   <svg
@@ -347,7 +342,7 @@ const Index = () => {
                 </a>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.facebook.com/"
                   aria-label="Parveen Anand Facebook Profile"
                 >
                   <svg
@@ -361,7 +356,7 @@ const Index = () => {
                 </a>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.linkedin.com/"
                   aria-label="Parveen Anand LinkedIn Profile"
                 >
                   <svg
@@ -386,7 +381,7 @@ const Index = () => {
                 <p className="text-muted">Lead Designer</p>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.twitter.com/"
                   aria-label="Parveen Anand Twitter Profile"
                 >
                   <svg
@@ -400,7 +395,7 @@ const Index = () => {
                 </a>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.facebook.com/"
                   aria-label="Parveen Anand Facebook Profile"
                 >
                   <svg
@@ -414,7 +409,7 @@ const Index = () => {
                 </a>
                 <a
                   className="btn btn-dark btn-social mx-2"
-                  href="#!"
+                  href="https://www.linkedin.com/"
                   aria-label="Parveen Anand LinkedIn Profile"
                 >
                   <svg
@@ -435,7 +430,7 @@ const Index = () => {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-md-3 col-sm-6 my-3">
-              <a href="#!">
+              <a href="https://www.microsoft.com/">
                 <img
                   className="img-fluid img-brand d-block mx-auto"
                   src={logo1}
@@ -445,7 +440,7 @@ const Index = () => {
               </a>
             </div>
             <div className="col-md-3 col-sm-6 my-3">
-              <a href="#!">
+              <a href="https://www.google.com/">
                 <img
                   className="img-fluid img-brand d-block mx-auto"
                   src={logo2}
@@ -455,7 +450,7 @@ const Index = () => {
               </a>
             </div>
             <div className="col-md-3 col-sm-6 my-3">
-              <a href="#!">
+              <a href="https://www.meta.com/">
                 <img
                   className="img-fluid img-brand d-block mx-auto"
                   src={logo3}
@@ -465,7 +460,7 @@ const Index = () => {
               </a>
             </div>
             <div className="col-md-3 col-sm-6 my-3">
-              <a href="#!">
+              <a href="https://www.amd.com/">
                 <img
                   className="img-fluid img-brand d-block mx-auto"
                   src={logo4}
@@ -477,110 +472,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-      <section className="page-section" id="contact">
-        <div className="container">
-          <div className="text-center">
-            <h2 className="section-heading text-uppercase">Kontaktirajte Nas</h2>
-          </div>
-          <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-            <div className="row align-items-stretch mb-5">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <input
-                    className="form-control"
-                    id="name"
-                    type="text"
-                    placeholder="Your Name *"
-                    data-sb-validations="required"
-                  />
-                  <div
-                    className="invalid-feedback"
-                    data-sb-feedback="name:required"
-                  >
-                    A name is required.
-                  </div>
-                </div>
-                <div className="form-group">
-                  <input
-                    className="form-control"
-                    id="email"
-                    type="email"
-                    placeholder="Your Email *"
-                    data-sb-validations="required,email"
-                  />
-                  <div
-                    className="invalid-feedback"
-                    data-sb-feedback="email:required"
-                  >
-                    An email is required.
-                  </div>
-                  <div
-                    className="invalid-feedback"
-                    data-sb-feedback="email:email"
-                  >
-                    Email is not valid.
-                  </div>
-                </div>
-                <div className="form-group mb-md-0">
-                  <input
-                    className="form-control"
-                    id="phone"
-                    type="tel"
-                    placeholder="Your Phone *"
-                    data-sb-validations="required"
-                  />
-                  <div
-                    className="invalid-feedback"
-                    data-sb-feedback="phone:required"
-                  >
-                    A phone number is required.
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group form-group-textarea mb-md-0">
-                  <textarea
-                    className="form-control"
-                    id="message"
-                    placeholder="Your Message *"
-                    data-sb-validations="required"
-                  ></textarea>
-                  <div
-                    className="invalid-feedback"
-                    data-sb-feedback="message:required"
-                  >
-                    A message is required.
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="d-none" id="submitSuccessMessage">
-              <div className="text-center text-white mb-3">
-                <div className="fw-bolder">Form submission successful!</div>
-                To activate this form, sign up at
-                <br />
-                <a href="https://startbootstrap.com/solution/contact-forms">
-                  https://startbootstrap.com/solution/contact-forms
-                </a>
-              </div>
-            </div>
-            <div className="d-none" id="submitErrorMessage">
-              <div className="text-center text-danger mb-3">
-                Error sending message!
-              </div>
-            </div>
-            <div className="text-center">
-              <button
-                className="btn btn-primary btn-xl text-uppercase disabled"
-                id="submitButton"
-                type="submit"
-              >
-                Send Message
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
       <ToastContainer />
     </div>
   );

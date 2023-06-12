@@ -164,10 +164,10 @@ const KompanijaProfil = () => {
         const imageRef = ref(storage, `kompanije/${slika.name + v4()}`);
         let slikaurl = "";
         uploadBytes(imageRef, slika).then(() => {
-          getDownloadURL(imageRef).then((res) => {
+          getDownloadURL(imageRef).then(async(res) => {
             slikaurl = res;
             try {
-              const response = axios.put(
+              const response =await axios.put(
                 `/Kompanija/UpdateKompanija/${kompanija.id}`,
                 {
                   naziv: naziv,

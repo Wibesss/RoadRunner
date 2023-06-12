@@ -116,15 +116,69 @@ public class VozacController : ControllerBase
          return BadRequest(ex.Message);
       }
   }
-  [Authorize(Roles ="Vozac,Dispecer")]
+  [Authorize(Roles ="Dispecer")]
   [Route("DeleteVozac/{id}")]
   [HttpDelete]
   public async Task<ActionResult> DeleteVozac(int id)
   {
     try{
+             
              var Vozac = Context.Vozac!.Find(id);
              if(Vozac!=null)
              {
+                var vozila=await Context.Vozilo!.Where(p=>p.Vozac==Vozac).ToListAsync();
+                var prikolice=await Context.Prikolica!.Where(p=>p.Vozac==Vozac).ToListAsync();
+                var ponudjene=await Context.PonudjenaTura!.Where(p=>p.Vozac==Vozac).ToListAsync();
+                var prihvacena=await Context.PrihvacenaTura!.Where(p=>p.Vozac==Vozac).ToListAsync();
+                var dodeljena= await Context.DodeljeneTure!.Where(p=>p.Vozac==Vozac).ToListAsync();
+                var ocene=await Context.Ocena!.Where(p=>p.Vozac==Vozac).ToListAsync();
+                var favorizacije=await Context.Favorizacija!.Where(p=>p.Vozac==Vozac).ToListAsync();
+
+                foreach(var f in favorizacije)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+                 foreach(var f in ocene)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+
+                 foreach(var f in dodeljena)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+                 foreach(var f in prihvacena)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+                 foreach(var f in ponudjene)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+                 foreach(var f in prikolice)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+                 foreach(var f in vozila)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+
+
                 Context.Vozac.Remove(Vozac);
                 await Context.SaveChangesAsync();
                 return Ok($"Vozac obrisan");

@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import VozacDodeljeneListItem from "./VozacDodeljeneListItem";
 import MapePrihvaceneTure from "./MapePrihvaceneTure";
 import LoadingPage from "./LoadingPage";
+import { HubConnectionBuilder } from "@microsoft/signalr";
+import { toast, ToastContainer } from "react-toastify";
 
 const VozacDodeljene = () => {
   const { user, setUser } = useContext(UserContext);
@@ -39,6 +41,48 @@ const VozacDodeljene = () => {
         });
     }
   }, [ready, user, obrisano, stanje]);
+
+  const token = `Bearer ${Cookies.get("Token")}`;
+
+  useEffect(() => {
+    let connection;
+    if (ready && user.role === "Vozac") {
+      connection = new HubConnectionBuilder()
+        .withUrl(
+          `http://localhost:5026/notificationHub?username=${user.korisnickoIme}`,
+          {
+            accessTokenFactory: () => token,
+          }
+        )
+        .build();
+
+      connection
+        .start()
+        .then(() => {
+          connection.on("ReceiveMessage", (message) => {
+            toast(message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              css: `
+              background-color: white;
+              `,
+            });
+          });
+        })
+        .catch((error) => {});
+    }
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+    };
+  }, [ready]);
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>
@@ -83,6 +127,7 @@ const VozacDodeljene = () => {
   } else {
     return (
       <div className="flex flex-col items-center mt-10">
+        <ToastContainer></ToastContainer>
         <h3 className="text-center text-xl font-bold mb-4">Dodeljene ture</h3>
         <div className="overflow-auto w-full sm:w-4/5 sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500  shadow-md ">

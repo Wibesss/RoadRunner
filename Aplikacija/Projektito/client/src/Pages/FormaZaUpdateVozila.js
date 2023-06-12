@@ -65,7 +65,6 @@ const FormaZaUpdateVozila = ({
             type="file"
             id="customFilePhoto"
             name="file"
-            required
             placeholder={"Photo"}
             onChange={(e) => setPhoto(e.target.files[0])}
             hidden

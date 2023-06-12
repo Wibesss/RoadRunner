@@ -7,13 +7,16 @@ import { useEffect } from "react";
 import MapePrihvaceneTure from "./MapePrihvaceneTure";
 import VozacPrihvaceneListItem from "./VozacPrihvaceneListItem";
 import LoadingPage from "./LoadingPage";
+import { HubConnectionBuilder } from "@microsoft/signalr";
+import { toast, ToastContainer } from "react-toastify";
 const VozacPrihvacene = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, ready } = useContext(UserContext);
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
+  const token = `Bearer ${Cookies.get("Token")}`;
   const [currentItems, setCurrentItems] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [readyy, setReadyy] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [mapa, setMapa] = useState(false);
   const [turaId, setTuraId] = useState("");
@@ -30,13 +33,53 @@ const VozacPrihvacene = () => {
         .get(`/Tura/GetPrihvacenaTuraVozac/${user.id}`, config)
         .then((response) => {
           setCurrentItems(response.data);
-          setReady(true);
+          setReadyy(true);
         })
         .catch((err) => {
           console.log(err.message);
         });
     }
-  }, [ready, user, obrisano]);
+  }, [readyy, user, obrisano]);
+
+  useEffect(() => {
+    let connection;
+    if (ready && user.role === "Vozac") {
+      connection = new HubConnectionBuilder()
+        .withUrl(
+          `http://localhost:5026/notificationHub?username=${user.korisnickoIme}`,
+          {
+            accessTokenFactory: () => token,
+          }
+        )
+        .build();
+
+      connection
+        .start()
+        .then(() => {
+          connection.on("ReceiveMessage", (message) => {
+            toast(message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              css: `
+              background-color: white;
+              `,
+            });
+          });
+        })
+        .catch((error) => {});
+    }
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+    };
+  }, [ready]);
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>
@@ -53,11 +96,12 @@ const VozacPrihvacene = () => {
       setOrder("ASC");
     }
   };
-  if (!ready) {
+  if (!readyy) {
     return <LoadingPage />;
   } else {
     return (
       <div className="flex flex-col mt-10 items-center ">
+        <ToastContainer></ToastContainer>
         <h3 className="text-center text-xl font-bold mb-4">Prihvacene Ture</h3>
         <div className="overflow-auto w-full sm:w-4/5 sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500  shadow-md ">

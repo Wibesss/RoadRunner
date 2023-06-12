@@ -12,6 +12,7 @@ import { Image } from "react-native";
 import { Modal } from "react-bootstrap";
 
 const VozacProfil = () => {
+  const { ready, user, setUser } = useContext(UserContext);
   const [redirect, setRedirect] = useState(null);
   const [vozac, setVozac] = useState([]);
   const [vozacReady, setVozacReady] = useState(false);
@@ -37,6 +38,7 @@ const VozacProfil = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
+  const token = `Bearer ${Cookies.get("Token")}`;
   useEffect(() => {
     axios
       .get(`/Vozac/GetVozaca/${user.id}`, config)
@@ -54,8 +56,6 @@ const VozacProfil = () => {
         console.log(err.message);
       });
   }, [updateUser]);
-
-  const { ready, user, setUser } = useContext(UserContext);
 
   if (ready && !user) {
     return <Navigate to={redirect} />;
@@ -173,10 +173,10 @@ const VozacProfil = () => {
         const imageRef = ref(storage, `vozaci/${slika.name + v4()}`);
         let slikaurl = "";
         uploadBytes(imageRef, slika).then(() => {
-          getDownloadURL(imageRef).then((res) => {
+          getDownloadURL(imageRef).then(async (res) => {
             slikaurl = res;
             try {
-              const response = axios.put(
+              const response = await axios.put(
                 `/Vozac/UpdateVozac/${vozac.id}`,
                 {
                   ime: ime,
