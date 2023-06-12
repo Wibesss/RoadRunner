@@ -95,23 +95,23 @@ const VozacOcene = () => {
         <div className="flex flex-col flex-grow w-full items-center overflow-x-auto gap-2 mt-2">
           {ready &&
             currentItems.map((ocena) => (
-              <div class="shadow-lg border w-4/5 sm:w-1/3">
-                <div class="border-b  border-gray-400 lg:border-l-0  lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                  <div class="mb-8">
-                    <div class="text-gray-900 font-bold text-xl mb-2 flex justify-center">
+              <div className="shadow-lg border w-4/5 sm:w-1/3">
+                <div className="border-b  border-gray-400 lg:border-l-0  lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                  <div className="mb-8">
+                    <div className="text-gray-900 font-bold text-xl mb-2 flex justify-center">
                       <Rating value={ocena.broj} readOnly />
                     </div>
-                    <p class="text-gray-700 text-base flex justify-center">
+                    <p className="text-gray-700 text-base flex justify-center">
                       {ocena.opis}
                     </p>
                   </div>
-                  <div class="flex items-center">
+                  <div className="flex items-center">
                     <Image
                       style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
                       source={{ uri: ocena.kompanija.logo }}
                     />
-                    <div class="ml-4 text-xl">
-                      <p class="text-gray-900 leading-none">
+                    <div className="ml-4 text-xl">
+                      <p className="text-gray-900 leading-none">
                         {ocena.kompanija.naziv}
                       </p>
                     </div>

@@ -90,6 +90,7 @@ const KompanijaTure = () => {
     currentPageV,
     selectedVozac,
   ]);
+
   const handleDodajClick = () => {
     setPrikaziVozaca(false);
     setPrikaziVozace(false);
@@ -307,8 +308,6 @@ const KompanijaTure = () => {
       });
   };
 
-  
-
   const handleClose = () => setShowAlert(false);
 
   if (!ready || !currentItemsReady) {
@@ -351,32 +350,59 @@ const KompanijaTure = () => {
                   >
                     <thead className="text-xs text-white uppercase bg-primary">
                       <tr>
-                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Vrsta robe
+                        <th
+                          scope="col"
+                          className="text-center px-6 py-3 whitespace-nowrap"
+                        >
+                          <div className="flex flex-row justify-center">
+                            Vrsta robe
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Tezina robe
+                          <div className="flex flex-row justify-center">
+                            Tezina robe
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Visina robe
+                          <div className="flex flex-row justify-center">
+                            {" "}
+                            Visina robe{" "}
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Duzina robe
+                          <div className="flex flex-row justify-center">
+                            Duzina robe
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Sirina robe
+                          <div className="flex flex-row justify-center">
+                            Sirina robe
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Zapremina robe
+                          <div className="flex flex-row justify-center">
+                            Zapremina robe
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Status
+                          <div className="flex flex-row justify-center">
+                            Status
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Datum pocetka
+                          <div className="flex flex-row justify-center">
+                            Datum pocetka
+                          </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                          Duzina
+                          <div className="flex flex-row justify-center">
+                            Duzina
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          <div className="flex flex-row justify-center">
+                            Vozac
+                          </div>
                         </th>
                         <th></th>
                       </tr>
@@ -444,7 +470,7 @@ const KompanijaTure = () => {
                 ) : (
                   lastTura !== 0 &&
                   prikaziVozace && (
-                    <h1 className="text-center text-2xl">
+                    <h1 className="text-center text-2xl mt-2 sm:mt-10">
                       Za sada ne postoje vozači koji su prihvatili turu!
                     </h1>
                   )

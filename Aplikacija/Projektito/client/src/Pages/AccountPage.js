@@ -19,9 +19,9 @@ const AccountPage = () => {
 
   return (
     <div className="">
-      {user.role.toString() === "Vozac" ? (
+      {user?.role.toString() === "Vozac" ? (
         <AccountVozac />
-      ) : user.role.toString() === "Kompanija" ? (
+      ) : user?.role.toString() === "Kompanija" ? (
         <AccountKompanija />
       ) : (
         <AccountDispecer />

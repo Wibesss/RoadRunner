@@ -28,7 +28,7 @@ const AccountKompanija = () => {
     return <Navigate to="/" />;
   }
 
-  if (user.role.toString() !== "Kompanija") {
+  if (user?.role.toString() !== "Kompanija") {
     return <MissingPage />;
   }
 

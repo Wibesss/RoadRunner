@@ -193,6 +193,7 @@ const VozacVozila = () => {
     return <LoadingPage />;
   } else
     return (
+      
       <div className="flex overflow-hidden w-full m-5 flex-col justify-center">
         <div className="flex flex-col items-center">
           <div className="flex justify-center w-4/5 sm:w-1/4">

@@ -65,9 +65,7 @@ const PrikazVozacaZ = ({
               Ukupno {ocene.ukupniBrojOcena} ocena
             </p>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 ">
-                5
-              </span>
+              <span className="text-sm font-medium text-blue-600 ">5</span>
               <div className="w-full h-5 mx-2 bg-gray-200 rounded  ">
                 <div
                   className="h-5 bg-yellow-400 rounded"
@@ -81,9 +79,7 @@ const PrikazVozacaZ = ({
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 ">
-                4
-              </span>
+              <span className="text-sm font-medium text-blue-600 ">4</span>
               <div className="w-full h-5 mx-2 bg-gray-200 rounded">
                 <div
                   className="h-5 bg-yellow-400 rounded"
@@ -97,9 +93,7 @@ const PrikazVozacaZ = ({
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600">
-                3
-              </span>
+              <span className="text-sm font-medium text-blue-600">3</span>
               <div className="w-full h-5 mx-2 bg-gray-200 rounded">
                 <div
                   className="h-5 bg-yellow-400 rounded"
@@ -113,9 +107,7 @@ const PrikazVozacaZ = ({
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600">
-                2
-              </span>
+              <span className="text-sm font-medium text-blue-600">2</span>
               <div className="w-full h-5 mx-2 bg-gray-200 rounded">
                 <div
                   className="h-5 bg-yellow-400 rounded"
@@ -129,9 +121,7 @@ const PrikazVozacaZ = ({
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600">
-                1
-              </span>
+              <span className="text-sm font-medium text-blue-600">1</span>
               <div className="w-full h-5 mx-2 bg-gray-200 rounded">
                 <div
                   className="h-5 bg-yellow-400 rounded"
@@ -169,7 +159,7 @@ const PrikazVozacaZ = ({
             />
             <input
               type="text"
-              placeholder="Opis"
+              placeholder="Komentar"
               required
               onChange={(e) => {
                 setOpis(e.target.value);

@@ -72,7 +72,7 @@ const AccountVozac = () => {
     return <Navigate to="/" />;
   }
 
-  if (user.role.toString() !== "Vozac") {
+  if (user?.role.toString() !== "Vozac") {
     return <MissingPage />;
   }
 
