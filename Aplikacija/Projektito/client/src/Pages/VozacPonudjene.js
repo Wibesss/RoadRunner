@@ -8,14 +8,17 @@ import VozacPonudjeneListItem from "./VozacPonudjeneListItem";
 import KomponentaMape from "./KomponentaMape";
 import { Modal } from "react-bootstrap";
 import LoadingPage from "./LoadingPage";
+import { HubConnectionBuilder } from "@microsoft/signalr";
+import { toast, ToastContainer } from "react-toastify";
 
 const VozacPonudjene = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, ready } = useContext(UserContext);
+  const token = `Bearer ${Cookies.get("Token")}`;
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   const [currentItems, setCurrentItems] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [readyy, setReadyy] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [mapa, setMapa] = useState(false);
   const [turaId, setTuraId] = useState("");
@@ -37,13 +40,54 @@ const VozacPonudjene = () => {
           .get(`/Tura/GetPonudjenjaTuraVozac/${user.id}`, config)
           .then((response) => {
             setCurrentItems(response.data);
-            setReady(true);
+            setReadyy(true);
           });
       } catch (err) {
         console.log(err.message);
       }
     }
-  }, [ready, user, obrisano]);
+  }, [readyy, user, obrisano]);
+
+  useEffect(() => {
+    let connection;
+    if (ready && user.role === "Vozac") {
+      connection = new HubConnectionBuilder()
+        .withUrl(
+          `http://localhost:5026/notificationHub?username=${user.korisnickoIme}`,
+          {
+            accessTokenFactory: () => token,
+          }
+        )
+        .build();
+
+      connection
+        .start()
+        .then(() => {
+          connection.on("ReceiveMessage", (message) => {
+            toast(message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              css: `
+              background-color: white;
+              `,
+            });
+          });
+        })
+        .catch((error) => {});
+    }
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+    };
+  }, [ready]);
+
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>
@@ -75,11 +119,12 @@ const VozacPonudjene = () => {
 
   const handleClose = () => setShowAlert(false);
 
-  if (!ready) {
+  if (!readyy) {
     return <LoadingPage />;
   } else {
     return (
       <>
+      <ToastContainer></ToastContainer>
         <Modal
           show={showAlert}
           onHide={handleClose}

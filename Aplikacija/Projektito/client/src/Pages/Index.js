@@ -24,7 +24,7 @@ const Index = () => {
 
   useEffect(() => {
     let connection;
-    if (ready && user) {
+    if (ready && user.role === "Vozac") {
       connection = new HubConnectionBuilder()
         .withUrl(
           `http://localhost:5026/notificationHub?username=${user.korisnickoIme}`,
@@ -37,8 +37,6 @@ const Index = () => {
       connection
         .start()
         .then(() => {
-          console.log("SignalR connection established.");
-
           connection.on("ReceiveMessage", (message) => {
             toast(message, {
               position: "top-right",
@@ -55,14 +53,11 @@ const Index = () => {
             });
           });
         })
-        .catch((error) => {
-          console.error("SignalR connection error:", error);
-        });
+        .catch((error) => {});
     }
     return () => {
       if (connection) {
         connection.stop();
-        console.log("SignalR connection stopped.");
       }
     };
   }, [ready]);
@@ -480,7 +475,9 @@ const Index = () => {
       <section className="page-section" id="contact">
         <div className="container">
           <div className="text-center">
-            <h2 className="section-heading text-uppercase">Kontaktirajte Nas</h2>
+            <h2 className="section-heading text-uppercase">
+              Kontaktirajte Nas
+            </h2>
           </div>
           <form id="contactForm" data-sb-form-api-token="API_TOKEN">
             <div className="row align-items-stretch mb-5">

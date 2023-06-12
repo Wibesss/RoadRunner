@@ -8,7 +8,13 @@ import DispecerNoveTureVozaciListItem from "./DispecerNoveTureVozaciListItem";
 import { Modal } from "react-bootstrap";
 import LoadingPage from "./LoadingPage";
 
-const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMapa }) => {
+const DispecerNoveTureVozaci = ({
+  turaId,
+  poslati,
+  setPoslati,
+  setVozaci,
+  setMapa,
+}) => {
   const { user, setUser } = useContext(UserContext);
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -65,6 +71,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMap
         axios
           .post(
             `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,
+            {},
             config
           )
           .then((response) => {
@@ -205,9 +212,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMap
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    <div className="flex flex-row">
-                      Srednja ocena
-                    </div>
+                    <div className="flex flex-row">Srednja ocena</div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
                     <div className="flex flex-row">Ponudi</div>

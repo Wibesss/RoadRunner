@@ -12,6 +12,7 @@ import { Image } from "react-native";
 import { Modal } from "react-bootstrap";
 
 const VozacProfil = () => {
+  const { ready, user, setUser } = useContext(UserContext);
   const [redirect, setRedirect] = useState(null);
   const [vozac, setVozac] = useState([]);
   const [vozacReady, setVozacReady] = useState(false);
@@ -37,6 +38,7 @@ const VozacProfil = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
+  const token = `Bearer ${Cookies.get("Token")}`;
   useEffect(() => {
     axios.get(`/Vozac/GetVozaca/${user.id}`, config).then((response) => {
       setVozac(response.data);
@@ -50,8 +52,7 @@ const VozacProfil = () => {
     });
   }, [updateUser]);
 
-  const { ready, user, setUser } = useContext(UserContext);
-
+ 
   if (ready && !user) {
     return <Navigate to={redirect} />;
   }

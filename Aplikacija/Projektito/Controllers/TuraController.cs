@@ -229,6 +229,16 @@ public class TuraController : ControllerBase
                         pt.Tura=tura;
                         Context.PonudjenaTura!.Add(pt);
                         await Context.SaveChangesAsync();
+
+                        var connectionId = await Context.ConnectionInfoo!
+                        .Where(p => p.korisnickoIme == vozac!.KorisnickoIme)
+                        .Select(p => p.ConnedtionId)
+                        .FirstOrDefaultAsync();
+
+                    if (connectionId != null)
+                    {
+                        await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Ponudjena vam je nova tura!");
+                    }
                         
                     }
                 }
@@ -248,6 +258,7 @@ public class TuraController : ControllerBase
     {
         var prihvacena=await Context!.PrihvacenaTura!.Where(p=> p.Vozac!.ID==idVozaca && p.Tura!.ID==idTure).Include(p=>p.Dispecer).Include(p=>p.Tura).Include(p=>p.Vozac).Include(p=>p.Vozilo).FirstOrDefaultAsync();
         var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.ID==idTure).FirstOrDefaultAsync();
+        var vozac=await Context.Vozac!.FindAsync(idVozaca);
         if(dodeljena!=null)
         {
             return BadRequest("Tura je vec dodeljena drugom vozacu!");
@@ -275,7 +286,7 @@ public class TuraController : ControllerBase
                 await Context.SaveChangesAsync();
 
                 var connectionId = await Context.ConnectionInfoo!
-                .Where(p => p.korisnickoIme == "BoziCCCa")
+                .Where(p => p.korisnickoIme == vozac!.KorisnickoIme)
                 .Select(p => p.ConnedtionId)
                 .FirstOrDefaultAsync();
 
@@ -848,19 +859,19 @@ public class TuraController : ControllerBase
         }
    }
    
-//    [Route("PosaljiPoruku")]
-//    [HttpGet]
-//      public async Task PosaljiPoruku()
-//     {
-//                var connectionId = await Context.ConnectionInfoo!
-//                 .Where(p => p.korisnickoIme == "BoziCCCa")
-//                 .Select(p => p.ConnedtionId)
-//                 .FirstOrDefaultAsync();
+   [Route("PosaljiPoruku")]
+   [HttpGet]
+     public async Task PosaljiPoruku()
+    {
+               var connectionId = await Context.ConnectionInfoo!
+                .Where(p => p.korisnickoIme == "BoziCCCa")
+                .Select(p => p.ConnedtionId)
+                .FirstOrDefaultAsync();
 
-//             if (connectionId != null)
-//             {
-//                 await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Dodeljena vam je nova tura!");
-//             }
-//      }
+            if (connectionId != null)
+            {
+                await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Dodeljena vam je nova tura!");
+            }
+     }
 
 }
