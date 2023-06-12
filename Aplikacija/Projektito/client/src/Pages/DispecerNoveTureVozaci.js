@@ -64,7 +64,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMap
       if (odabraneStavke != "") {
         axios
           .post(
-            `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,
+            `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,{},
             config
           )
           .then((response) => {

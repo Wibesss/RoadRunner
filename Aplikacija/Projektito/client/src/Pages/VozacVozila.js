@@ -16,7 +16,7 @@ const VozacVozila = () => {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   const { user } = useContext(UserContext);
-  const itemsPerPage = 4;
+  const itemsPerPage = 2;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const indexOfLastItem = currentPage * itemsPerPage;

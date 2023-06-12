@@ -174,7 +174,7 @@ const RegisterKompanija = () => {
           />
           <input
             type="text"
-            placeholder={"Krosinicko ime"}
+            placeholder={"Korsinicko ime"}
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
