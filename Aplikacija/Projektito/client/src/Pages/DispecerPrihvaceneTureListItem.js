@@ -13,7 +13,7 @@ const DispecerPrihvaceneTureListItem = ({ item ,mapa, setMapa, setTuraId,setPoce
         <div className="flex justify-center">
           <Image
             style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
-            source={{ uri: item.logo }}
+            source={{ uri: item.logoKompanije }}
           />
         </div>
       </td>
