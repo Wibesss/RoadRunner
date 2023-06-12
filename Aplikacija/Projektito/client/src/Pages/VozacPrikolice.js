@@ -23,7 +23,7 @@ const VozacPrikolice = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const [currentItems, setCurrentItems] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [currentItemsReady, setCurrentItemsReady] = useState(false);
   const [formaZaDodavanjePrikolice, setFormaZaDodavanjePrikolice] =
     useState(false);
   const [dodato, setDodato] = useState(false);
@@ -41,17 +41,27 @@ const VozacPrikolice = () => {
   const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
-    axios.get(`/Prikolica/GetPrikolica/${user.id}`, config).then((response) => {
-      setTotalPages(Math.ceil(response.data.length / itemsPerPage));
-      setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
-      setReady(true);
-    });
-  }, [ready, dodato, currentPage, obrisano, azurirano]);
+    axios
+      .get(`/Prikolica/GetPrikolica/${user.id}`, config)
+      .then((response) => {
+        setTotalPages(Math.ceil(response.data.length / itemsPerPage));
+        setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
+        setCurrentItemsReady(true);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, [currentItemsReady, dodato, currentPage, obrisano, azurirano]);
 
   const handleDelete = (id) => {
-    axios.delete(`/Prikolica/DeletePrikolica/${id}`, config).then(() => {
-      setObrisano(!obrisano);
-    });
+    axios
+      .delete(`/Prikolica/DeletePrikolica/${id}`, config)
+      .then(() => {
+        setObrisano(!obrisano);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
   let photourl = "";
   const handleSubmit = (e) => {
@@ -81,6 +91,9 @@ const VozacPrikolice = () => {
               .then(() => {
                 setFormaZaDodavanjePrikolice(!formaZaDodavanjePrikolice);
                 setDodato(!dodato);
+              })
+              .catch((err) => {
+                console.log(err.message);
               });
           });
         });
@@ -142,6 +155,9 @@ const VozacPrikolice = () => {
         .then(() => {
           setFormaZaUpdatePrikolice(!formaZaUpdatePrikolice);
           setAzurirano(!azurirano);
+        })
+        .catch((err) => {
+          console.log(err.message);
         });
     } else {
       const imageRef = ref(storage, `vozila/${photo.name + v4()}`);
@@ -184,16 +200,16 @@ const VozacPrikolice = () => {
     formaZaUpdatePrikolice && setFormaZaUpdatePrikolice(false);
     setFormaZaDodavanjePrikolice(!formaZaDodavanjePrikolice);
   };
-  if (!ready) {
+  if (!currentItemsReady) {
     return <LoadingPage />;
   } else
     return (
-      <div className=" overflow-hidden w-full m-5 flex-col">
-        <div className="flex flex-col  items-center mt-10">
-          <div className="flex justify-center w-1/2">
+      <div className="flex overflow-hidden w-full m-5 flex-col justify-center">
+        <div className="flex flex-col items-center">
+          <div className="flex justify-center w-4/5 sm:w-1/4">
             <button
               type="submit"
-              className="btn-prim"
+              className="btn-prim w-full"
               onClick={(e) => {
                 handleDodajClick();
               }}
@@ -237,10 +253,10 @@ const VozacPrikolice = () => {
             />
           )}
         </div>
-        <div className="inline-flex rounded-md shadow-sm mt-auto">
+        <div className="flex justify-center items-center rounded-md  mt-4">
           <button
             type="button"
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+            className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
             onClick={handleClickPrev}
             disabled={currentPage === 1}
           >
@@ -253,7 +269,7 @@ const VozacPrikolice = () => {
               <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
             </svg>
           </button>
-          <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white border-t border-b border-gray-200 ">
+          <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white">
             {currentPage}
           </p>
           <button
@@ -273,9 +289,9 @@ const VozacPrikolice = () => {
           </button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-3/5 bg-white text-left text-sm text-gray-500 rounded-lg border border-gray-200 shadow-md ml-auto mr-auto">
+          <table className="w-4/5 bg-white text-left text-sm text-gray-500 rounded-lg border border-gray-200 shadow-md ml-auto mr-auto">
             <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-              {ready &&
+              {currentItemsReady &&
                 currentItems.map((prikolica) => (
                   <PrikoliceListItem
                     prikolica={prikolica}

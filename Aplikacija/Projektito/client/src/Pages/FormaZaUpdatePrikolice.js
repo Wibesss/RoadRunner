@@ -27,9 +27,14 @@ const FormaZaUpdatePrikolice = ({
   };
   const [tipovi, setTipovi] = useState([]);
   useEffect(() => {
-    axios.get(`/Prikolica/GetTipPrikolica`, config).then((response) => {
-      setTipovi(response.data);
-    });
+    axios
+      .get(`/Prikolica/GetTipPrikolica`, config)
+      .then((response) => {
+        setTipovi(response.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, []);
   return (
     <div className="w-full flex flex-col justify-center items-center sm:w-3/5 overflow-hidden rounded-lg shadow-md ">

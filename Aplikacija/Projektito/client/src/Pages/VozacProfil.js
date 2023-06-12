@@ -38,16 +38,21 @@ const VozacProfil = () => {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   useEffect(() => {
-    axios.get(`/Vozac/GetVozaca/${user.id}`, config).then((response) => {
-      setVozac(response.data);
-      setVozacReady(true);
-      setIme(response.data.ime);
-      setPrezime(response.data.prezime);
-      setBrojTelefona(response.data.brojTelefona);
-      setJmbg(response.data.jmbg);
-      setEmail(response.data.email);
-      setKorisnickoIme(response.data.korisnickoIme);
-    });
+    axios
+      .get(`/Vozac/GetVozaca/${user.id}`, config)
+      .then((response) => {
+        setVozac(response.data);
+        setVozacReady(true);
+        setIme(response.data.ime);
+        setPrezime(response.data.prezime);
+        setBrojTelefona(response.data.brojTelefona);
+        setJmbg(response.data.jmbg);
+        setEmail(response.data.email);
+        setKorisnickoIme(response.data.korisnickoIme);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, [updateUser]);
 
   const { ready, user, setUser } = useContext(UserContext);
@@ -57,14 +62,15 @@ const VozacProfil = () => {
   }
 
   const handleLogout = async () => {
-    try {
-      axios.post("/Login/SadCeDaNestanem", {}, config).then(() => {
+    axios
+      .post("/Login/SadCeDaNestanem", {}, config)
+      .then(() => {
         setUser(null);
         setRedirect("/");
+      })
+      .catch((err) => {
+        console.log("Error:" + err.message);
       });
-    } catch (err) {
-      console.log("Error:" + err.message);
-    }
   };
 
   const handlePotrvdu = async (e) => {
@@ -236,25 +242,24 @@ const VozacProfil = () => {
       setStringGreska("Nova i potrvrdna šifra se ne poklapaju.");
       setShowAlert(true);
     } else {
-      try {
-        const encodedStaraSifra = encodeURIComponent(staraSifra);
-        const encodedNovaSifra = encodeURIComponent(novaSifra);
-        console.log(`${encodedStaraSifra} i ${encodedNovaSifra}`);
-        axios
-          .put(
-            `/Vozac/UpdateSifra/${vozac.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
-            {},
-            config
-          )
-          .then((response) => {
-            if (!response.ok) {
-              console.log("Server returned status code " + response.status);
-            }
-            handleLogout();
-          });
-      } catch (err) {
-        console.log("Error: " + err.message);
-      }
+      const encodedStaraSifra = encodeURIComponent(staraSifra);
+      const encodedNovaSifra = encodeURIComponent(novaSifra);
+      console.log(`${encodedStaraSifra} i ${encodedNovaSifra}`);
+      axios
+        .put(
+          `/Vozac/UpdateSifra/${vozac.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
+          {},
+          config
+        )
+        .then((response) => {
+          if (!response.ok) {
+            console.log("Server returned status code " + response.status);
+          }
+          handleLogout();
+        })
+        .catch((err) => {
+          console.log("Error:" + err.message);
+        });
     }
   };
 
@@ -289,7 +294,7 @@ const VozacProfil = () => {
         <form className="w-2/3 file-upload" autoComplete="off">
           <div>
             <div className="flex flex-col justify-center items-center sm:flex-row">
-              <div className="flex flex-wrap justify-center mb-5 gap-5 w-2/3">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-5 mb-5 w-2/3">
                 <button
                   type="button"
                   className="btn-danger btn-xl sm:mb-5 h-15 min-w-[30px]"

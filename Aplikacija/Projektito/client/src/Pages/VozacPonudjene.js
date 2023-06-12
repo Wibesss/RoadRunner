@@ -32,16 +32,16 @@ const VozacPonudjene = () => {
 
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Tura/GetPonudjenjaTuraVozac/${user.id}`, config)
-          .then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Tura/GetPonudjenjaTuraVozac/${user.id}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          setStringGreska(`Error: + ${err.message}`);
+          setShowAlert(true);
+        });
     }
   }, [ready, user, obrisano]);
   const sorting = (col) => {
@@ -61,16 +61,16 @@ const VozacPonudjene = () => {
     }
   };
   const handleDelete = (tID, vID) => {
-    try {
-      axios
-        .delete(`Tura/DeletePonudjenaTura/${tID}/${vID}`, config)
-        .then((response) => {
-          setObrisano(true);
-          setMapa(!mapa);
-        });
-    } catch (err) {
-      alert(err.message);
-    }
+    axios
+      .delete(`Tura/DeletePonudjenaTura/${tID}/${vID}`, config)
+      .then((response) => {
+        setObrisano(true);
+        setMapa(!mapa);
+      })
+      .catch((err) => {
+        setStringGreska(`Error: + ${err.message}`);
+        setShowAlert(true);
+      });
   };
 
   const handleClose = () => setShowAlert(false);

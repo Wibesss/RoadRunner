@@ -24,11 +24,16 @@ const VozacOcene = () => {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   useEffect(() => {
-    axios.get(`/Vozac/GetOcene/${user.id}`, config).then((response) => {
-      setTotalPages(Math.ceil(response.data.length / itemsPerPage));
-      setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
-      setReady(true);
-    });
+    axios
+      .get(`/Vozac/GetOcene/${user.id}`, config)
+      .then((response) => {
+        setTotalPages(Math.ceil(response.data.length / itemsPerPage));
+        setCurrentItems(response.data.slice(indexOfFirstItem, indexOfLastItem));
+        setReady(true);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, [currentPage, ready]);
   const handleClickNext = () => {
     if (currentPage < totalPages) {

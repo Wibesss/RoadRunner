@@ -40,58 +40,56 @@ const DispecerPrihvaceneTureVozaci = ({
 
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Tura/GetVozaceZaTuruDispecer/${turaId}`, config)
-          .then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-        }
-        catch(err)
-        {
-          console.log(err.message)
-        } 
-    }        
-    }, [ready,user,poslati,turaId]);
-    const sorting = (col)=> {
-      if(order==="ASC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] > b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("DSC");
-      }
-      if(order==="DSC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] < b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("ASC");
-      }
+      axios
+        .get(`/Tura/GetVozaceZaTuruDispecer/${turaId}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          setStringGreska(`Error: + ${err.message}`);
+          setShowAlert(true);
+        });
     }
-    const handlePrihvati = () => {
-        
-        try{
-            if(odabraneStavke!="")
-            {
-                axios.put(`/Tura/ProslediTuru/${turaId}/${odabraneStavke}`,{}, config).then((response) => {
-                    setPoslati(!poslati);
-                    setObrisano(!obrisano);
-                    setVozaci("");
-                });
-                axios.delete(`/Tura/DeletePonudjeneTure/${turaId}`, config).then((response) => {
-                });
-            }
-            else
-            {
-              setStringGreska("Niste izabrali vozaca.");
-              showAlert(true);
-            }
-        } catch (err) {
-      setStringGreska(err.message);
+  }, [ready, user, poslati, turaId]);
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] > b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] < b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("ASC");
+    }
+  };
+  const handlePrihvati = () => {
+    if (odabraneStavke != "") {
+      axios
+        .put(`/Tura/ProslediTuru/${turaId}/${odabraneStavke}`, {}, config)
+        .then((response) => {
+          setPoslati(!poslati);
+          setObrisano(!obrisano);
+          setVozaci("");
+        })
+        .catch((err) => {
+          setStringGreska(`Error: + ${err.message}`);
+          setShowAlert(true);
+        });
+      axios
+        .delete(`/Tura/DeletePonudjeneTure/${turaId}`, config)
+        .then((response) => {})
+        .catch((err) => {
+          setStringGreska(`Error: + ${err.message}`);
+          setShowAlert(true);
+        });
+    } else {
+      setStringGreska("Niste izabrali vozaca.");
       showAlert(true);
     }
   };
@@ -204,9 +202,7 @@ const DispecerPrihvaceneTureVozaci = ({
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    <div className="flex flex-row">
-                      Srednja ocena
-                    </div>
+                    <div className="flex flex-row">Srednja ocena</div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
                     <div className="flex flex-row">
@@ -228,9 +224,6 @@ const DispecerPrihvaceneTureVozaci = ({
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
                     <div className="flex flex-row">Model vozila</div>
-                  </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    <div className="flex flex-row">Slika</div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
                     <div className="flex flex-row">Ponudi</div>

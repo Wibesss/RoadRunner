@@ -22,12 +22,16 @@ const PrikazVozacaZ = ({
   const [opis, setOpis] = useState("");
   useEffect(() => {
     (async function pom() {
-      const response = await axios.get(
-        `/Vozac/GetSrednjuOcenu/${vozac.vozac.id}`,
-        config
-      );
-      setOcene(response.data);
-      setOceneReady(true);
+      try {
+        const response = await axios.get(
+          `/Vozac/GetSrednjuOcenu/${vozac.vozac.id}`,
+          config
+        );
+        setOcene(response.data);
+        setOceneReady(true);
+      } catch (err) {
+        console.log("Error: " + err.messege);
+      }
     })();
   }, [vozac.vozac.id, ocenjen]);
   if (oceneReady && ocene.srednja !== undefined) {
@@ -139,7 +143,7 @@ const PrikazVozacaZ = ({
               </span>
             </div>
           </div>
-          <p className="mt-8">Cena: {vozac.generisanaCena} din</p>
+          <p className="mt-8">`Cena: {vozac.generisanaCena} din`</p>
           <button
             className="btn-primary"
             onClick={() => handleFavorizuj(user.id, vozac.vozac.id)}

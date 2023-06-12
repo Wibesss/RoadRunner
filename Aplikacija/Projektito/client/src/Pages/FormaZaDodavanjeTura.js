@@ -23,7 +23,7 @@ const FormaZaDodavanjeTura = forwardRef(
       setDuzinaTure,
       handlePotvrdiDodavanje,
       datumPocetka,
-      tip
+      tip,
     },
     ref
   ) => {
@@ -53,8 +53,7 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Tezina(kg)"
-              className="mx-2 my-2"
-              disabled={tip==='Tecnost'}
+              disabled={tip === "Tecnost"}
               required
               onChange={(e) => {
                 setTezina(e.target.value);
@@ -63,8 +62,7 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Duzina(cm)"
-              className="mx-2 my-2"
-              disabled={tip==='Tecnost'}
+              disabled={tip === "Tecnost"}
               onChange={(e) => {
                 setDuzina(e.target.value);
               }}
@@ -73,8 +71,7 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Sirina(cm)"
-              className="mx-2 my-2"
-              disabled={tip==='Tecnost'}
+              disabled={tip === "Tecnost"}
               onChange={(e) => {
                 setSirina(e.target.value);
               }}
@@ -83,8 +80,7 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Visina(cm)"
-              className="mx-2 my-2"
-              disabled={tip==='Tecnost'}
+              disabled={tip === "Tecnost"}
               onChange={(e) => {
                 setVisina(e.target.value);
               }}
@@ -93,8 +89,7 @@ const FormaZaDodavanjeTura = forwardRef(
             <input
               type="number"
               placeholder="Zapremina(l)"
-              className="mx-2 my-2"
-              disabled={tip!=='Tecnost'}
+              disabled={tip !== "Tecnost"}
               onChange={(e) => {
                 setZapremina(e.target.value);
               }}

@@ -8,7 +8,13 @@ import DispecerNoveTureVozaciListItem from "./DispecerNoveTureVozaciListItem";
 import { Modal } from "react-bootstrap";
 import LoadingPage from "./LoadingPage";
 
-const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMapa }) => {
+const DispecerNoveTureVozaci = ({
+  turaId,
+  poslati,
+  setPoslati,
+  setVozaci,
+  setMapa,
+}) => {
   const { user, setUser } = useContext(UserContext);
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -31,16 +37,15 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMap
 
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config)
-          .then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Dispecer/IzlistajVozaceZaTuru/${turaId}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log("Error:" + err.message);
+        });
     }
   }, [ready, user, poslati, turaId]);
   const sorting = (col) => {
@@ -60,25 +65,25 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMap
     }
   };
   const handlePrihvati = () => {
-    try {
-      if (odabraneStavke != "") {
-        axios
-          .post(
-            `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,
-            config
-          )
-          .then((response) => {
-            setPoslati(!poslati);
-            setMapa(false);
-            setVozaci("");
-          });
-      } else {
-        setStringGreska("Niste izabrali vozaca.");
-        showAlert(true);
-      }
-    } catch (err) {
-      setStringGreska(err.message);
-      showAlert(true);
+    if (odabraneStavke != "") {
+      axios
+        .post(
+          `Tura/AddPonudjenaTura/${turaId}/${user.id}/${odabraneStavke}`,
+          {},
+          config
+        )
+        .then((response) => {
+          setPoslati(!poslati);
+          setMapa(false);
+          setVozaci("");
+        })
+        .catch((err) => {
+          setStringGreska(`Error: + ${err.message}`);
+          setShowAlert(true);
+        });
+    } else {
+      setStringGreska("Niste izabrali vozaca.");
+      setShowAlert(true);
     }
   };
 
@@ -205,9 +210,7 @@ const DispecerNoveTureVozaci = ({ turaId, poslati, setPoslati, setVozaci, setMap
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    <div className="flex flex-row">
-                      Srednja ocena
-                    </div>
+                    <div className="flex flex-row">Srednja ocena</div>
                   </th>
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
                     <div className="flex flex-row">Ponudi</div>

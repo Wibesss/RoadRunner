@@ -2,7 +2,6 @@ import React from "react";
 import { UserContext } from "../UserContext";
 import { useState, useContext } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
 import { useEffect } from "react";
 import { Image } from "react-native";
 

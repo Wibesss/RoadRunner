@@ -21,15 +21,14 @@ const DispecerPrihvaceneTureVozaciListItem = ({
   };
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Vozac/GetSrednjuOcenu/${item.vozac.id}`, config)
-          .then((response) => {
-            setVozacOcene(response.data);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Vozac/GetSrednjuOcenu/${item.vozac.id}`, config)
+        .then((response) => {
+          setVozacOcene(response.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
   }, [item]);
   return (
@@ -49,9 +48,6 @@ const DispecerPrihvaceneTureVozaciListItem = ({
       <td className="p-4 whitespace-nowrap">{item.generisanaCena}</td>
       <td className="p-4 whitespace-nowrap">{item.marka}</td>
       <td className="p-4 whitespace-nowrap">{item.model}</td>
-      <td className="p-4 whitespace-nowrap">
-        <img src={item.slika} className="w-12 h-12" alt="Slika" />
-      </td>
       <td>
         <input
           type="checkbox"

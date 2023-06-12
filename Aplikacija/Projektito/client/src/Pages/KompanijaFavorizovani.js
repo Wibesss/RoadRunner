@@ -37,6 +37,10 @@ const KompanijaFavorizovani = () => {
         )
           setCurrentPage(currentPage - 1);
         setReady(true);
+      })
+      .catch((err) => {
+        setStringGreska(`Error: + ${err.message}`);
+        setShowAlert(true);
       });
   }, [currentPage, obrisano]);
 
@@ -52,6 +56,10 @@ const KompanijaFavorizovani = () => {
           );
           showAlert(true);
         }
+      })
+      .catch((err) => {
+        setStringGreska(`Error: + ${err.message}`);
+        setShowAlert(true);
       });
   };
   const handleClickNext = () => {
@@ -87,10 +95,10 @@ const KompanijaFavorizovani = () => {
       </Modal>
 
       <div className="w-full flex flex-col items-center relative">
-        <div className="inline-flex rounded-md shadow-sm mt-auto">
+        <div className="flex justify-center items-center rounded-md mt-auto">
           <button
             type="button"
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+            className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
             onClick={handleClickPrev}
             disabled={currentPage === 1}
           >
@@ -103,12 +111,12 @@ const KompanijaFavorizovani = () => {
               <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
             </svg>
           </button>
-          <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white border-t border-b border-gray-200 ">
+          <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white">
             {currentPage}
           </p>
           <button
             type="button"
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+            className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
             onClick={handleClickNext}
             disabled={currentPage === totalPages}
           >

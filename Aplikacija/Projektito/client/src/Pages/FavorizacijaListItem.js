@@ -21,14 +21,17 @@ const FavorizacijaListItem = ({
   const [ocene, setOcene] = useState([]);
   useEffect(() => {
     (async function pom() {
-      const response = await axios.get(
-        `/Vozac/GetSrednjuOcenu/${item.id}`,
-        config
-      );
-      setOcene(response.data);
-      setOceneReady(true);
+      try {
+        const response = await axios.get(
+          `/Vozac/GetSrednjuOcenu/${item.id}`,
+          config
+        );
+        setOcene(response.data);
+        setOceneReady(true);
+      } catch (err) {
+        console.log("Error: " + err.message);
+      }
     })();
-
   }, [item.id, obrisano]);
 
   const toggleDropdown = () => {

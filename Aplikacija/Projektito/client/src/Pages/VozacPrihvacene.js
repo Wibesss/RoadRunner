@@ -26,16 +26,15 @@ const VozacPrihvacene = () => {
   const [lastUpdate, setLastUpdate] = useState(0);
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Tura/GetPrihvacenaTuraVozac/${user.id}`, config)
-          .then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Tura/GetPrihvacenaTuraVozac/${user.id}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
   }, [ready, user, obrisano]);
   const sorting = (col) => {

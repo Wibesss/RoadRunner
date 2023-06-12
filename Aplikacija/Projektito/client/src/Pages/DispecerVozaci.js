@@ -9,63 +9,55 @@ import DispecerVozacListItem from "./DispecerVozacListItem";
 import LoadingPage from "./LoadingPage";
 
 const DispecerVozaci = () => {
-  const {user, setUser } = useContext(UserContext);
-    const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
-      };
-  const [currentItems,setCurrentItems] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [order,setOrder] = useState("ASC");
-    const [obrisano,setObrisano] = useState(false);
-    useEffect(() => {
-      if(user)
-        {
-        try{
-          axios.get(`/Vozac/GetVozace`, config).then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-        }
-        catch(err)
-        {
-          console.log(err.message)
-        } 
-    }        
-    }, [ready,user,obrisano]);
-    const sorting = (col)=> {
-      if(order==="ASC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] > b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("DSC");
-      }
-      if(order==="DSC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] < b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("ASC");
-      }
-    }
-    const handleDelete = (vozacId) => {
-      if(user)
-      {
-      try{
-        axios.delete(`/Vozac/DeleteVozac/${vozacId}`, config).then((response) => {
-          setObrisano(true);
+  const { user, setUser } = useContext(UserContext);
+  const config = {
+    headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
+  };
+  const [currentItems, setCurrentItems] = useState([]);
+  const [ready, setReady] = useState(false);
+  const [order, setOrder] = useState("ASC");
+  const [obrisano, setObrisano] = useState(false);
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`/Vozac/GetVozace`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
         });
-      }
-      catch(err)
-      {
-        console.log(err.message)
-      } 
     }
-  }
-
-  
+  }, [ready, user, obrisano]);
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] > b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] < b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("ASC");
+    }
+  };
+  const handleDelete = (vozacId) => {
+    if (user) {
+      axios
+        .delete(`/Vozac/DeleteVozac/${vozacId}`, config)
+        .then((response) => {
+          setObrisano(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
 
   if (!ready) {
     return <LoadingPage />;
@@ -182,7 +174,7 @@ const DispecerVozaci = () => {
                   </button>
                 </th>
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    Srednja ocena
+                  Srednja ocena
                 </th>
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                   <div className="flex flex-row">Obrisi</div>

@@ -18,14 +18,15 @@ const DispecerKompanije = () => {
   const [obrisano, setObrisano] = useState(false);
   useEffect(() => {
     if (user) {
-      try {
-        axios.get(`/Kompanija/GetKompanije`, config).then((response) => {
+      axios
+        .get(`/Kompanija/GetKompanije`, config)
+        .then((response) => {
           setCurrentItems(response.data);
           setReady(true);
+        })
+        .catch((err) => {
+          console.log("Error:" + err.message);
         });
-      } catch (err) {
-        console.log(err.message);
-      }
     }
   }, [ready, user, obrisano]);
   const sorting = (col) => {
@@ -46,16 +47,15 @@ const DispecerKompanije = () => {
   };
   const handleDelete = (kompanijaId) => {
     if (user) {
-      try {
-        axios
-          .delete(`/Kompanija/DeleteKompanija/${kompanijaId}`, config)
-          .then((response) => {
-            console.log(response.data);
-            setObrisano(true);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .delete(`/Kompanija/DeleteKompanija/${kompanijaId}`, config)
+        .then((response) => {
+          console.log(response.data);
+          setObrisano(true);
+        })
+        .catch((err) => {
+          console.log("Error:" + err.message);
+        });
     }
   };
   if (!ready) {

@@ -38,26 +38,32 @@ const AccountDispecer = () => {
   const { ready, user, setUser } = useContext(UserContext);
 
   const handleLogout = async () => {
-    try {
-      axios.post("/Login/SadCeDaNestanem", {}, config).then(() => {
+    axios
+      .post("/Login/SadCeDaNestanem", {}, config)
+      .then(() => {
         setUser(null);
         setRedirect("/");
+      })
+      .catch((err) => {
+        console.log("Error:" + err.message);
       });
-    } catch (err) {
-      console.log("Error:" + err.message);
-    }
   };
 
   useEffect(() => {
-    axios.get(`/Dispecer/GetDispecer/${user.id}`, config).then((response) => {
-      setDispecer(response.data);
-      setDispecerReady(true);
-      setIme(response.data.ime);
-      setPrezime(response.data.prezime);
-      setJmbg(response.data.jmbg);
-      setEmail(response.data.email);
-      setKorisnickoIme(response.data.korisnickoIme);
-    });
+    axios
+      .get(`/Dispecer/GetDispecer/${user.id}`, config)
+      .then((response) => {
+        setDispecer(response.data);
+        setDispecerReady(true);
+        setIme(response.data.ime);
+        setPrezime(response.data.prezime);
+        setJmbg(response.data.jmbg);
+        setEmail(response.data.email);
+        setKorisnickoIme(response.data.korisnickoIme);
+      })
+      .catch((err) => {
+        console.log("Error:" + err.message);
+      });
   }, [updateUser]);
 
   if (ready && !user && !redirect) {
@@ -132,7 +138,7 @@ const AccountDispecer = () => {
             config
           )
           .then((response) => {
-            if (response.status === 200) {
+            if (response.ok) {
               setUpdateUser(!updateUser);
             } else {
               console.log("Server returned status code " + response.status);
@@ -244,24 +250,23 @@ const AccountDispecer = () => {
       setStringGreska("Nova i potrvrdna šifra se ne poklapaju.");
       setShowAlert(true);
     } else {
-      try {
-        const encodedStaraSifra = encodeURIComponent(staraSifra);
-        const encodedNovaSifra = encodeURIComponent(novaSifra);
-        axios
-          .put(
-            `/Dispecer/UpdateSifra/${dispecer.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
-            {},
-            config
-          )
-          .then((response) => {
-            if (!response.ok) {
-              console.log("Server returned status code " + response.status);
-            }
-            handleLogout();
-          });
-      } catch (err) {
-        console.log("Error: " + err.message);
-      }
+      const encodedStaraSifra = encodeURIComponent(staraSifra);
+      const encodedNovaSifra = encodeURIComponent(novaSifra);
+      axios
+        .put(
+          `/Dispecer/UpdateSifra/${dispecer.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
+          {},
+          config
+        )
+        .then((response) => {
+          if (!response.ok) {
+            console.log("Server returned status code " + response.status);
+          }
+          handleLogout();
+        })
+        .catch((err) => {
+          console.log("Error:" + err.message);
+        });
     }
   };
 
@@ -292,11 +297,12 @@ const AccountDispecer = () => {
             </button>
           </Modal.Footer>
         </Modal>
+
         <div className="flex flex-col items-center font-bold pt-4 sm:mt-4">
           <form className="w-2/3 file-upload" autoComplete="off">
             <div>
               <div className="flex flex-col sm:flex-row">
-                <div className="flex flex-wrap justify-start mb-5 gap-5 w-2/3">
+                <div className="flex flex-wrap justify-center mb-5 gap-5 w-full">
                   <button
                     type="button"
                     className="btn-danger btn-xl sm:mb-5 h-15 min-w-[30px]"

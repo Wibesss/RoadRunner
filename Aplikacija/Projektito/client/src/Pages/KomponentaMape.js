@@ -105,25 +105,32 @@ const KomponentaMape = ({
     };
   }, [pocetnaGS, pocetnaGD, krajnjaGS, krajnjaGD]);
   useEffect(() => {
-    axios.get(`/Vozilo/GetVozilo/${vozacId}`, config).then((response) => {
-      setAuta(response.data);
-    });
+    axios
+      .get(`/Vozilo/GetVozilo/${vozacId}`, config)
+      .then((response) => {
+        setAuta(response.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, []);
   const handlePrihvati = () => {
     if (auto !== null) {
-      try {
-        axios
-          .post(`Tura/AddPrihvacenaTura/${ponudjenaTuraId}/${auto}`, {}, config)
-          .then((response) => {});
-        axios
-          .delete(`Tura/DeletePonudjenaTura/${turaId}/${vozacId}`, config)
-          .then((response) => {
-            setObrisano(true);
-            setMapa(!mapa);
-          });
-      } catch (err) {
-        alert(err.message);
-      }
+      axios
+        .post(`Tura/AddPrihvacenaTura/${ponudjenaTuraId}/${auto}`, {}, config)
+        .then((response) => {})
+        .catch((err) => {
+          console.log(err.message);
+        });
+      axios
+        .delete(`Tura/DeletePonudjenaTura/${turaId}/${vozacId}`, config)
+        .then((response) => {
+          setObrisano(true);
+          setMapa(!mapa);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
   };
 

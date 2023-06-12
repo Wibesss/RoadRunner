@@ -14,15 +14,13 @@ const DispecerVozacListItem = ({ item, handleDelete }) => {
   };
   useEffect(() => {
     if (user) {
-      try {
         axios
           .get(`/Vozac/GetSrednjuOcenu/${item.id}`, config)
           .then((response) => {
             setVozacOcene(response.data);
+          }).catch((err) => {
+            console.log(err.message);
           });
-      } catch (err) {
-        console.log(err.message);
-      }
     }
   }, [item]);
   return (

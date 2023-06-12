@@ -8,7 +8,6 @@ import VozacDodeljeneListItem from "./VozacDodeljeneListItem";
 import MapePrihvaceneTure from "./MapePrihvaceneTure";
 import LoadingPage from "./LoadingPage";
 
-
 const VozacDodeljene = () => {
   const { user, setUser } = useContext(UserContext);
   const config = {
@@ -29,16 +28,15 @@ const VozacDodeljene = () => {
   const [lastUpdate, setLastUpdate] = useState(0);
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Tura/GetDodeljenaTuraVozac/${user.id}`, config)
-          .then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Tura/GetDodeljenaTuraVozac/${user.id}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
   }, [ready, user, obrisano, stanje]);
   const sorting = (col) => {
@@ -58,29 +56,26 @@ const VozacDodeljene = () => {
     }
   };
   const handleStart = (id) => {
-    try {
-      axios
-        .put(`/Tura/ZapocniTuru/${id}`, [], config)
-        .then((response) => {
-          const prom = stanje + 1;
-          setStanje(prom);
-        })
-        .catch((error) => {
-          alert(error.response.data);
-        });
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-  const handleEnd = (id) => {
-    try {
-      axios.put(`/Tura/ZavrsiTuru/${id}`, [], config).then((response) => {
+    axios
+      .put(`/Tura/ZapocniTuru/${id}`, [], config)
+      .then((response) => {
         const prom = stanje + 1;
         setStanje(prom);
+      })
+      .catch((error) => {
+        alert(error.response.data);
       });
-    } catch (err) {
-      console.log(err.message);
-    }
+  };
+  const handleEnd = (id) => {
+    axios
+      .put(`/Tura/ZavrsiTuru/${id}`, [], config)
+      .then((response) => {
+        const prom = stanje + 1;
+        setStanje(prom);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   if (!ready) {

@@ -7,10 +7,15 @@ export function UserContextProvider({ children }) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     if (!user) {
-      axios.get(`/Login/Profile`).then(({ data }) => {
-        setUser(data);
-        setReady(true);
-      });
+      axios
+        .get(`/Login/Profile`)
+        .then(({ data }) => {
+          setUser(data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log("Error:" + err.message);
+        });
     }
   }, [user]);
   return (
@@ -19,4 +24,3 @@ export function UserContextProvider({ children }) {
     </UserContext.Provider>
   );
 }
-

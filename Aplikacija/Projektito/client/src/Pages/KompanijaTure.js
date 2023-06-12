@@ -26,6 +26,7 @@ const KompanijaTure = () => {
   const indexOfLastItemV = currentPageV * itemsPerPageV;
   const indexOfFirstItemV = indexOfLastItemV - itemsPerPageV;
   const [currentItems, setCurrentItems] = useState([]);
+  const [currentItemsReady, setCurrentItemsReady] = useState(false);
   const [tipovi, setTipovi] = useState([]);
   const [formaZaDodavanjeTure, setFormaZaDodavanjeTure] = useState(false);
   const [tip, setTip] = useState("");
@@ -59,10 +60,17 @@ const KompanijaTure = () => {
         .get(`/Tura/GetTuraKompanija/${user?.id}`, config)
         .then((response) => {
           setCurrentItems(response.data);
+          setCurrentItemsReady(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
         });
       axios
         .get(`Tura/GetTipTure`, config)
-        .then((response) => setTipovi(response.data));
+        .then((response) => setTipovi(response.data))
+        .catch((err) => {
+          console.log(err.message);
+        });
 
       if (lastTura !== 0 && vozaci !== undefined) {
         setVozaciCurrent(vozaci.slice(indexOfFirstItemV, indexOfLastItemV));
@@ -105,8 +113,8 @@ const KompanijaTure = () => {
           });
         }
       })
-      .catch((error) => {
-        alert(error.response.data.message);
+      .catch((err) => {
+        console.log(err.message);
       });
   };
 
@@ -155,73 +163,79 @@ const KompanijaTure = () => {
   };
 
   const handleIzaberi = () => {
-    try {
-      axios
-        .post(`Tura/AddDodeljenaTura/${selectedVozac}/${lastTura}`, {}, config)
-        .then((response) => {
-          if (response.status === 200) {
-            setPrikaziVozace(false);
-            setObrisano(!obrisano);
-          } else
-            console.log("Server responded with status code " + response.status);
-        });
-    } catch (ex) {
-      console.log(ex.message);
-    }
+    axios
+      .post(`Tura/AddDodeljenaTura/${selectedVozac}/${lastTura}`, {}, config)
+      .then((response) => {
+        if (response.status === 200) {
+          setPrikaziVozace(false);
+          setObrisano(!obrisano);
+        } else
+          console.log("Server responded with status code " + response.status);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
   const handlePrikaziVozaca = (id) => {
-    try {
-      setLastTura(id);
-      if (lastTura !== id) {
-        axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
+    setLastTura(id);
+    if (lastTura !== id) {
+      axios
+        .get(`Tura/GetVozacaZaTuru/${id}`, config)
+        .then((response) => {
           setDodeljenVozac(response.data);
           setPrikaziVozaca(true);
           setPrikaziVozace(false);
           setPrikaziVozacaZ(false);
           setFormaZaDodavanjeTure(false);
+        })
+        .catch((err) => {
+          console.log(err.message);
         });
-      } else {
-        setPrikaziVozaca(!prikaziVozaca);
-      }
-    } catch (ex) {
-      console.log(ex);
+    } else {
+      setPrikaziVozaca(!prikaziVozaca);
     }
   };
 
   const handlePrikaziVozacaZ = (id) => {
-    try {
-      setLastTura(id);
-      if (lastTura !== id) {
-        axios.get(`Tura/GetVozacaZaTuru/${id}`, config).then((response) => {
+    setLastTura(id);
+    if (lastTura !== id) {
+      axios
+        .get(`Tura/GetVozacaZaTuru/${id}`, config)
+        .then((response) => {
           setVozacZ(response.data);
           setPrikaziVozaca(false);
           setPrikaziVozace(false);
           setFormaZaDodavanjeTure(false);
           setPrikaziVozacaZ(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
         });
-      } else {
-        setPrikaziVozacaZ(!prikaziVozacaZ);
-      }
-    } catch (ex) {
-      console.log(ex);
+    } else {
+      setPrikaziVozacaZ(!prikaziVozacaZ);
     }
   };
 
   const handlePrikazi = (id) => {
     setLastTura(id);
     if (lastTura !== id) {
-      axios.get(`Tura/GetVozaceZaTuru/${id}`, config).then((response) => {
-        setVozaci(response.data);
-        setTotalPagesV(Math.ceil(response.data.length / itemsPerPageV));
-        setVozaciCurrent(
-          response.data.slice(indexOfFirstItemV, indexOfLastItemV)
-        );
-        setPrikaziVozaca(false);
-        setPrikaziVozacaZ(false);
-        setFormaZaDodavanjeTure(false);
-        setPrikaziVozace(true);
-        setSelectedVozac(0);
-      });
+      axios
+        .get(`Tura/GetVozaceZaTuru/${id}`, config)
+        .then((response) => {
+          setVozaci(response.data);
+          setTotalPagesV(Math.ceil(response.data.length / itemsPerPageV));
+          setVozaciCurrent(
+            response.data.slice(indexOfFirstItemV, indexOfLastItemV)
+          );
+          setPrikaziVozaca(false);
+          setPrikaziVozacaZ(false);
+          setFormaZaDodavanjeTure(false);
+          setPrikaziVozace(true);
+          setSelectedVozac(0);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     } else {
       setPrikaziVozace(!prikaziVozace);
     }
@@ -229,41 +243,38 @@ const KompanijaTure = () => {
 
   const handlePotvrdiDodavanje = (e) => {
     e.preventDefault();
-    try {
-      axios
-        .post(
-          `Tura/AddTura/${user.id}/${tip}`,
-          {
-            tezinaRobe: tezina,
-            duzinaRobe: duzina,
-            sirinaRobe: sirina,
-            visinaRobe: visina,
-            zapremina: zapremina,
-            pocetnaGeografskaSirina: pgs.toFixed(6),
-            pocetnaGeografskaDuzina: pgd.toFixed(6),
-            odredisnaGeografskaSirina: ogs.toFixed(6),
-            odredisnaGeografskaDuzina: ogd.toFixed(6),
-            status: "status",
-            datumPocetka: datumPocetka.toISOString().split("T")[0],
-            duzina: duzinaTure,
-            predvidjeniKraj: "2023-05-24",
-          },
-          config
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            setDodato(!dodato);
-          } else
-            console.log(
-              "Server responded with status code: " + response.status
-            );
-          setFormaZaDodavanjeTure(false);
-          if (tableRef.current)
-            tableRef.current.scrollIntoView({ behavior: "smooth" });
-        });
-    } catch (Ex) {
-      console.log(Ex.message);
-    }
+    axios
+      .post(
+        `Tura/AddTura/${user.id}/${tip}`,
+        {
+          tezinaRobe: tezina,
+          duzinaRobe: duzina,
+          sirinaRobe: sirina,
+          visinaRobe: visina,
+          zapremina: zapremina,
+          pocetnaGeografskaSirina: pgs.toFixed(6),
+          pocetnaGeografskaDuzina: pgd.toFixed(6),
+          odredisnaGeografskaSirina: ogs.toFixed(6),
+          odredisnaGeografskaDuzina: ogd.toFixed(6),
+          status: "status",
+          datumPocetka: datumPocetka.toISOString().split("T")[0],
+          duzina: duzinaTure,
+          predvidjeniKraj: "2023-05-24",
+        },
+        config
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setDodato(!dodato);
+        } else
+          console.log("Server responded with status code: " + response.status);
+        setFormaZaDodavanjeTure(false);
+        if (tableRef.current)
+          tableRef.current.scrollIntoView({ behavior: "smooth" });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   const handleSelected = (id) => {
@@ -271,19 +282,20 @@ const KompanijaTure = () => {
   };
 
   const handleDelete = (id) => {
-    try {
-      axios.delete(`Tura/DeleteTura/${id}`, config).then((response) => {
+    axios
+      .delete(`Tura/DeleteTura/${id}`, config)
+      .then((response) => {
         if (response.status === 200) {
           setObrisano(!obrisano);
         } else
           console.log("Server responded with status code: " + response.status);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
-    } catch (Ex) {
-      console.log(Ex.message);
-    }
   };
 
-  if (!ready) {
+  if (!ready || !currentItemsReady) {
     return <LoadingPage />;
   } else {
     return (
@@ -346,7 +358,7 @@ const KompanijaTure = () => {
                         key={ind}
                         handlePrikaziVozaca={handlePrikaziVozaca}
                         handlePrikaziVozacaZ={handlePrikaziVozacaZ}
-                    />
+                      />
                     ))}
                     {currentItems.length === 0 && (
                       <tr>
@@ -361,26 +373,46 @@ const KompanijaTure = () => {
             </div>
             <div className="w-full flex flex-col gap-2 ml-4 flex-wrap ">
               {vozaciCurrent?.length !== 0 ? (
-                <div className="flex justify-center gap-5 mt-10 flex-wrap">
+                <div className="flex justify-center items-center rounded-md mt-4">
                   <button
+                    type="button"
+                    className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
                     onClick={handleClickPrev}
                     disabled={currentPageV === 1}
                   >
-                    Previous
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="1em"
+                      viewBox="0 0 448 512"
+                      fill={"black"}
+                    >
+                      <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
                   </button>
-                  <span>{currentPageV}</span>
+                  <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white">
+                    {currentPageV}
+                  </p>
                   <button
+                    type="button"
+                    className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
                     onClick={handleClickNext}
                     disabled={currentPageV === totalPagesV}
                   >
-                    Next
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="1em"
+                      viewBox="0 0 448 512"
+                      fill={"black"}
+                    >
+                      <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                    </svg>
                   </button>
                 </div>
               ) : (
                 lastTura !== 0 &&
                 prikaziVozace && (
                   <h1 className="text-center text-2xl">
-                    ZA SADA NEMA VOZACA KOJI SU PRIHVATILI TURU!
+                    Za sada ne postoje vozači koji su prihvatili turu!
                   </h1>
                 )
               )}
@@ -401,19 +433,19 @@ const KompanijaTure = () => {
                   ></PrikazDodeljenogVozaca>
                 )}
                 {prikaziVozacaZ === true && (
-                <PrikazVozacaZ
-                  vozac={vozacZ}
-                  handleFavorizuj={handleFavorizuj}
-                  handleOceni={handleOceni}
-                  user={user}
-                  ocenjen={ocenjen}
-                  lastTura={lastTura}
-                ></PrikazVozacaZ>
-              )}
-            </div>
+                  <PrikazVozacaZ
+                    vozac={vozacZ}
+                    handleFavorizuj={handleFavorizuj}
+                    handleOceni={handleOceni}
+                    user={user}
+                    ocenjen={ocenjen}
+                    lastTura={lastTura}
+                  ></PrikazVozacaZ>
+                )}
+              </div>
               {selectedVozac !== 0 && prikaziVozace === true && (
                 <div className="flex justify-center">
-                  <button className="btn-primary w-1/6" onClick={handleIzaberi}>
+                  <button className="btn-prim sm:w-1/6" onClick={handleIzaberi}>
                     Izaberi
                   </button>
                 </div>
@@ -440,7 +472,7 @@ const KompanijaTure = () => {
                 handlePotvrdiDodavanje={handlePotvrdiDodavanje}
                 datumPocetka={datumPocetka}
                 tip={tip}
-            />
+              />
             )}
           </div>
         </div>

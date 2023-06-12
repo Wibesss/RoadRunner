@@ -9,61 +9,57 @@ import MapeDispecer from "./MapeDispecer";
 import DispecerPrihvaceneTureVozaci from "./DispecerPrihvaceneTureVozaci";
 import LoadingPage from "./LoadingPage";
 const DispecerPrihvaceneTure = () => {
-  const {user, setUser } = useContext(UserContext);
-    const config = {
-        headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
-      };
-    const [currentItems,setCurrentItems] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [order,setOrder] = useState("ASC");
-    const [turaId,setTuraId] = useState("");
-    const [mapa,setMapa] = useState(false);
-    const [ponudjenaTuraId,setPonudjenaTuraId] = useState("");
-    const [pocetnaGS,setPocetnaGS] = useState("");
-    const [pocetnaGD,setPocetnaGD] = useState("");
-    const [krajnjaGS,setKrajnjaGS] = useState("");
-    const [krajnjaGD,setKrajnjaGD] = useState("");
-    const [stanje,setStanje] = useState(0);
-    const [obrisano,setObrisano] = useState(false);
-    const [vozaci,setVozaci]=useState("");
-    const [poslati,setPoslati] = useState(false);
-    const [kompanijaID,setKompanijaID] = useState("");
-    const [lastUpdate,setLastUpdate] = useState(0);
-    const [lastUpdateVozaci,setLastUpdateVozaci] = useState(0);
-    useEffect(() => {
-      if(user)
-        {
-        try{
-          axios.get(`/Tura/GetPrihvacenaTura/${user.id}`, config).then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-        }
-        catch(err)
-        {
-          console.log(err.message)
-        } 
-    }        
-    }, [ready,user,obrisano,stanje,poslati,turaId]);
-    const sorting = (col)=> {
-      if(order==="ASC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] > b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("DSC");
-      }
-      if(order==="DSC")
-      {
-        const sorted = [...currentItems].sort((a,b)=>
-            a[col] < b[col] ? 1 : -1
-        );
-        setCurrentItems(sorted);
-        setOrder("ASC");
-      }
+  const { user, setUser } = useContext(UserContext);
+  const config = {
+    headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
+  };
+  const [currentItems, setCurrentItems] = useState([]);
+  const [ready, setReady] = useState(false);
+  const [order, setOrder] = useState("ASC");
+  const [turaId, setTuraId] = useState("");
+  const [mapa, setMapa] = useState(false);
+  const [ponudjenaTuraId, setPonudjenaTuraId] = useState("");
+  const [pocetnaGS, setPocetnaGS] = useState("");
+  const [pocetnaGD, setPocetnaGD] = useState("");
+  const [krajnjaGS, setKrajnjaGS] = useState("");
+  const [krajnjaGD, setKrajnjaGD] = useState("");
+  const [stanje, setStanje] = useState(0);
+  const [obrisano, setObrisano] = useState(false);
+  const [vozaci, setVozaci] = useState("");
+  const [poslati, setPoslati] = useState(false);
+  const [kompanijaID, setKompanijaID] = useState("");
+  const [lastUpdate, setLastUpdate] = useState(0);
+  const [lastUpdateVozaci, setLastUpdateVozaci] = useState(0);
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`/Tura/GetPrihvacenaTura/${user.id}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
-    
+  }, [ready, user, obrisano, stanje, poslati, turaId]);
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] > b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...currentItems].sort((a, b) =>
+        a[col] < b[col] ? 1 : -1
+      );
+      setCurrentItems(sorted);
+      setOrder("ASC");
+    }
+  };
+
   if (!ready) {
     return <LoadingPage />;
   } else {
@@ -221,58 +217,58 @@ const DispecerPrihvaceneTure = () => {
               </tr>
             </thead>
 
-                    <tbody className='text-center'>
-                      {currentItems.map((item, ind) => (
-                        <DispecerPrihvaceneTureListItem 
-                        item={item} 
-                        key={ind}
-                        mapa={mapa}
-                        setMapa={setMapa}
-                        setTuraId={setTuraId}
-                        setPocetnaGS={setPocetnaGS}
-                        setPocetnaGD={setPocetnaGD}
-                        setKrajnjaGS={setKrajnjaGS}
-                        setKrajnjaGD={setKrajnjaGD}
-                        vozaci={vozaci}
-                        setVozaci={setVozaci}
-                        setKompanijaID={setKompanijaID}
-                        lastUpdate={lastUpdate}
-                        setLastUpdate={setLastUpdate}
-                        lastUpdateVozaci={lastUpdateVozaci}
-                        setLastUpdateVozaci={setLastUpdateVozaci}  
-                        />
-                      ))}
-                      {currentItems.length === 0 && (
-                        <tr>
-                          <th colSpan="10" className="text-center">
-                            Nema tura
-                          </th>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-              </div>
-                <div className = "w-full">
-                  {mapa && (
-                    <MapeDispecer
-                      pocetnaGS = {pocetnaGS}
-                      pocetnaGD = {pocetnaGD}
-                      krajnjaGS = {krajnjaGS}
-                      krajnjaGD = {krajnjaGD}
-                    />
-                  )}
-                  {vozaci && (
-                    <DispecerPrihvaceneTureVozaci
-                      turaId={turaId}
-                      poslati={poslati}
-                      setPoslati={setPoslati}
-                      setVozaci={setVozaci}
-                      kompanijaID={kompanijaID}
-                      obrisano={obrisano}
-                      setObrisano={setObrisano}
-                    />
-                  )}
-              </div>
+            <tbody className="text-center">
+              {currentItems.map((item, ind) => (
+                <DispecerPrihvaceneTureListItem
+                  item={item}
+                  key={ind}
+                  mapa={mapa}
+                  setMapa={setMapa}
+                  setTuraId={setTuraId}
+                  setPocetnaGS={setPocetnaGS}
+                  setPocetnaGD={setPocetnaGD}
+                  setKrajnjaGS={setKrajnjaGS}
+                  setKrajnjaGD={setKrajnjaGD}
+                  vozaci={vozaci}
+                  setVozaci={setVozaci}
+                  setKompanijaID={setKompanijaID}
+                  lastUpdate={lastUpdate}
+                  setLastUpdate={setLastUpdate}
+                  lastUpdateVozaci={lastUpdateVozaci}
+                  setLastUpdateVozaci={setLastUpdateVozaci}
+                />
+              ))}
+              {currentItems.length === 0 && (
+                <tr>
+                  <th colSpan="10" className="text-center">
+                    Nema tura
+                  </th>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="w-full">
+          {mapa && (
+            <MapeDispecer
+              pocetnaGS={pocetnaGS}
+              pocetnaGD={pocetnaGD}
+              krajnjaGS={krajnjaGS}
+              krajnjaGD={krajnjaGD}
+            />
+          )}
+          {vozaci && (
+            <DispecerPrihvaceneTureVozaci
+              turaId={turaId}
+              poslati={poslati}
+              setPoslati={setPoslati}
+              setVozaci={setVozaci}
+              kompanijaID={kompanijaID}
+              obrisano={obrisano}
+              setObrisano={setObrisano}
+            />
+          )}
+        </div>
       </div>
     );
   }

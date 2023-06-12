@@ -36,14 +36,20 @@ const KompanijaProfil = () => {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   useEffect(() => {
-    axios.get(`/Kompanija/GetKompanija/${user.id}`, config).then((response) => {
-      setKompanija(response.data);
-      setNaziv(response.data.naziv);
-      setVlasnik(response.data.vlasnik);
-      setAdresa(response.data.adresa);
-      setEmail(response.data.email);
-      setKorisnickoIme(response.data.korisnickoIme);
-    });
+    axios
+      .get(`/Kompanija/GetKompanija/${user.id}`, config)
+      .then((response) => {
+        setKompanija(response.data);
+        setNaziv(response.data.naziv);
+        setVlasnik(response.data.vlasnik);
+        setAdresa(response.data.adresa);
+        setEmail(response.data.email);
+        setKorisnickoIme(response.data.korisnickoIme);
+      })
+      .catch((err) => {
+        setStringGreska(`Error: + ${err.message}`);
+        setShowAlert(true);
+      });
   }, [updateUser]);
 
   const { ready, user, setUser } = useContext(UserContext);
@@ -53,14 +59,16 @@ const KompanijaProfil = () => {
   }
 
   const handleLogout = async () => {
-    try {
-      axios.post("/Login/SadCeDaNestanem", {}, config).then(() => {
+    axios
+      .post("/Login/SadCeDaNestanem", {}, config)
+      .then(() => {
         setUser(null);
         setRedirect("/");
+      })
+      .catch((err) => {
+        setStringGreska(`Error: + ${err.message}`);
+        setShowAlert(true);
       });
-    } catch (err) {
-      console.log("Error:" + err.message);
-    }
   };
 
   const handlePotrvdu = async (e) => {
@@ -224,24 +232,24 @@ const KompanijaProfil = () => {
       setStringGreska("Nova i potrvrdna šifra se ne poklapaju.");
       setShowAlert(true);
     } else {
-      try {
-        const encodedStaraSifra = encodeURIComponent(staraSifra);
-        const encodedNovaSifra = encodeURIComponent(novaSifra);
-        axios
-          .put(
-            `/Kompanija/UpdateSifra/${kompanija.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
-            {},
-            config
-          )
-          .then((response) => {
-            if (!response.ok) {
-              console.log("Server returned status code " + response.status);
-            }
-            handleLogout();
-          });
-      } catch (err) {
-        console.log("Error: " + err.message);
-      }
+      const encodedStaraSifra = encodeURIComponent(staraSifra);
+      const encodedNovaSifra = encodeURIComponent(novaSifra);
+      axios
+        .put(
+          `/Kompanija/UpdateSifra/${kompanija.id}/${encodedStaraSifra}/${encodedNovaSifra}`,
+          {},
+          config
+        )
+        .then((response) => {
+          if (!response.ok) {
+            console.log("Server returned status code " + response.status);
+          }
+          handleLogout();
+        })
+        .catch((err) => {
+          setStringGreska(`Error: + ${err.message}`);
+          setShowAlert(true);
+        });
     }
   };
 

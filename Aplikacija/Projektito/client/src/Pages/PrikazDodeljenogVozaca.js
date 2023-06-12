@@ -13,12 +13,16 @@ const PrikazDodeljenogVozaca = ({ vozac }) => {
   const [oceneReady, setOceneReady] = useState(false);
   useEffect(() => {
     (async function pom() {
-      const response = await axios.get(
-        `/Vozac/GetSrednjuOcenu/${vozac.vozac.id}`,
-        config
-      );
-      setOcene(response.data);
-      setOceneReady(true);
+      try {
+        const response = await axios.get(
+          `/Vozac/GetSrednjuOcenu/${vozac.vozac.id}`,
+          config
+        );
+        setOcene(response.data);
+        setOceneReady(true);
+      } catch (err) {
+        console.log("Error: " + err.messege);
+      }
     })();
   }, [vozac.vozac.id]);
 

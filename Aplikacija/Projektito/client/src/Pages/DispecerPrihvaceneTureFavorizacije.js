@@ -18,16 +18,15 @@ const DispecerPrihvaceneTureFavorizacije = ({ kompanijaID }) => {
   const [stanje, setStanje] = useState(0);
   useEffect(() => {
     if (user) {
-      try {
-        axios
-          .get(`/Kompanija/GetFavorizacije/${kompanijaID}`, config)
-          .then((response) => {
-            setCurrentItems(response.data);
-            setReady(true);
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
+      axios
+        .get(`/Kompanija/GetFavorizacije/${kompanijaID}`, config)
+        .then((response) => {
+          setCurrentItems(response.data);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
   }, [ready, user]);
   const sorting = (col) => {
@@ -104,7 +103,7 @@ const DispecerPrihvaceneTureFavorizacije = ({ kompanijaID }) => {
               {currentItems.length === 0 && (
                 <tr>
                   <th colSpan="10" className="text-center">
-                    Nepostoje adekvatni vozaci
+                    Ne postoje adekvatni vozaci
                   </th>
                 </tr>
               )}
