@@ -7,7 +7,7 @@ import KompanijaProfil from "./KompanijaProfil";
 import MissingPage from "./MissingPage";
 
 const AccountKompanija = () => {
-  const { user } = useContext(UserContext);
+  const {ready, user } = useContext(UserContext);
 
   let { subpage } = useParams();
   
@@ -24,7 +24,7 @@ const AccountKompanija = () => {
     return classes;
   };
 
-  if (!user) {
+  if (ready && !user) {
     return <Navigate to="/" />;
   }
 

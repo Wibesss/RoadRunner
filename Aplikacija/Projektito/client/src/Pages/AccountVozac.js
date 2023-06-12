@@ -68,7 +68,7 @@ const AccountVozac = () => {
     return classes;
   };
 
-  if (!user) {
+  if (ready && !user) {
     return <Navigate to="/" />;
   }
 

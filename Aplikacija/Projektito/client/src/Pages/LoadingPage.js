@@ -1,6 +1,5 @@
 import React from "react";
 import loadingGif from "../assets/img/loadingGif.gif";
-import { Link } from "react-router-dom";
 
 const LoadingPage = () => {
   return (

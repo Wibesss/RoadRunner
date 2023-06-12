@@ -10,6 +10,7 @@ import LoadingPage from "./LoadingPage";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { toast, ToastContainer } from "react-toastify";
 import { Modal } from "react-bootstrap";
+import MissingPage from "./MissingPage";
 
 const VozacDodeljene = () => {
   const { user, setUser } = useContext(UserContext);
@@ -88,6 +89,11 @@ const VozacDodeljene = () => {
       }
     };
   }, [ready]);
+
+  if (user?.role.toString() !== "Vozac") {
+    return <MissingPage />;
+  }
+
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>

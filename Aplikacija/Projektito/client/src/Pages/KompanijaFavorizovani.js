@@ -6,6 +6,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import FavorizacijaListItem from "./FavorizacijaListItem";
 import { Modal } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
+import MissingPage from "./MissingPage";
 
 const KompanijaFavorizovani = () => {
   const config = {
@@ -43,6 +45,10 @@ const KompanijaFavorizovani = () => {
         setShowAlert(true);
       });
   }, [currentPage, obrisano]);
+
+  if (ready && !user) {
+    return <Navigate to="/" />;
+  }
 
   const handleOdfavorizuj = (idVozaca) => {
     axios
