@@ -39,7 +39,7 @@ const VozacPonudjene = () => {
         .get(`/Tura/GetPonudjenjaTuraVozac/${user.id}`, config)
         .then((response) => {
           setCurrentItems(response.data);
-          setReady(true);
+          setReadyy(true);
         })
         .catch((err) => {
           setStringGreska(`Error: + ${err.message}`);
@@ -124,7 +124,7 @@ const VozacPonudjene = () => {
   } else {
     return (
       <>
-      <ToastContainer></ToastContainer>
+        <ToastContainer></ToastContainer>
         <Modal
           show={showAlert}
           onHide={handleClose}

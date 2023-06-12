@@ -48,7 +48,7 @@ const PrikazVozacaZ = ({
             {vozac.vozac.ime + " " + vozac.vozac.prezime}
           </h5>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {vozac.korisnickoIme}
+            {vozac.vozac.korisnickoIme}
           </span>
           <div className="flex flex-col mt-4 space-x-3 md:mt-6 w-5/6">
             <div className="flex justify-center mb-3">

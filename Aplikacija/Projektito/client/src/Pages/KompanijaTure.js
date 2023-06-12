@@ -18,7 +18,7 @@ const KompanijaTure = () => {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
   const { user, ready } = useContext(UserContext);
-  const itemsPerPageV = 4;
+  const itemsPerPageV = 3;
   const [selectedVozac, setSelectedVozac] = useState(0);
   const [currentPageV, setCurrentPageV] = useState(1);
   const [vozaciCurrent, setVozaciCurrent] = useState([]);
@@ -169,6 +169,7 @@ const KompanijaTure = () => {
         if (response.status === 200) {
           setPrikaziVozace(false);
           setObrisano(!obrisano);
+          window.location.reload();
         } else
           console.log("Server responded with status code " + response.status);
       })
@@ -182,6 +183,7 @@ const KompanijaTure = () => {
       axios
         .get(`Tura/GetVozacaZaTuru/${id}`, config)
         .then((response) => {
+          console.log(response.data);
           setDodeljenVozac(response.data);
           setPrikaziVozaca(true);
           setPrikaziVozace(false);
