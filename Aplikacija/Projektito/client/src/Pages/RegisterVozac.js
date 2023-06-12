@@ -120,13 +120,13 @@ const RegisterVozac = () => {
               if (error.response && error.response.status === 400) {
                 const errorMessage = error.response.data;
                 if (errorMessage === "Vec postoji nalog sa tim emailom") {
-                  setStringGreska("Vec postoji nalog sa tim emailom.");
+                  setStringGreska("Već postoji nalog sa tim emailom.");
                   setShowAlert(true);
                 } else if (
                   errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
                 ) {
                   setStringGreska(
-                    "Vec postoji nalog sa tim korisnickim imenom."
+                    "Već postoji nalog sa tim korisničkim imenom."
                   );
                   setShowAlert(true);
                 } else {

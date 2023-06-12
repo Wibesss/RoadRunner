@@ -201,7 +201,7 @@ const DispecerNoveTureVozaci = ({
                       className="flex flex-row uppercase"
                       onClick={() => sorting("korisnickoIme")}
                     >
-                      Korisnicko ime
+                      Korisničko ime
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"

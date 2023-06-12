@@ -155,7 +155,7 @@ const DispecerVozaci = () => {
                       className="flex flex-row uppercase"
                       onClick={() => sorting("korisnickoIme")}
                     >
-                      Korisnicko ime
+                      Korisničko ime
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"
@@ -174,7 +174,7 @@ const DispecerVozaci = () => {
                       className="flex flex-row uppercase"
                       onClick={() => sorting("brojTelefona")}
                     >
-                      Broj telefona
+                      Broj Telefona
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"
@@ -189,7 +189,7 @@ const DispecerVozaci = () => {
                 </th>
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
                   <div className="flex flex-row justify-center">
-                    Srednja ocena
+                    Srednja Ocena
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">

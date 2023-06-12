@@ -47,7 +47,7 @@ const PrikolicaListItem = ({ prikolica, handleDelete, handleUpdate }) => {
         <td className="px-6 py-4">
           <div className="text-sm">
             <div className="">
-              Zapremina:{" "}
+              Zapremina:
               {prikolica.zapremina === null ? "-" : prikolica.zapremina}
             </div>
             <div className="">
@@ -57,10 +57,10 @@ const PrikolicaListItem = ({ prikolica, handleDelete, handleUpdate }) => {
         </td>
         <td className="px-6 py-4">
           <div className="">
-            Duzina: {prikolica.duzina === null ? "-" : prikolica.duzina}
+            Dužina: {prikolica.duzina === null ? "-" : prikolica.duzina}
           </div>
           <div className="">
-            Sirina: {prikolica.sirina === null ? "-" : prikolica.sirina}
+            Širina: {prikolica.sirina === null ? "-" : prikolica.sirina}
           </div>
           <div className="">
             Visina: {prikolica.visina === null ? "-" : prikolica.visina}

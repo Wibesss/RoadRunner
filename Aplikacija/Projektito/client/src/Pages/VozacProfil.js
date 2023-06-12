@@ -206,7 +206,7 @@ const VozacProfil = () => {
                   errorMessage === "Vec postoji nalog sa tim korisnickim imenom"
                 ) {
                   setStringGreska(
-                    "Vec postoji nalog sa tim korisnickim imenom"
+                    "Već postoji nalog sa tim korisničkim imenom"
                   );
                   setShowAlert(true);
                 } else {

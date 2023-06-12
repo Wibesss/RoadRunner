@@ -48,7 +48,7 @@ const DispecerVozacListItem = ({ item, handleDelete }) => {
             Nazad
           </button>
           <button className="btn-danger" onClick={handleObrisi}>
-            Obrisi
+            Obriši
           </button>
         </Modal.Footer>
       </Modal>

@@ -138,7 +138,7 @@ const VozacPrihvacene = () => {
                       className="flex flex-row uppercase"
                       onClick={() => sorting("tezinaRobe")}
                     >
-                      Tezina robe
+                      Težina robe
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"
@@ -157,7 +157,7 @@ const VozacPrihvacene = () => {
                       className="flex flex-row uppercase"
                       onClick={() => sorting("duzinaRobe")}
                     >
-                      Duzina robe
+                      Dužina robe
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"
@@ -176,7 +176,7 @@ const VozacPrihvacene = () => {
                       className="flex flex-row uppercase"
                       onClick={() => sorting("sirinaRobe")}
                     >
-                      Sirina robe
+                      Širina robe
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"
@@ -236,7 +236,7 @@ const VozacPrihvacene = () => {
                       className="flex flex-row uppercase"
                       onClick={() => sorting("duzina")}
                     >
-                      Duzina ture
+                      Dužina ture
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-3 h-3 ml-1 mb-0"
@@ -310,7 +310,7 @@ const VozacPrihvacene = () => {
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                  <div className="flex flex-row justify-center">Prikazi</div>
+                  <div className="flex flex-row justify-center">Prikaži</div>
                 </th>
               </tr>
             </thead>

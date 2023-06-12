@@ -37,7 +37,7 @@ const Header = () => {
         <div className="flex flex-row">
           <Link
             to={"/"}
-            className="navbar-brand flex items-center gap-4 hover:text-primary duration-300"
+            className="navbar-brand flex flex'gitems-center gap-4 hover:text-primary duration-300"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -85,12 +85,12 @@ const Header = () => {
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
               <li className="nav-item">
                 <Link to={"/vozacponudjene"} className={`nav-link ${boja}`}>
-                  Ponudjene Ture
+                  Ponuđene Ture
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to={"/vozacprihvacene"} className={`nav-link ${boja}`}>
-                  Prihvacene Ture
+                  Prihvaćene Ture
                 </Link>
               </li>
               <li className="nav-item">
@@ -119,7 +119,7 @@ const Header = () => {
               </li>
               <li className="nav-item">
                 <Link to={"/dispecervozaci"} className={`nav-link ${boja}`}>
-                  Vozaci
+                  Vozači
                 </Link>
               </li>
               <li className="nav-item">

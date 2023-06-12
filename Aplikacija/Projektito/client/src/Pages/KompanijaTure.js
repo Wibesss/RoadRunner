@@ -360,23 +360,22 @@ const KompanijaTure = () => {
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            Tezina robe
+                            Težina robe
                           </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            {" "}
-                            Visina robe{" "}
+                            Visina robe
                           </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            Duzina robe
+                            Dužina robe
                           </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            Sirina robe
+                            Širina robe
                           </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
@@ -391,17 +390,17 @@ const KompanijaTure = () => {
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            Datum pocetka
+                            Datum početka
                           </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            Duzina
+                            Dužina
                           </div>
                         </th>
                         <th scope="col" className="px-6 py-3 whitespace-nowrap">
                           <div className="flex flex-row justify-center">
-                            Vozac
+                            Vozač
                           </div>
                         </th>
                         <th></th>

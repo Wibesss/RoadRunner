@@ -61,7 +61,7 @@ const DispecerPrihvaceneTureFavorizacije = ({ kompanijaID }) => {
     return (
       <div className="flex flex-col mt-2">
         <h3 className="text-center text-xl font-bold mb-4">
-          Favorizovani vozaci kompanije
+          Favorizovani vozači kompanije
         </h3>
         <div className="overflow-auto w-full sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500  shadow-md ">
@@ -95,7 +95,7 @@ const DispecerPrihvaceneTureFavorizacije = ({ kompanijaID }) => {
                 <div className="flex flex-row justify-center">
                   <button className="flex flex-row uppercase">
                     onClick={() => sorting("korisnickoIme")}
-                    Korisnicko ime
+                    Korisničko ime
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-3 h-3 ml-1 mb-0"
@@ -121,7 +121,7 @@ const DispecerPrihvaceneTureFavorizacije = ({ kompanijaID }) => {
               {currentItems.length === 0 && (
                 <tr>
                   <th colSpan="10" className="text-center">
-                    Ne postoje adekvatni vozaci
+                    Ne postoje adekvatni vozači
                   </th>
                 </tr>
               )}
