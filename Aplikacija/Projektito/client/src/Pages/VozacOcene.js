@@ -95,11 +95,7 @@ const VozacOcene = () => {
         <div className="flex flex-col flex-grow w-full items-center overflow-x-auto gap-2 mt-2">
           {ready &&
             currentItems.map((ocena) => (
-              <div class=" w-1/3 lg:max-w-full">
-                <div
-                  class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-                  title="Mountain"
-                ></div>
+              <div class="shadow-lg border w-4/5 sm:w-1/3">
                 <div class="border-b  border-gray-400 lg:border-l-0  lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                   <div class="mb-8">
                     <div class="text-gray-900 font-bold text-xl mb-2 flex justify-center">
@@ -110,12 +106,11 @@ const VozacOcene = () => {
                     </p>
                   </div>
                   <div class="flex items-center">
-                    <img
-                      class="w-10 h-10 rounded-full mr-4"
-                      src={ocena.kompanija.logo}
-                      alt="Avatar of Writer"
+                    <Image
+                      style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+                      source={{ uri: ocena.kompanija.logo }}
                     />
-                    <div class="text-sm">
+                    <div class="ml-4 text-xl">
                       <p class="text-gray-900 leading-none">
                         {ocena.kompanija.naziv}
                       </p>

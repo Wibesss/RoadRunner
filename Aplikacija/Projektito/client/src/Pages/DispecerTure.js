@@ -6,7 +6,14 @@ import axios from "axios";
 import { useEffect } from "react";
 import DispecerNoveTure from "./DispecerNoveTure";
 import DispecerPrihvaceneTure from "./DispecerPrihvaceneTure";
+import MissingPage from "./MissingPage";
 const DispecerTure = () => {
+  const { user } = useContext(UserContext);
+
+  if (user?.role.toString() !== "Dispecer") {
+    return <MissingPage />;
+  }
+
   return (
     <div className="flex flex-col sm:flex-row flex-wrap mt-10">
       <div className="w-full sm:w-1/2 p-8">

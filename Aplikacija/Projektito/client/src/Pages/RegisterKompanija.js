@@ -7,8 +7,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
+import { UserContext } from "../UserContext";
+import MissingPage from "./MissingPage";
 
 const RegisterKompanija = () => {
+  const { user, ready } = useContext(UserContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -21,9 +24,12 @@ const RegisterKompanija = () => {
   const [stringGreska, setStringGreska] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-  const {user} = useContext();
-  if (user) {
+  if (ready && !user) {
     return <Navigate to="/" />;
+  }
+
+  if (user.role.toString() !== "Kompanija") {
+    return <MissingPage />;
   }
 
   async function registerKompanija(e) {
@@ -69,7 +75,8 @@ const RegisterKompanija = () => {
           "Sifra mora da ima jedno veliko,jedno malo slovo, jedan specijalni znak i najmanja duzina je 8 karaktera.";
       }
       if (adress.length < 1 || adress.length > 40) {
-        validationErrors.Adresa = "Adresa treba da ima između 1 i 40 karaktera.";
+        validationErrors.Adresa =
+          "Adresa treba da ima između 1 i 40 karaktera.";
       }
       if (owner.length < 1 || owner.length > 40) {
         validationErrors.Broj = "Vlasnik treba da ima između 1 i 40 karaktera.";
@@ -221,7 +228,9 @@ const RegisterKompanija = () => {
             {logo === null ? "" : `Izabrana slika:${logo.name}`}
           </p>
         </form>
-        <button className={"btn-prim btn-xl mt-6"} onClick={registerKompanija}>Registruj se</button>
+        <button className={"btn-prim btn-xl mt-6"} onClick={registerKompanija}>
+          Registruj se
+        </button>
         <div className="text-center py-2">
           <h5>
             Nemate nalog? <Link to={"/registration"}>Kreirajte nalog</Link>

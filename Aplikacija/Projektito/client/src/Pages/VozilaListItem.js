@@ -25,7 +25,6 @@ const VozilaListItem = ({ vozilo, handleDelete, handleUpdate }) => {
           <button
             type="submit"
             x-data="{ tooltip: 'Delete' }"
-            href="#"
             onClick={() => {
               handleDelete(vozilo.id);
             }}
@@ -52,7 +51,6 @@ const VozilaListItem = ({ vozilo, handleDelete, handleUpdate }) => {
               handleUpdate(e);
             }}
             x-data="{ tooltip: 'Edite' }"
-            href="#"
           >
             <svg
               id={vozilo.id}

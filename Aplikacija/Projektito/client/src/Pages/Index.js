@@ -16,7 +16,9 @@ import logo2 from "../assets/img/logos/google.jpg";
 import logo3 from "../assets/img/logos/meta.jpg";
 import logo4 from "../assets/img/logos/amd.jpg";
 
-import userPic from "../assets/img/user.jpg";
+import userPic1 from "../assets/img/tim/1.jpg";
+import userPic2 from "../assets/img/tim/2.jpg";
+import userPic3 from "../assets/img/tim/3.jpg";
 
 const Index = () => {
   const { ready, user } = useContext(UserContext);
@@ -67,14 +69,11 @@ const Index = () => {
       <header className="masthead">
         <div className="container pb-80 ">
           <div className="">
-            <div className="masthead-subheading ">Dobrodošli</div>
+            <div className="masthead-subheading ">Dobrodošli na</div>
             <div className="masthead-heading text-uppercase ">RoadRunner</div>
-            <button
-              className="btn btn-prim btn-xl text-uppercase"
-              href="#services"
-            >
+            <a className="btn-prim btn-xl text-uppercase" href="#services">
               Saznaj više
-            </button>
+            </a>
           </div>
         </div>
       </header>
@@ -83,7 +82,7 @@ const Index = () => {
           <div className="text-center">
             <h2 className="section-heading text-uppercase">Servisi</h2>
             <h3 className="section-subheading text-muted">
-              Lorem ipsum dolor sit amet consectetur.
+              Ovo su neke od usluga koje mi nudimo.
             </h3>
           </div>
           <div className="row text-center">
@@ -106,11 +105,29 @@ const Index = () => {
                   <path d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm368-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
                 </svg>
               </span>
-              <h4 className="my-3">E-Commerce</h4>
+              <h4 className="my-3">Vozac</h4>
               <p className="text-muted">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima
-                maxime quam architecto quo inventore harum ex magni, dicta
-                impedit.
+                Nudimo vozačima veliki sepktar poslova iz kojih oni mogu
+                izabrati one koje njima odgovaraju
+              </p>
+            </div>
+            <div className="col-md-4">
+              <span className="fa-stack fa-4x">
+                <i className="fa fa-circle fa-stack-2x text-primary"></i>
+                <svg
+                  className="fa fa-building fa-stack-1x fa-inverse"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  fill="white"
+                  viewBox="0 0 448 512"
+                >
+                  <path d="M436 480h-20V24c0-13.255-10.745-24-24-24H56C42.745 0 32 10.745 32 24v456H12c-6.627 0-12 5.373-12 12v20h448v-20c0-6.627-5.373-12-12-12zM128 76c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12h-40c-6.627 0-12-5.373-12-12V76zm0 96c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12h-40c-6.627 0-12-5.373-12-12v-40zm52 148h-40c-6.627 0-12-5.373-12-12v-40c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12zm76 160h-64v-84c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v84zm64-172c0 6.627-5.373 12-12 12h-40c-6.627 0-12-5.373-12-12v-40c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v40zm0-96c0 6.627-5.373 12-12 12h-40c-6.627 0-12-5.373-12-12v-40c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v40zm0-96c0 6.627-5.373 12-12 12h-40c-6.627 0-12-5.373-12-12V76c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v40z" />
+                </svg>
+              </span>
+              <h4 className="my-3">Komanija</h4>
+              <p className="text-muted">
+                Nudimo kompanijama pouzdan i širok asortiman vozača za prevoz
+                njihovih prozvoda po specifičnim potrebama
               </p>
             </div>
             <div className="col-md-4">
@@ -118,23 +135,10 @@ const Index = () => {
                 <i className="fa fa-circle fa-stack-2x text-primary"></i>
                 <i className="fa fa-laptop fa-stack-1x fa-inverse"></i>
               </span>
-              <h4 className="my-3">Responsive Design</h4>
+              <h4 className="my-3">Korisnički interfejs</h4>
               <p className="text-muted">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima
-                maxime quam architecto quo inventore harum ex magni, dicta
-                impedit.
-              </p>
-            </div>
-            <div className="col-md-4">
-              <span className="fa-stack fa-4x">
-                <i className="fa fa-circle fa-stack-2x text-primary"></i>
-                <i className="fa fa-lock fa-stack-1x fa-inverse"></i>
-              </span>
-              <h4 className="my-3">Web Security</h4>
-              <p className="text-muted">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima
-                maxime quam architecto quo inventore harum ex magni, dicta
-                impedit.
+                Nudimo brz, lak i intuitivan korisnički interfejs koji je
+                dostupan na velikom broju uređaja
               </p>
             </div>
           </div>
@@ -162,12 +166,13 @@ const Index = () => {
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>Maj 2023</h4>
+                  <h4>Mart 2023</h4>
                   <h4 className="subheading">Ideja aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
-                    Ideja ove aplikacije kreirana je nakon{" "}
+                    Ideja ove aplikacije nastala je nakon višečasovnog sastanka
+                    na kome je izvršena duboka analia tržišta
                   </p>
                 </div>
               </div>
@@ -183,14 +188,15 @@ const Index = () => {
               <div className="timeline-panel">
                 <div className="timeline-heading">
                   <h4>April 2023</h4>
-                  <h4 className="subheading">Projektovanje aplikacije</h4>
+                  <h4 className="subheading">
+                    Projektovanje modela aplikacije
+                  </h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Sunt ut voluptatum eius sapiente, totam reiciendis
-                    temporibus qui quibusdam, recusandae sit vero unde, sed,
-                    incidunt et ea quo dolore laudantium consectetur!
+                    Nakon dobrog sagledavanja problema koji je trebalo rešiti
+                    kreirali smo model aplikacije koji je enkapsulirao
+                    najvažnije zahteve projekta
                   </p>
                 </div>
               </div>
@@ -205,15 +211,14 @@ const Index = () => {
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>Maj 2024</h4>
+                  <h4>Maj 2023</h4>
                   <h4 className="subheading">Izrada aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Sunt ut voluptatum eius sapiente, totam reiciendis
-                    temporibus qui quibusdam, recusandae sit vero unde, sed,
-                    incidunt et ea quo dolore laudantium consectetur!
+                    Počinje sa pronalaženjem i izučavanjem novih tehnologija
+                    koje su potrebne za kreiranje aplikacije kao sto su ReactJS
+                    i naš tim započinje kreiranje fornt-end dela projekta
                   </p>
                 </div>
               </div>
@@ -228,15 +233,14 @@ const Index = () => {
               </div>
               <div className="timeline-panel">
                 <div className="timeline-heading">
-                  <h4>July 2020</h4>
+                  <h4>Jun 2023</h4>
                   <h4 className="subheading">Finalizacija aplikacije</h4>
                 </div>
                 <div className="timeline-body">
                   <p className="text-muted">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Sunt ut voluptatum eius sapiente, totam reiciendis
-                    temporibus qui quibusdam, recusandae sit vero unde, sed,
-                    incidunt et ea quo dolore laudantium consectetur!
+                    Sa najvećim delom aplikacije spremnim za upotrebu u zadnjem
+                    koraku je pažnja bila okrenuta samom izgledu aplikacije i
+                    ispravljanju grešaka koje su se pojavile u toku razvoja
                   </p>
                 </div>
               </div>
@@ -258,9 +262,11 @@ const Index = () => {
       <section className="page-section bg-light" id="team">
         <div className="container">
           <div className="text-center">
-            <h2 className="section-heading text-uppercase">Our Amazing Team</h2>
+            <h2 className="section-heading text-uppercase">
+              Tim naših developera
+            </h2>
             <h3 className="section-subheading text-muted">
-              Lorem ipsum dolor sit amet consectetur.
+              Osobe koje su učestvovale u realizaciji projekta
             </h3>
           </div>
           <div className="row">
@@ -268,11 +274,11 @@ const Index = () => {
               <div className="team-member">
                 <img
                   className="mx-auto rounded-circle"
-                  src={userPic}
+                  src={userPic1}
                   alt="..."
                 />
                 <h4>Milan Miljkovic</h4>
-                <p className="text-muted">Lead Designer</p>
+                <p className="text-muted">Glavni Dizajner</p>
                 <a
                   className="btn btn-dark btn-social mx-2"
                   href="https://www.twitter.com/"
@@ -321,11 +327,11 @@ const Index = () => {
               <div className="team-member">
                 <img
                   className="mx-auto rounded-circle"
-                  src={userPic}
+                  src={userPic2}
                   alt="..."
                 />
                 <h4>Božidar Mitić</h4>
-                <p className="text-muted">Lead Designer</p>
+                <p className="text-muted">Front-End Developer</p>
                 <a
                   className="btn btn-dark btn-social mx-2"
                   href="https://www.twitter.com/"
@@ -374,11 +380,11 @@ const Index = () => {
               <div className="team-member">
                 <img
                   className="mx-auto rounded-circle"
-                  src={userPic}
+                  src={userPic3}
                   alt="..."
                 />
                 <h4>Nenad Pavlović</h4>
-                <p className="text-muted">Lead Designer</p>
+                <p className="text-muted">Back-End Developer</p>
                 <a
                   className="btn btn-dark btn-social mx-2"
                   href="https://www.twitter.com/"

@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "react-bootstrap";
 
 import LoadingPage from "./LoadingPage";
+import MissingPage from "./MissingPage";
 const KompanijaTure = () => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -96,6 +97,10 @@ const KompanijaTure = () => {
     flushSync();
     if (listref.current) listref.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (user?.role.toString() !== "Kompanija") {
+    return <MissingPage />;
+  }
 
   const handleFavorizuj = (idKomp, idVozac) => {
     axios
@@ -301,6 +306,8 @@ const KompanijaTure = () => {
         console.log(err.message);
       });
   };
+
+  
 
   const handleClose = () => setShowAlert(false);
 

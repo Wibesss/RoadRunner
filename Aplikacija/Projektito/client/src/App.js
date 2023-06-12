@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import Login from "./Pages/Login.js";
 import Layout from "./Layout.js";
 import Register from "./Pages/Register.js";
@@ -49,9 +48,9 @@ function App() {
           <Route path="/vozacponudjene" element={<VozacPonudjene />}></Route>
           <Route path="/vozacprihvacene" element={<VozacPrihvacene />}></Route>
           <Route path="/vozacdodeljene" element={<VozacDodeljene />}></Route>
-          <Route path="/kompanijaTure" element={<KompanijaTure />}></Route>
-          <Route path="/dispecerTure" element={<DispecerTure />}></Route>
-          <Route path="/dispecerVozaci" element={<DispecerVozaci />}></Route>
+          <Route path="/kompanijature" element={<KompanijaTure />}></Route>
+          <Route path="/dispecerture" element={<DispecerTure />}></Route>
+          <Route path="/dispecervozaci" element={<DispecerVozaci />}></Route>
           <Route
             path="/dispecerKompanije"
             element={<DispecerKompanije />}

@@ -9,6 +9,7 @@ import VozacPrihvaceneListItem from "./VozacPrihvaceneListItem";
 import LoadingPage from "./LoadingPage";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { toast, ToastContainer } from "react-toastify";
+import MissingPage from "./MissingPage";
 const VozacPrihvacene = () => {
   const { user, ready } = useContext(UserContext);
   const config = {
@@ -80,6 +81,11 @@ const VozacPrihvacene = () => {
       }
     };
   }, [ready]);
+
+  if (user?.role.toString() !== "Vozac") {
+    return <MissingPage />;
+  }
+
   const sorting = (col) => {
     if (order === "ASC") {
       const sorted = [...currentItems].sort((a, b) =>

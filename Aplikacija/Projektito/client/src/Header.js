@@ -103,7 +103,7 @@ const Header = () => {
           {user?.role === "Kompanija" && (
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
               <li className="nav-item">
-                <Link to={"/kompanijaTure"} className={`nav-link ${boja}`}>
+                <Link to={"/kompanijature"} className={`nav-link ${boja}`}>
                   Moje Ture
                 </Link>
               </li>
@@ -113,17 +113,17 @@ const Header = () => {
           {user?.role === "Dispecer" && (
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
               <li className="nav-item">
-                <Link to={"/dispecerTure"} className={`nav-link ${boja}`}>
+                <Link to={"/dispecerture"} className={`nav-link ${boja}`}>
                   Ture
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/dispecerVozaci"} className={`nav-link ${boja}`}>
+                <Link to={"/dispecervozaci"} className={`nav-link ${boja}`}>
                   Vozaci
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/dispecerKompanije"} className={`nav-link ${boja}`}>
+                <Link to={"/dispecerkompanije"} className={`nav-link ${boja}`}>
                   Kompanije
                 </Link>
               </li>
@@ -162,7 +162,7 @@ const Header = () => {
                 Prijavi se
               </Link>
               <Link
-                to="/registration/Vozac"
+                to="/registration/vozac"
                 className="btn-prim"
                 onClick={() => setOpenMenu(!openMenu)}
               >
