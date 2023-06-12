@@ -256,7 +256,7 @@ const KompanijaProfil = () => {
   const handleClose = () => {
     setShowAlert(false);
     if (stringGreska !== "Nova i potrvrdna šifra se ne poklapaju.")
-      window.location.reload();
+      setUpdateUser(!updateUser);
   };
 
   if (!ready) {

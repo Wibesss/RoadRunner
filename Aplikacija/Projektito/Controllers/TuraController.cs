@@ -575,7 +575,7 @@ public class TuraController : ControllerBase
    {
         try
         {
-            var ture= await Context!.DodeljeneTure!.Where(p=>p.Vozac!.ID==idVozaca).Include(p=>p.Dispecer)
+            var ture= await Context!.DodeljeneTure!.Where(p=>p.Vozac!.ID==idVozaca && p.Tura!.Status!="Zavrsena").Include(p=>p.Dispecer)
             .Include(p=>p.Tura).ThenInclude(p=>p!.TipRobe).Include(p => p.Tura)
             .ThenInclude(p => p!.Kompanija).Include(p=>p.Vozac)
             .Select(p => new {
@@ -872,7 +872,7 @@ public class TuraController : ControllerBase
      public async Task PosaljiPoruku()
     {
                var connectionId = await Context.ConnectionInfoo!
-                .Where(p => p.korisnickoIme == "BoziCCCa")
+                .Where(p => p.korisnickoIme == "Nenadd")
                 .Select(p => p.ConnedtionId)
                 .FirstOrDefaultAsync();
 

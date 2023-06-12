@@ -92,52 +92,38 @@ const VozacOcene = () => {
             </svg>
           </button>
         </div>
-        <div className="flex flex-grow w-full justify-center overflow-x-auto">
-          <table className="w-2/3 divide-y divide-gray-200 ">
-            {ready &&
-              currentItems.map((ocena) => (
-                <th className="pb-2 sm:pb-4">
-                  <div className="flex flex-col sm:flex-row items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <Image
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 200 / 2,
-                        }}
-                        source={{ uri: ocena.kompanija.logo }}
-                      />
+        <div className="flex flex-col flex-grow w-full items-center overflow-x-auto gap-2 mt-2">
+          {ready &&
+            currentItems.map((ocena) => (
+              <div class=" w-1/3 lg:max-w-full">
+                <div
+                  class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+                  title="Mountain"
+                ></div>
+                <div class="border-b  border-gray-400 lg:border-l-0  lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                  <div class="mb-8">
+                    <div class="text-gray-900 font-bold text-xl mb-2 flex justify-center">
+                      <Rating value={ocena.broj} readOnly />
                     </div>
-                    <div className="flex flex-col justify-center items-center flex-grow min-w-0 w-96">
-                      <p className="text-sm font-medium text-gray-900 truncate ">
-                        Kompanija: {ocena?.kompanija.naziv}
+                    <p class="text-gray-700 text-base flex justify-center">
+                      {ocena.opis}
+                    </p>
+                  </div>
+                  <div class="flex items-center">
+                    <img
+                      class="w-10 h-10 rounded-full mr-4"
+                      src={ocena.kompanija.logo}
+                      alt="Avatar of Writer"
+                    />
+                    <div class="text-sm">
+                      <p class="text-gray-900 leading-none">
+                        {ocena.kompanija.naziv}
                       </p>
-                      <div className="flex flex-row flex-wrap w-full">
-                        <p className="text-sm text-gray-500 truncate ">
-                          Opis: {ocena?.opis}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 ">
-                      {
-                        <Box
-                          sx={{
-                            "& > legend": { mt: 2 },
-                          }}
-                        >
-                          <Typography component="legend">Ocena:</Typography>
-                          <Rating
-                            name="read-only"
-                            value={ocena?.broj}
-                            readOnly
-                          />
-                        </Box>
-                      }
                     </div>
                   </div>
-                </th>
-              ))}
-          </table>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     );
