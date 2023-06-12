@@ -49,10 +49,10 @@ const VozacProfil = () => {
       setJmbg(response.data.jmbg);
       setEmail(response.data.email);
       setKorisnickoIme(response.data.korisnickoIme);
+      console.log("a");
     });
   }, [updateUser]);
 
- 
   if (ready && !user) {
     return <Navigate to={redirect} />;
   }
@@ -168,10 +168,10 @@ const VozacProfil = () => {
         const imageRef = ref(storage, `vozaci/${slika.name + v4()}`);
         let slikaurl = "";
         uploadBytes(imageRef, slika).then(() => {
-          getDownloadURL(imageRef).then((res) => {
+          getDownloadURL(imageRef).then(async (res) => {
             slikaurl = res;
             try {
-              const response = axios.put(
+              const response = await axios.put(
                 `/Vozac/UpdateVozac/${vozac.id}`,
                 {
                   ime: ime,

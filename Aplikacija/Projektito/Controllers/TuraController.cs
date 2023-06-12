@@ -185,11 +185,19 @@ public class TuraController : ControllerBase
    [HttpDelete]
    public async Task<IActionResult> DeleteTura(int idTure)
    {
+        var prihvacene= await Context.PrihvacenaTura!.Where(p=>p.Tura!.ID==idTure).ToListAsync();
+        var ponudjene=await Context.PonudjenaTura!.Where(p=>p.Tura!.ID==idTure).ToListAsync();
+        var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.ID==idTure).ToListAsync();
         var tura=await Context.Tura!.FindAsync(idTure);
-        if(tura!=null)
+        if(tura!=null && prihvacene.Count==0 && dodeljena.Count==0)
         {
             try
             {
+                foreach(var pon in ponudjene)
+                {
+                    Context.Remove(pon);
+                    await Context.SaveChangesAsync();
+                }
                 Context.Remove(tura);
                 await Context.SaveChangesAsync();
                 return Ok("Uspesno obrisana tura sa id-jem"+idTure+"!");
@@ -201,7 +209,7 @@ public class TuraController : ControllerBase
         }
         else
         {
-            return BadRequest("Tura nije pronadjena");
+            return BadRequest("Ne mozete obrisati ovu turu!");
         }
 
    }

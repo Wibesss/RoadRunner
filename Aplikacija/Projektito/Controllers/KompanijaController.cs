@@ -120,6 +120,35 @@ public class KompanijaController : ControllerBase
              var Kompanija = Context.Kompanija!.Find(id);
              if(Kompanija!=null)
              {
+                var ture=await Context.Tura!.Where(p=>p.Kompanija==Kompanija).ToListAsync();
+                var ocene=await Context.Ocena!.Where(p=>p.Kompanija==Kompanija).ToListAsync();
+                var favorizacije=await Context.Favorizacija!.Where(p=>p.Kompanija==Kompanija).ToListAsync();
+                foreach(var t in ture)
+                {
+                var ponudjene=await Context.PonudjenaTura!.Where(p=>p.Tura==t).ToListAsync();
+                var prihvacena=await Context.PrihvacenaTura!.Where(p=>p.Tura==t).ToListAsync();
+                var dodeljena= await Context.DodeljeneTure!.Where(p=>p.Tura==t).ToListAsync();
+
+                foreach(var p in ponudjene)
+                    Context.Remove(p);
+                foreach(var p in prihvacena)
+                    Context.Remove(p);
+                foreach(var p in dodeljena)
+                    Context.Remove(p);
+
+                await Context.SaveChangesAsync();
+                }
+                  foreach(var f in favorizacije)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
+
+                 foreach(var f in ocene)
+                {
+                    Context.Remove(f);
+                }
+                await Context.SaveChangesAsync();
                 Context.Kompanija.Remove(Kompanija);
                 await Context.SaveChangesAsync();
                 return Ok($"Kompanija obrisana");
