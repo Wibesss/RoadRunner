@@ -34,10 +34,12 @@ const VozilaListItem = ({ vozilo, handleDelete, handleUpdate }) => {
 
       <tr className="hover:bg-gray-50 h-40">
         <td className=" h-full w-1/5 px-14 font-normal text-gray-900 ">
-          <Image
-            style={{ width: 100, height: 100, borderRadius: 200 / 2 }}
-            source={{ uri: vozilo.slika }}
-          />
+          <div className="flex justify-center">
+            <Image
+              style={{ width: 100, height: 100, borderRadius: 200 / 2 }}
+              source={{ uri: vozilo.slika }}
+            />
+          </div>
         </td>
         <td className="px-6 py-4">
           <div className="text-sm">

@@ -55,10 +55,12 @@ const DispecerVozacListItem = ({ item, handleDelete }) => {
 
       <tr className="bg-white border-b">
         <td className="p-4 whitespace-nowrap">
+        <div className="flex justify-center">
           <Image
             style={{ width: 100, height: 100, borderRadius: 200 / 2 }}
             source={{ uri: item.slika }}
           />
+          </div>
         </td>
         <td className="p-4 whitespace-nowrap">{item.ime}</td>
         <td className=" p-4 whitespace-nowrap">{item.prezime}</td>

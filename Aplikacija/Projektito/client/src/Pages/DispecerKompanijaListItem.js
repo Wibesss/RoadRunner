@@ -35,10 +35,12 @@ const DispecerKompanijaListItem = ({ item, handleDelete }) => {
       </Modal>
       <tr className="bg-white border-b">
         <td className="p-4 whitespace-nowrap">
-          <Image
-            style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
-            source={{ uri: item.logo }}
-          />
+          <div className="flex justify-center">
+            <Image
+              style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
+              source={{ uri: item.logo }}
+            />
+          </div>
         </td>
         <td className="p-4 whitespace-nowrap">{item.naziv}</td>
         <td className="p-4 whitespace-nowrap">{item.email}</td>

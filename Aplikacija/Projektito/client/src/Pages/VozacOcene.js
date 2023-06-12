@@ -105,13 +105,13 @@ const VozacOcene = () => {
                       {ocena.opis}
                     </p>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex just-center">
                     <Image
                       style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
                       source={{ uri: ocena.kompanija.logo }}
                     />
-                    <div className="ml-4 text-xl">
-                      <p className="text-gray-900 leading-none">
+                    <div className="ml-4 text-xl flex justify-center items-center">
+                      <p className="text-gray-900">
                         {ocena.kompanija.naziv}
                       </p>
                     </div>

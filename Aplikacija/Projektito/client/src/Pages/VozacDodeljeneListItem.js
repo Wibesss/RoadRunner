@@ -39,10 +39,12 @@ const VozacDodeljeneListItem = ({
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
       <td className="p-4 whitespace-nowrap">
+      <div className="flex justify-center">
         <Image
           style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
           source={{ uri: item.slikaVozila }}
         />
+        </div>
       </td>
       <td className="p-4 whitespace-nowrap">{item.cena}</td>
       <td>

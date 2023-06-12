@@ -32,14 +32,15 @@ const DispecerNoveTureVozaciListItem = ({
     }
   }, [item]);
 
-  
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">
-        <Image
-          style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
-          source={{ uri: item.slika }}
-        />
+        <div className="flex justify-center">
+          <Image
+            style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+            source={{ uri: item.slika }}
+          />
+        </div>
       </td>
       <td className="p-4 whitespace-nowrap">{item.ime}</td>
       <td className=" p-4 whitespace-nowrap">{item.prezime}</td>
