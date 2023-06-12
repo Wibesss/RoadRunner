@@ -38,7 +38,7 @@ const DispecerPrihvaceneTureListItem = ({ item ,mapa, setMapa, setTuraId,setPoce
       <td className="p-4 whitespace-nowrap">{item.datumPocetka}</td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600"
           onClick={() =>{
             if (lastUpdate === item.turaId) {
               setMapa(false);
@@ -85,7 +85,7 @@ const DispecerPrihvaceneTureListItem = ({ item ,mapa, setMapa, setTuraId,setPoce
       </td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600"
           onClick={() =>{
             setKompanijaID(item.kompanijaId)
             if (lastUpdateVozaci === item.turaId) {

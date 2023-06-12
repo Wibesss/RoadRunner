@@ -1,6 +1,6 @@
-import React, { useContext,useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../UserContext";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import VozacProfil from "./VozacProfil";
 import VozacVozila from "./VozacVozila";
 import VozacOcene from "./VozacOcene";
@@ -9,10 +9,10 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
-
+import MissingPage from "./MissingPage";
 
 const AccountVozac = () => {
-  const { user,ready } = useContext(UserContext);
+  const { user, ready } = useContext(UserContext);
   const token = `Bearer ${Cookies.get("Token")}`;
   useEffect(() => {
     let connection;
@@ -29,7 +29,6 @@ const AccountVozac = () => {
       connection
         .start()
         .then(() => {
-
           connection.on("ReceiveMessage", (message) => {
             toast(message, {
               position: "top-right",
@@ -46,8 +45,7 @@ const AccountVozac = () => {
             });
           });
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
     return () => {
       if (connection) {
@@ -55,7 +53,6 @@ const AccountVozac = () => {
       }
     };
   }, [ready]);
-
 
   let { subpage } = useParams();
 
@@ -70,6 +67,14 @@ const AccountVozac = () => {
     }
     return classes;
   };
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  if (user.role.toString() !== "Vozac") {
+    return <MissingPage />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center font-bold">

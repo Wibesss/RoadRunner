@@ -4,12 +4,13 @@ import AccountVozac from "./AccountVozac";
 import AccountKompanija from "./AccountKompanija";
 import AccountDispecer from "./AccountDispecer";
 import { Navigate } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
 
 const AccountPage = () => {
   const { ready, user } = useContext(UserContext);
 
   if (!ready) {
-    return "Loading...";
+    return <LoadingPage />
   }
 
   if (ready && !user) {

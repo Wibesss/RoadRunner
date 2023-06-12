@@ -40,7 +40,7 @@ const DispecerVozacListItem = ({ item, handleDelete }) => {
       <td className="p-4 whitespace-nowrap">{vozacOcene.srednja}</td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600 "
           onClick={() => {
             handleDelete(item.id);
           }}

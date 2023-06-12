@@ -38,7 +38,7 @@ const VozacPonudjeneListItem = ({
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600  "
           onClick={() => {
             if (lastUpdate === item.turaId) {
               setMapa(false);
@@ -85,7 +85,7 @@ const VozacPonudjeneListItem = ({
       </td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600  "
           onClick={() => {
             handleDelete(item.turaId, vID);
           }}

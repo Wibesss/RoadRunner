@@ -1,14 +1,16 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import KompanijaFavorizovani from "./KompanijaFavorizovani";
 import { UserContext } from "../UserContext";
 import { useContext } from "react";
 import KompanijaProfil from "./KompanijaProfil";
+import MissingPage from "./MissingPage";
 
 const AccountKompanija = () => {
   const { user } = useContext(UserContext);
 
   let { subpage } = useParams();
+  
 
   if (subpage === undefined) {
     subpage = "profil";
@@ -21,6 +23,14 @@ const AccountKompanija = () => {
     }
     return classes;
   };
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  if (user.role.toString() !== "Kompanija") {
+    return <MissingPage />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center font-bold w-full">

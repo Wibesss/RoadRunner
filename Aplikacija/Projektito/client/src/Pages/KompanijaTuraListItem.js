@@ -8,7 +8,7 @@ const KompanijaTuraListItem = ({
   handlePrikaziVozacaZ,
 }) => {
   return (
-    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <tr className="bg-white border-b ">
       <td className="p-4 whitespace-nowrap">{item.tipRobe.tip}</td>
       <td className="p-4 whitespace-nowrap">
         {item.tezinaRobe === null ? "-" : item.tezinaRobe}
@@ -30,7 +30,7 @@ const KompanijaTuraListItem = ({
       <td className="p-4 whitespace-nowrap">{item.duzina}</td>
       <td className="flex items-center px-6 py-4 space-x-3 whitespace-nowrap">
         <button
-          className="font-medium text-red-600 dark:text-red-500 hover:underline"
+          className="font-medium text-red-600 "
           onClick={() => {
             handleDelete(item.id);
           }}

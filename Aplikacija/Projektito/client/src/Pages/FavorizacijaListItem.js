@@ -40,12 +40,12 @@ const FavorizacijaListItem = ({
 
   if (oceneReady && ocene.srednja !== undefined) {
     return (
-      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ">
+      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow ">
         <div className="flex  justify-end px-4 pt-4 relative">
           <button
             id="dropdownMenuIconHorizontalButton"
             data-dropdown-toggle="dropdownDotsHorizontal"
-            className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none  focus:ring-gray-50 "
             type="button"
             onClick={toggleDropdown}
           >
@@ -87,29 +87,30 @@ const FavorizacijaListItem = ({
             src={item.slika}
             alt=""
           />
-          <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+          <h5 className="mb-1 text-xl font-medium text-gray-900 ">
             {item.ime + " " + item.prezime}
           </h5>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-gray-500 
+          ">
             {item.korisnickoIme}
           </span>
           <div className="flex flex-col mt-4 space-x-3 md:mt-6 w-5/6">
             <div className="flex justify-center mb-3">
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">
+              <div className="inline-flex items-center text-base font-semibold text-gray-900 ">
                 {<Rating name="read-only" value={ocene.srednja} readOnly />}
               </div>
-              <p className="ml-2  font-medium text-gray-900 dark:text-white">
+              <p className="ml-2  font-medium text-gray-900 ">
                 {ocene.srednja} / 5
               </p>
             </div>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            <p className="text-sm font-medium text-gray-500 ">
               Ukupno {ocene.ukupniBrojOcena} ocena
             </p>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 5
               </span>
-              <div className="w-full h-5 mx-2 bg-gray-200 rounded dark:bg-gray-700 ">
+              <div className="w-full h-5 mx-2 bg-gray-200 rounded ">
                 <div
                   className="h-5 bg-yellow-400 rounded"
                   style={{
@@ -117,15 +118,15 @@ const FavorizacijaListItem = ({
                   }}
                 ></div>
               </div>
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500 mr-auto">
+              <span className="text-sm font-medium text-blue-600  mr-auto">
                 {`${ocene.brojPetica}%`}
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 4
               </span>
-              <div className="w-full h-5 mx-2 bg-gray-200 rounded dark:bg-gray-700">
+              <div className="w-full h-5 mx-2 bg-gray-200 rounded ">
                 <div
                   className="h-5 bg-yellow-400 rounded"
                   style={{
@@ -133,15 +134,15 @@ const FavorizacijaListItem = ({
                   }}
                 ></div>
               </div>
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500  mr-auto">
+              <span className="text-sm font-medium text-blue-600   mr-auto">
                 {`${ocene.brojCetvorke}%`}
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 3
               </span>
-              <div className="w-full h-5 mx-2 bg-gray-200 rounded dark:bg-gray-700">
+              <div className="w-full h-5 mx-2 bg-gray-200 rounded ">
                 <div
                   className="h-5 bg-yellow-400 rounded"
                   style={{
@@ -149,15 +150,15 @@ const FavorizacijaListItem = ({
                   }}
                 ></div>
               </div>
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 {`${ocene.brojTrojki}%`}
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 2
               </span>
-              <div className="w-full h-5 mx-2 bg-gray-200 rounded dark:bg-gray-700">
+              <div className="w-full h-5 mx-2 bg-gray-200 rounded ">
                 <div
                   className="h-5 bg-yellow-400 rounded"
                   style={{
@@ -165,15 +166,15 @@ const FavorizacijaListItem = ({
                   }}
                 ></div>
               </div>
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 {`${ocene.brojDvojki}%`}
               </span>
             </div>
             <div className="flex items-center mt-4">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 1
               </span>
-              <div className="w-full h-5 mx-2 bg-gray-200 rounded dark:bg-gray-700">
+              <div className="w-full h-5 mx-2 bg-gray-200 rounded ">
                 <div
                   className="h-5 bg-yellow-400 rounded"
                   style={{
@@ -181,7 +182,7 @@ const FavorizacijaListItem = ({
                   }}
                 ></div>
               </div>
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
+              <span className="text-sm font-medium text-blue-600 ">
                 {`${ocene.brojJedinica}%`}
               </span>
             </div>

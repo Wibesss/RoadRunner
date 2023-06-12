@@ -54,7 +54,7 @@ const KompanijaFavorizovani = () => {
           setStringGreska(
             "Doslo je do greske pri brisanju fovorizovanog vozača!"
           );
-          showAlert(true);
+          setShowAlert(true);
         }
       })
       .catch((err) => {

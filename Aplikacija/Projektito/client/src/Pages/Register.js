@@ -1,9 +1,14 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import RegisterKompanija from "./RegisterKompanija.js";
-import RegisterVozac from "./RegisterVozac.js";
+import React, { useContext } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Link, Outlet } from "react-router-dom";
+import { UserContext } from "../UserContext";
 const Register = () => {
+  const { user} = useContext(UserContext);
+  
+  if (user) {
+    return <Navigate to={"/"} />;
+  }
+  
   return (
     <div>
       <div

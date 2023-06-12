@@ -11,7 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [showNeuspesno, setShowNeuspesno] = useState(false);
 
   useEffect(() => {
@@ -36,6 +36,10 @@ const Login = () => {
     return <Navigate to={"/"} />;
   }
   const handleClose = () => setShowNeuspesno(false);
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>

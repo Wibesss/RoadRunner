@@ -26,7 +26,7 @@ const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,
       <td className="p-4 whitespace-nowrap">{item.kompanijaNaziv}</td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600  hover:underline"
           onClick={() =>{
             if (lastUpdate === item.turaId) {
               setMapa(false);
@@ -73,7 +73,7 @@ const DispecerNoveTureListItem = ({ item ,mapa, setMapa, setTuraId,setPocetnaGS,
       </td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600  hover:underline"
           onClick={() =>{
             if (lastUpdateVozaci === item.turaId) {
               setVozaci(false);

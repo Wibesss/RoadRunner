@@ -6,6 +6,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import DispecerKompanijaListItem from "./DispecerKompanijaListItem";
 import LoadingPage from "./LoadingPage";
+import { Navigate } from "react-router-dom";
+import MissingPage from "./MissingPage";
 
 const DispecerKompanije = () => {
   const { user, setUser } = useContext(UserContext);
@@ -16,6 +18,9 @@ const DispecerKompanije = () => {
   const [ready, setReady] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [obrisano, setObrisano] = useState(false);
+
+  
+
   useEffect(() => {
     if (user) {
       axios
@@ -58,6 +63,15 @@ const DispecerKompanije = () => {
         });
     }
   };
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  if (user.role.toString() !== "Dispecer") {
+    return <MissingPage />;
+  }
+
   if (!ready) {
     return <LoadingPage />;
   } else {

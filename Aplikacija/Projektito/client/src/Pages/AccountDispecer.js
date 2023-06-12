@@ -8,7 +8,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import LoadingPage from "./LoadingPage";
 import { Image } from "react-native";
-
+import MissingPage from "./MissingPage";
 import { Modal } from "react-bootstrap";
 
 const AccountDispecer = () => {
@@ -69,6 +69,7 @@ const AccountDispecer = () => {
   if (ready && !user && !redirect) {
     return <Navigate to={redirect} />;
   }
+
 
   const handlePotrvdu = (e) => {
     e.preventDefault();

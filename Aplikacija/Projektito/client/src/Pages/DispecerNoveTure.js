@@ -8,8 +8,13 @@ import DispecerNoveTureListItem from "./DispecerNoveTureListItem";
 import MapeDispecer from "./MapeDispecer";
 import DispecerNoveTureVozaci from "./DispecerNoveTureVozaci";
 import LoadingPage from "./LoadingPage";
+import MissingPage from "./MissingPage";
+import { Navigate } from "react-router-dom";
 const DispecerNoveTure = () => {
   const { user } = useContext(UserContext);
+
+  
+
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
   };
@@ -59,6 +64,15 @@ const DispecerNoveTure = () => {
       setOrder("ASC");
     }
   };
+
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  if (user.role.toString() !== "Dispecer") {
+    return <MissingPage />;
+  }
 
   if (!ready) {
     return <LoadingPage />;

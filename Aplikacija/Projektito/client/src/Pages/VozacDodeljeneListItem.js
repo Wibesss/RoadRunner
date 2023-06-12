@@ -47,7 +47,7 @@ const VozacDodeljeneListItem = ({
       <td className="p-4 whitespace-nowrap">{item.cena}</td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600 "
           onClick={() => {
             if (lastUpdate === item.turaId) {
               setMapa(false);
@@ -94,7 +94,7 @@ const VozacDodeljeneListItem = ({
       </td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600"
           onClick={() => {
             handleStart(item.id);
           }}
@@ -117,7 +117,7 @@ const VozacDodeljeneListItem = ({
       </td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600 "
           onClick={() => {
             handleEnd(item.id);
           }}

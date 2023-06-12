@@ -11,6 +11,7 @@ import PrikazDodeljenogVozaca from "./PrikazDodeljenogVozaca";
 import PrikazVozacaZ from "./PrikazVozacaZ";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Modal } from "react-bootstrap";
 
 import LoadingPage from "./LoadingPage";
 const KompanijaTure = () => {
@@ -51,6 +52,9 @@ const KompanijaTure = () => {
   const [prikaziVozacaZ, setPrikaziVozacaZ] = useState(false);
   const [vozacZ, setVozacZ] = useState();
   const [ocenjen, setOcenjen] = useState(false);
+
+  const [stringGreska, setStringGreska] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const listref = useRef(null);
   const tableRef = useRef(null);
@@ -145,8 +149,9 @@ const KompanijaTure = () => {
         });
         setOcenjen(!ocenjen);
       })
-      .catch((error) => {
-        alert(error.response.data.message);
+      .catch((err) => {
+        setStringGreska(`Error: + ${err.message}`);
+        setShowAlert(true);
       });
   };
 
@@ -295,188 +300,211 @@ const KompanijaTure = () => {
       });
   };
 
+  const handleClose = () => setShowAlert(false);
+
   if (!ready || !currentItemsReady) {
     return <LoadingPage />;
   } else {
     return (
-      <div className="flex flex-col items-center justify-center">
-        <ToastContainer></ToastContainer>
-        <div className="flex flex-grow flex-col mt-10 w-4/5 justify-center items-center">
-          <div className="flex flex-col w-full justify-center items-center">
-            <div className="w-full min-h-fill flex flex-col justify-center overflow-auto sm:rounded-lg">
-              <button
-                className="btn-prim self-center sm:w-1/5 mx-2 my-4"
-                onClick={handleDodajClick}
-              >
-                Dodaj Turu
-              </button>
-
-              <div className=" overflow-auto sm:rounded-lg">
-                <table
-                  className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md "
-                  ref={tableRef}
+      <>
+        <Modal
+          show={showAlert}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Greška!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{stringGreska}</Modal.Body>
+          <Modal.Footer>
+            <button className="btn-prim" onClick={handleClose}>
+              Zatvori
+            </button>
+          </Modal.Footer>
+        </Modal>
+        <div className="flex flex-col items-center justify-center">
+          <ToastContainer></ToastContainer>
+          <div className="flex flex-grow flex-col mt-10 w-4/5 justify-center items-center">
+            <div className="flex flex-col w-full justify-center items-center">
+              <div className="w-full min-h-fill flex flex-col justify-center overflow-auto sm:rounded-lg">
+                <button
+                  className="btn-prim self-center sm:w-1/5 mx-2 my-4"
+                  onClick={handleDodajClick}
                 >
-                  <thead className="text-xs text-white uppercase bg-primary">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Vrsta robe
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Tezina robe
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Visina robe
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Duzina robe
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Sirina robe
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Zapremina robe
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Status
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Datum pocetka
-                      </th>
-                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                        Duzina
-                      </th>
-                      <th></th>
-                    </tr>
-                  </thead>
+                  Dodaj Turu
+                </button>
 
-                  <tbody>
-                    {currentItems.map((item, ind) => (
-                      <KompanijaTuraListItem
-                        item={item}
-                        handleDelete={handleDelete}
-                        handlePrikazi={handlePrikazi}
-                        key={ind}
-                        handlePrikaziVozaca={handlePrikaziVozaca}
-                        handlePrikaziVozacaZ={handlePrikaziVozacaZ}
+                <div className=" overflow-auto sm:rounded-lg">
+                  <table
+                    className="w-full text-sm text-left text-gray-500  shadow-md "
+                    ref={tableRef}
+                  >
+                    <thead className="text-xs text-white uppercase bg-primary">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Vrsta robe
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Tezina robe
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Visina robe
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Duzina robe
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Sirina robe
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Zapremina robe
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Datum pocetka
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Duzina
+                        </th>
+                        <th></th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {currentItems.map((item, ind) => (
+                        <KompanijaTuraListItem
+                          item={item}
+                          handleDelete={handleDelete}
+                          handlePrikazi={handlePrikazi}
+                          key={ind}
+                          handlePrikaziVozaca={handlePrikaziVozaca}
+                          handlePrikaziVozacaZ={handlePrikaziVozacaZ}
+                        />
+                      ))}
+                      {currentItems.length === 0 && (
+                        <tr>
+                          <th colSpan="10" className="text-center">
+                            Nemate aktivnih ruta
+                          </th>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="w-full flex flex-col gap-2 ml-4 flex-wrap ">
+                {vozaciCurrent?.length !== 0 ? (
+                  <div className="flex justify-center items-center rounded-md mt-4">
+                    <button
+                      type="button"
+                      className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
+                      onClick={handleClickPrev}
+                      disabled={currentPageV === 1}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="1em"
+                        viewBox="0 0 448 512"
+                        fill={"black"}
+                      >
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                      </svg>
+                    </button>
+                    <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white">
+                      {currentPageV}
+                    </p>
+                    <button
+                      type="button"
+                      className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
+                      onClick={handleClickNext}
+                      disabled={currentPageV === totalPagesV}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="1em"
+                        viewBox="0 0 448 512"
+                        fill={"black"}
+                      >
+                        <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  lastTura !== 0 &&
+                  prikaziVozace && (
+                    <h1 className="text-center text-2xl">
+                      Za sada ne postoje vozači koji su prihvatili turu!
+                    </h1>
+                  )
+                )}
+                <div className="w-full flex gap flex-wrap justify-around">
+                  {prikaziVozace === true &&
+                    vozaciCurrent?.map((vozac) => (
+                      <VozaciZaTuruListItem
+                        item={vozac}
+                        key={vozac.id}
+                        currentPageV={currentPageV}
+                        onClick={handleSelected}
+                        selectedVozac={selectedVozac}
                       />
                     ))}
-                    {currentItems.length === 0 && (
-                      <tr>
-                        <th colSpan="10" className="text-center">
-                          Nemate aktivnih ruta
-                        </th>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="w-full flex flex-col gap-2 ml-4 flex-wrap ">
-              {vozaciCurrent?.length !== 0 ? (
-                <div className="flex justify-center items-center rounded-md mt-4">
-                  <button
-                    type="button"
-                    className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
-                    onClick={handleClickPrev}
-                    disabled={currentPageV === 1}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 448 512"
-                      fill={"black"}
-                    >
-                      <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-                    </svg>
-                  </button>
-                  <p className="px-4 py-2 text-xl font-bold text-gray-900 bg-white">
-                    {currentPageV}
-                  </p>
-                  <button
-                    type="button"
-                    className="px-4 py-2 h-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md"
-                    onClick={handleClickNext}
-                    disabled={currentPageV === totalPagesV}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 448 512"
-                      fill={"black"}
-                    >
-                      <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                    </svg>
-                  </button>
+                  {prikaziVozaca === true && (
+                    <PrikazDodeljenogVozaca
+                      vozac={dodeljenVozac}
+                    ></PrikazDodeljenogVozaca>
+                  )}
+                  {prikaziVozacaZ === true && (
+                    <PrikazVozacaZ
+                      vozac={vozacZ}
+                      handleFavorizuj={handleFavorizuj}
+                      handleOceni={handleOceni}
+                      user={user}
+                      ocenjen={ocenjen}
+                      lastTura={lastTura}
+                    ></PrikazVozacaZ>
+                  )}
                 </div>
-              ) : (
-                lastTura !== 0 &&
-                prikaziVozace && (
-                  <h1 className="text-center text-2xl">
-                    Za sada ne postoje vozači koji su prihvatili turu!
-                  </h1>
-                )
-              )}
-              <div className="w-full flex gap flex-wrap justify-around">
-                {prikaziVozace === true &&
-                  vozaciCurrent?.map((vozac) => (
-                    <VozaciZaTuruListItem
-                      item={vozac}
-                      key={vozac.id}
-                      currentPageV={currentPageV}
-                      onClick={handleSelected}
-                      selectedVozac={selectedVozac}
-                    />
-                  ))}
-                {prikaziVozaca === true && (
-                  <PrikazDodeljenogVozaca
-                    vozac={dodeljenVozac}
-                  ></PrikazDodeljenogVozaca>
-                )}
-                {prikaziVozacaZ === true && (
-                  <PrikazVozacaZ
-                    vozac={vozacZ}
-                    handleFavorizuj={handleFavorizuj}
-                    handleOceni={handleOceni}
-                    user={user}
-                    ocenjen={ocenjen}
-                    lastTura={lastTura}
-                  ></PrikazVozacaZ>
+                {selectedVozac !== 0 && prikaziVozace === true && (
+                  <div className="flex justify-center">
+                    <button
+                      className="btn-prim sm:w-1/6"
+                      onClick={handleIzaberi}
+                    >
+                      Izaberi
+                    </button>
+                  </div>
                 )}
               </div>
-              {selectedVozac !== 0 && prikaziVozace === true && (
-                <div className="flex justify-center">
-                  <button className="btn-prim sm:w-1/6" onClick={handleIzaberi}>
-                    Izaberi
-                  </button>
-                </div>
+            </div>
+            <div className="w-full flex justify-center ">
+              {formaZaDodavanjeTure && (
+                <FormaZaDodavanjeTura
+                  ref={listref}
+                  tipovi={tipovi}
+                  setTip={setTip}
+                  setDuzina={setDuzina}
+                  setSirina={setSirina}
+                  setVisina={setVisina}
+                  setTezina={setTezina}
+                  setZapremina={setZapremina}
+                  setPgs={setPgs}
+                  setPgd={setPgd}
+                  setOgs={setOgs}
+                  setOgd={setOgd}
+                  setDatumPocetka={setDatumPocetka}
+                  setDuzinaTure={setDuzinaTure}
+                  handlePotvrdiDodavanje={handlePotvrdiDodavanje}
+                  datumPocetka={datumPocetka}
+                  tip={tip}
+                />
               )}
             </div>
-          </div>
-          <div className="w-full flex justify-center ">
-            {formaZaDodavanjeTure && (
-              <FormaZaDodavanjeTura
-                ref={listref}
-                tipovi={tipovi}
-                setTip={setTip}
-                setDuzina={setDuzina}
-                setSirina={setSirina}
-                setVisina={setVisina}
-                setTezina={setTezina}
-                setZapremina={setZapremina}
-                setPgs={setPgs}
-                setPgd={setPgd}
-                setOgs={setOgs}
-                setOgd={setOgd}
-                setDatumPocetka={setDatumPocetka}
-                setDuzinaTure={setDuzinaTure}
-                handlePotvrdiDodavanje={handlePotvrdiDodavanje}
-                datumPocetka={datumPocetka}
-                tip={tip}
-              />
-            )}
           </div>
         </div>
-      </div>
+      </>
     );
   }
 };

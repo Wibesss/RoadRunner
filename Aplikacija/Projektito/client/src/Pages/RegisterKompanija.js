@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -20,6 +20,11 @@ const RegisterKompanija = () => {
 
   const [stringGreska, setStringGreska] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+
+  const {user} = useContext();
+  if (user) {
+    return <Navigate to="/" />;
+  }
 
   async function registerKompanija(e) {
     e.preventDefault();

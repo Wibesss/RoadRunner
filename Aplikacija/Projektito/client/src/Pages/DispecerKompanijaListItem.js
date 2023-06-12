@@ -2,6 +2,10 @@ import React from "react";
 import { Image } from "react-native";
 
 const DispecerKompanijaListItem = ({ item, handleDelete }) => {
+
+
+  
+
   return (
     <tr className="bg-white border-b">
       <td className="p-4 whitespace-nowrap">
@@ -17,7 +21,7 @@ const DispecerKompanijaListItem = ({ item, handleDelete }) => {
       <td className="p-4 whitespace-nowrap">{item.vlasnik}</td>
       <td>
         <button
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-blue-600  hover:underline"
           onClick={() => {
             handleDelete(item.id);
           }}
