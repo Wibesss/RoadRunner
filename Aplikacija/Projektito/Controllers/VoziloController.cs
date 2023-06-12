@@ -58,11 +58,11 @@ public class VoziloController : ControllerBase
   [Authorize(Roles ="Vozac,Dispecer")]
   [Route("DeleteVozilo/{idVozila}")]
   [HttpDelete]
-   public async Task<ActionResult> DeleteVozac(int idVozila)
+   public async Task<ActionResult> DeleteVozilo(int idVozila)
    {
     try{
              
-             var vozilo = Context.Vozilo!.Find(idVozila);
+            var vozilo = Context.Vozilo!.Find(idVozila);
              if(vozilo!=null)
              {
                 Context.Vozilo.Remove(vozilo);
@@ -85,7 +85,7 @@ public class VoziloController : ControllerBase
    public async Task<IActionResult> UpdateVozilo([FromBody] Vozilo v,int idVozila)
    {
         var vozilo=await Context.Vozilo!.Where(p=>p.ID==idVozila).FirstOrDefaultAsync();
-    
+
         if(vozilo!=null)
         {
             vozilo.Marka=v.Marka;
