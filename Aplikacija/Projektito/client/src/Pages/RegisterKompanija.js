@@ -24,13 +24,7 @@ const RegisterKompanija = () => {
   const [stringGreska, setStringGreska] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-  if (ready && !user) {
-    return <Navigate to="/" />;
-  }
 
-  if (user.role.toString() !== "Kompanija") {
-    return <MissingPage />;
-  }
 
   async function registerKompanija(e) {
     e.preventDefault();

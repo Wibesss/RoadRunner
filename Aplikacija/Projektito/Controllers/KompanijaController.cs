@@ -229,7 +229,7 @@ public class KompanijaController : ControllerBase
          var dodeljena=await Context.DodeljeneTure!.Where(p=>p.Tura!.Kompanija==kompanija && p.Vozac==vozac).Include(p=>p.Tura).FirstOrDefaultAsync();
          if(ocena ==null)
          {
-         if(/*dodeljena != null && dodeljena.Tura!.Status=="Zavrsena"*/true)
+         if(dodeljena != null && dodeljena.Tura!.Status=="Zavrsena")
          {
             o.Kompanija=kompanija;
             o.Vozac=vozac;
