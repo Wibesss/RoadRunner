@@ -28,10 +28,6 @@ const RegisterKompanija = () => {
     return <Navigate to="/" />;
   }
 
-  if (user.role.toString() !== "Kompanija") {
-    return <MissingPage />;
-  }
-
   async function registerKompanija(e) {
     e.preventDefault();
     try {
