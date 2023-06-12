@@ -51,6 +51,7 @@ const FormaZaUpdatePrikolice = ({
             placeholder="Zapremina"
             value={zapremina === null ? 0 : zapremina}
             required
+            disabled = {tip!=="Cisterna"}
             onChange={(e) => {
               setZapremina(e.target.value);
             }}
@@ -61,6 +62,7 @@ const FormaZaUpdatePrikolice = ({
             placeholder="Nosivost"
             value={nosivost === null ? 0 : nosivost}
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setNosivost(e.target.value);
             }}
@@ -71,6 +73,7 @@ const FormaZaUpdatePrikolice = ({
             placeholder="Duzina"
             value={duzina === null ? 0 : duzina}
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setDuzina(e.target.value);
             }}
@@ -81,6 +84,7 @@ const FormaZaUpdatePrikolice = ({
             placeholder="Sirina"
             value={sirina === null ? 0 : sirina}
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setSirina(e.target.value);
             }}
@@ -91,6 +95,7 @@ const FormaZaUpdatePrikolice = ({
             placeholder="Visina"
             value={visina === null ? 0 : visina}
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setVisina(e.target.value);
             }}

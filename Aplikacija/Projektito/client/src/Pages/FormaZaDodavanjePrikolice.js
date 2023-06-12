@@ -13,6 +13,7 @@ const FormaZaDodavanjePrikolice = ({
   setTablice,
   setPhoto,
   photo,
+  tip,
 }) => {
   const config = {
     headers: { Authorization: `Bearer ${Cookies.get("Token")}` },
@@ -48,6 +49,7 @@ const FormaZaDodavanjePrikolice = ({
             type="number"
             placeholder="Zapremina"
             required
+            disabled = {tip!=="Cisterna"}
             onChange={(e) => {
               setZapremina(e.target.value);
             }}
@@ -57,6 +59,7 @@ const FormaZaDodavanjePrikolice = ({
             type="number"
             placeholder="Nosivost"
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setNosivost(e.target.value);
             }}
@@ -66,6 +69,7 @@ const FormaZaDodavanjePrikolice = ({
             type="number"
             placeholder="Duzina"
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setDuzina(e.target.value);
             }}
@@ -75,6 +79,7 @@ const FormaZaDodavanjePrikolice = ({
             type="number"
             placeholder="Sirina"
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setSirina(e.target.value);
             }}
@@ -84,6 +89,7 @@ const FormaZaDodavanjePrikolice = ({
             type="number"
             placeholder="Visina"
             required
+            disabled = {tip==="Cisterna"}
             onChange={(e) => {
               setVisina(e.target.value);
             }}

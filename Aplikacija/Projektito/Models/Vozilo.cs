@@ -11,7 +11,6 @@ namespace Models
         [RegularExpression("^[a-zA-z]+$")]
         public required string Marka { get; set; }
         [MaxLength(15)]
-        [RegularExpression("^[a-zA-z]+$")]
         public required string Model { get; set; }
 
         public required string Slika { get; set; }
