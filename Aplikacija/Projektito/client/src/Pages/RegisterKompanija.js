@@ -21,10 +21,7 @@ const RegisterKompanija = () => {
   const [stringGreska, setStringGreska] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-  const {user} = useContext();
-  if (user) {
-    return <Navigate to="/" />;
-  }
+
 
   async function registerKompanija(e) {
     e.preventDefault();

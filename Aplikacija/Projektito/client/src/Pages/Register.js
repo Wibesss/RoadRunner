@@ -3,11 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Link, Outlet } from "react-router-dom";
 import { UserContext } from "../UserContext";
 const Register = () => {
-  const { user} = useContext(UserContext);
-  
-  if (user) {
-    return <Navigate to={"/"} />;
-  }
+
   
   return (
     <div>

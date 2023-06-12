@@ -53,7 +53,7 @@ function App() {
           <Route path="/dispecerTure" element={<DispecerTure />}></Route>
           <Route path="/dispecerVozaci" element={<DispecerVozaci />}></Route>
           <Route
-            path="/dispecerKompanije"
+            path="/dispecerkompanije"
             element={<DispecerKompanije />}
           ></Route>
         </Route>

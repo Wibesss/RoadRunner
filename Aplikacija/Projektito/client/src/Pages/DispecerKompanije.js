@@ -77,7 +77,7 @@ const DispecerKompanije = () => {
   } else {
     return (
       <div className="flex flex-col mt-8 items-center">
-        <div className="overflow-auto w-2/3 sm:rounded-lg">
+        <div className="overflow-auto w-10/12 sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500  shadow-md ">
             <thead className="text-xs text-white uppercase bg-primary">
               <tr>
